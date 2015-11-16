@@ -1,0 +1,45 @@
+strings:
+  #Port modes
+  ev3_port_status:
+    no-connect:
+    ev3-uart:
+    ev3-analog:
+  
+  #Driver names
+  ev3_driver_name:
+    none:
+    lego-ev3-touch:
+    lego-ev3-color:
+    lego-ev3-us:
+    lego-ev3-gyro:
+    
+
+  #Gyro modess
+  ev3_gyro_mode:
+    GYRO-ANG: 
+    GYRO-RATE:
+    GYRO-FAS: 
+    GYRO-G&A: GYRO_G_A
+    GYRO-CAL:
+  
+  #Ultrasonic modes
+  ev3_ultrasonic_mode:
+    US-DIST-CM:
+    US-DIST-IN:
+    US-LISTEN:
+    US-SI-CM:
+    US-SI-IN:
+    US-DC-CM:
+    US-DC-IN:
+  
+  #Color modes
+  ev3_color_mode:
+    COL-REFLECT:
+    COL-AMBIENT:
+    COL-COLOR:
+    REF-RAW:
+    RGB-RAW:
+    COL-CAL:
+  
+  ev3_touch_mode:
+    TOUCH:

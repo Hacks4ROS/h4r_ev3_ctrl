@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<package>
+  <name>h4r_ev3_ctrl</name>
+  <version>0.0.0</version>
+  <description>The h4r_ev3_ctrl package</description>
+  <maintainer email="cyborgx1@gmail.com">Christian Holl</maintainer>
+  <license>GPLv3</license>
+
+  
+  <url type="website">http://hacks4ros.github.io/h4r_ev3_ctrl</url>  
+  <url type="repository">http://github.com/Hacks4ROS/h4r_ev3_ctrl</url>
+  <url type="bugtracker">https://github.com/Hacks4ROS/h4r_ev3_ctrl/issues</url>
+  
+  <author email="cyborgx1@gmail.com">Christian Holl</author>
+
+<!--
+  <build_depend>message_generation</build_depend>
+  <run_depend>message_runtime</run_depend>
+-->
+  
+  <buildtool_depend>catkin</buildtool_depend>
+  
+  <run_depend>roscpp</run_depend>
+  <build_depend>roscpp</build_depend>
+
+  <build_depend>joint_limits_interface</build_depend>
+  <run_depend>joint_limits_interface</run_depend>
+  
+  <run_depend>control_toolbox</run_depend>
+  <build_depend>control_toolbox</build_depend>
+  
+  <run_depend>roslib</run_depend>
+  <build_depend>roslib</build_depend>
+    
+  <build_depend>diagnostic_msgs</build_depend>
+  <run_depend>diagnostic_msgs</run_depend>
+
+  <build_depend>controller_manager</build_depend>
+  <run_depend>controller_manager</run_depend>
+  
+  <build_depend>hardware_interface</build_depend>
+  <run_depend>hardware_interface</run_depend>
+  
+  <export>
+
+  </export>
+</package>
