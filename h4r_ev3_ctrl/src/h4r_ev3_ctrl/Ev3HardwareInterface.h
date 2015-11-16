@@ -47,7 +47,7 @@ class Ev3HardwareInterface : public hardware_interface::RobotHW
 	class OutPortData
 	{
 	public:
-		ev3dev::port_type type;
+		ev3dev::lego_port port;
 		string joint_name;
 		double command;
 		double position_out;
@@ -59,13 +59,21 @@ class Ev3HardwareInterface : public hardware_interface::RobotHW
 
 	public:
 		OutPortData(const ev3dev::port_type &type)
-		: type(type)
+		: port(type)
 		, command(0)
 		, position_out(0)
 		, velocity_out(0)
 		, effort_out(0)
 		, last_command_(0)
 		{}
+
+
+
+		bool check()
+		{
+
+		}
+
 
 		void on_write()
 		{
@@ -84,7 +92,6 @@ class Ev3HardwareInterface : public hardware_interface::RobotHW
 	};
 
 	std::vector<OutPortData*> out_data_;
-
 	hardware_interface::JointStateInterface jnt_state_interface;
 	hardware_interface::VelocityJointInterface jnt_vel_interface;
 	hardware_interface::PositionJointInterface jnt_pos_interface;
@@ -94,69 +101,12 @@ class Ev3HardwareInterface : public hardware_interface::RobotHW
 public:
 	Ev3HardwareInterface(const std::vector<ev3dev::port_type> &out_ports);
 	virtual ~Ev3HardwareInterface();
+
 	void write();
 	void read();
 
-
-
-
-	bool canSwitch(const std::list<ControllerInfo> &start_list,
-	                       const std::list<ControllerInfo> &stop_list) const
-	{
-
-		cout<<"CAN";
-		cout<<"Start:"<<endl;
-		for (std::list<ControllerInfo>::const_iterator it = start_list.begin(); it != start_list.end(); it++)
-		{
-			std::cout << it->name<<" "<<it->type <<" "<< endl;
-			for (std::set<std::string>::const_iterator res = it->resources.begin(); res != it->resources.end(); res++)
-			{
-				std::cout<<"\t"<<*res<<endl;
-			}
-		}
-
-
-		cout<<"STOP:"<<endl;
-		for (std::list<ControllerInfo>::const_iterator it = stop_list.begin(); it != stop_list.end(); it++)
-				{
-					std::cout << it->name<<" "<<it->type <<" "<< endl;
-					for (std::set<std::string>::const_iterator res = it->resources.begin(); res != it->resources.end(); res++)
-					{
-						std::cout<<"\t"<<*res<<endl;
-					}
-				}
-
-
-		return true;
-	}
-
-	void doSwitch(const std::list<ControllerInfo> &start_list,
-	                      const std::list<ControllerInfo> &stop_list)
-	{
-
-		cout<<"DO";
-		cout<<"Start:"<<endl;
-		for (std::list<ControllerInfo>::const_iterator it = start_list.begin(); it != start_list.end(); it++)
-		{
-			std::cout << it->name<<" "<<it->type <<" "<< endl;
-			for (std::set<std::string>::const_iterator res = it->resources.begin(); res != it->resources.end(); res++)
-			{
-				std::cout<<"\t"<<*res<<endl;
-			}
-		}
-
-
-		cout<<"STOP:"<<endl;
-		for (std::list<ControllerInfo>::const_iterator it = stop_list.begin(); it != stop_list.end(); it++)
-		{
-			std::cout << it->name<<" "<<it->type <<" "<< endl;
-			for (std::set<std::string>::const_iterator res = it->resources.begin(); res != it->resources.end(); res++)
-			{
-				std::cout<<"\t"<<*res<<endl;
-			}
-		}
-
-	}
+	bool canSwitch(const std::list<ControllerInfo> &start_list, const std::list<ControllerInfo> &stop_list) const;
+	void doSwitch(const std::list<ControllerInfo> &start_list,  const std::list<ControllerInfo> &stop_list);
 
 };
 

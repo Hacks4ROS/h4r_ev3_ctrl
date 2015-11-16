@@ -39,8 +39,8 @@ Ev3HardwareInterface::Ev3HardwareInterface(const std::vector<ev3dev::port_type> 
 
 		//Create jointname with letter
 		string joint_name;
+		joint_name+="Joint_";
 		joint_name+='A'+p;
-		joint_name+="_Joint";
 
 		//Register motor joints
 		hardware_interface::JointStateHandle state_handle(joint_name, &out_data_[p]->position_out, &out_data_[p]->velocity_out, &out_data_[p]->effort_out);
@@ -70,7 +70,6 @@ void Ev3HardwareInterface::write()
 {
 	for (int i = 0; i < out_data_.size(); ++i)
 	{
-		cout<<i<<"R: "<<out_data_[i]->command<<endl;
 
 	}
 }
@@ -81,6 +80,66 @@ void Ev3HardwareInterface::read()
 	{
 
 	}
+}
+
+
+bool Ev3HardwareInterface::canSwitch(const std::list<ControllerInfo> &start_list, const std::list<ControllerInfo> &stop_list) const
+{
+
+
+
+
+	cout<<"CAN";
+	cout<<"Start:"<<endl;
+	for (std::list<ControllerInfo>::const_iterator it = start_list.begin(); it != start_list.end(); it++)
+	{
+		std::cout << it->name<<" "<<it->type <<" "<< endl;
+		for (std::set<std::string>::const_iterator res = it->resources.begin(); res != it->resources.end(); res++)
+		{
+			std::cout<<"\t"<<*res<<endl;
+		}
+	}
+
+
+	cout<<"STOP:"<<endl;
+	for (std::list<ControllerInfo>::const_iterator it = stop_list.begin(); it != stop_list.end(); it++)
+			{
+				std::cout << it->name<<" "<<it->type <<" "<< endl;
+				for (std::set<std::string>::const_iterator res = it->resources.begin(); res != it->resources.end(); res++)
+				{
+					std::cout<<"\t"<<*res<<endl;
+				}
+			}
+
+
+	return true;
+}
+
+void Ev3HardwareInterface::doSwitch(const std::list<ControllerInfo> &start_list, const std::list<ControllerInfo> &stop_list)
+{
+
+	cout<<"DO";
+	cout<<"Start:"<<endl;
+	for (std::list<ControllerInfo>::const_iterator it = start_list.begin(); it != start_list.end(); it++)
+	{
+		std::cout << it->name<<" "<<it->type <<" "<< endl;
+		for (std::set<std::string>::const_iterator res = it->resources.begin(); res != it->resources.end(); res++)
+		{
+			std::cout<<"\t"<<*res<<endl;
+		}
+	}
+
+
+	cout<<"STOP:"<<endl;
+	for (std::list<ControllerInfo>::const_iterator it = stop_list.begin(); it != stop_list.end(); it++)
+	{
+		std::cout << it->name<<" "<<it->type <<" "<< endl;
+		for (std::set<std::string>::const_iterator res = it->resources.begin(); res != it->resources.end(); res++)
+		{
+			std::cout<<"\t"<<*res<<endl;
+		}
+	}
+
 }
 
 } /* namespace h4r_ev3_ctrl */
