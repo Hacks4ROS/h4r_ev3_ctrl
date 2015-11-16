@@ -38,7 +38,8 @@
 using namespace std;
 
 using namespace hardware_interface;
-using namespace joint_limits_interface;
+
+
 
 namespace h4r_ev3_ctrl {
 
@@ -75,7 +76,7 @@ class Ev3HardwareInterface : public hardware_interface::RobotHW
 		}
 
 
-		void on_write()
+		void write()
 		{
 			if(command!=last_command_)
 			{
@@ -83,7 +84,7 @@ class Ev3HardwareInterface : public hardware_interface::RobotHW
 			}
 		}
 
-		void on_read()
+		void read()
 		{
 
 		}
@@ -96,14 +97,15 @@ class Ev3HardwareInterface : public hardware_interface::RobotHW
 	hardware_interface::VelocityJointInterface jnt_vel_interface;
 	hardware_interface::PositionJointInterface jnt_pos_interface;
 	hardware_interface::EffortJointInterface jnt_eff_interface;
+	joint_limits_interface::PositionJointSoftLimitsInterface jnt_limits_interface;
 
 
 public:
 	Ev3HardwareInterface(const std::vector<ev3dev::port_type> &out_ports);
 	virtual ~Ev3HardwareInterface();
 
-	void write();
-	void read();
+	void write(const ros::Duration &d);
+	void read(const ros::Duration &d);
 
 	bool canSwitch(const std::list<ControllerInfo> &start_list, const std::list<ControllerInfo> &stop_list) const;
 	void doSwitch(const std::list<ControllerInfo> &start_list,  const std::list<ControllerInfo> &stop_list);

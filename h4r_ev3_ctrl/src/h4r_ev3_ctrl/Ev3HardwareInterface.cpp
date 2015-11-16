@@ -49,9 +49,20 @@ Ev3HardwareInterface::Ev3HardwareInterface(const std::vector<ev3dev::port_type> 
 		hardware_interface::JointHandle joint_handle(jnt_state_interface.getHandle(joint_name), &out_data_[p]->command);
 
 
+
 		jnt_pos_interface.registerHandle(joint_handle);
 		jnt_vel_interface.registerHandle(joint_handle);
 		jnt_eff_interface.registerHandle(joint_handle);
+
+
+		//Joint limits
+		joint_limits_interface::JointLimits limits;
+		limits.has_velocity_limits=true;
+		limits.max_velocity=100;
+
+		joint_limits_interface::SoftJointLimits soft_limits;
+		joint_limits_interface::PositionJointSoftLimitsHandle pos_limit_handle(jnt_pos_interface.getHandle(joint_name), limits, soft_limits);
+		jnt_limits_interface.registerHandle(pos_limit_handle);
 	}
 }
 
@@ -66,15 +77,17 @@ Ev3HardwareInterface::~Ev3HardwareInterface()
 	out_data_.clear();
 }
 
-void Ev3HardwareInterface::write()
+void Ev3HardwareInterface::write(const ros::Duration &d)
 {
+    jnt_limits_interface.enforceLimits(d);
 	for (int i = 0; i < out_data_.size(); ++i)
 	{
+		out_data_[i]->write();
 
 	}
 }
 
-void Ev3HardwareInterface::read()
+void Ev3HardwareInterface::read(const ros::Duration &d)
 {
 	for (int i = 0; i < out_data_.size(); ++i)
 	{
@@ -85,6 +98,8 @@ void Ev3HardwareInterface::read()
 
 bool Ev3HardwareInterface::canSwitch(const std::list<ControllerInfo> &start_list, const std::list<ControllerInfo> &stop_list) const
 {
+
+
 
 
 

@@ -66,17 +66,16 @@ int main(int argc, char** argv)
 	  h4r_ev3_ctrl::Ev3HardwareInterface robot(ifaces);
 	  controller_manager::ControllerManager cm(&robot,n);
 
-
 	  ros::Time ts = ros::Time::now();
 
 	  while (ros::ok())
 	  {
 	     ros::Duration d = ts - ros::Time::now();
 	     ts = ros::Time::now();
-	     robot.read();
+	     robot.read(d);
 	     cm.update(ts, d);
-	     robot.write();
-	     usleep(100000);
+	     robot.write(ros::Duration(1,0));
+	     usleep(50000);
 	  }
 
 	  spinner.stop();
