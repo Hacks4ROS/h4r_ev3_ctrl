@@ -45,9 +45,12 @@ int main(int argc, char** argv)
 	}
 
 
-	 ros::NodeHandle nh;
+	 ros::NodeHandle n;
+	 ros::NodeHandle nh("~");
+
 	 ros::CallbackQueue queue;
 	 nh.setCallbackQueue(&queue);
+	 n.setCallbackQueue(&queue);
 
 	  ros::AsyncSpinner spinner(4, &queue);
 	  spinner.start();
@@ -61,7 +64,7 @@ int main(int argc, char** argv)
 	 ifaces.push_back(ev3dev::OUTPUT_D);
 
 	  h4r_ev3_ctrl::Ev3HardwareInterface robot(ifaces);
-	  controller_manager::ControllerManager cm(&robot,nh);
+	  controller_manager::ControllerManager cm(&robot,n);
 
 
 	  ros::Time ts = ros::Time::now();

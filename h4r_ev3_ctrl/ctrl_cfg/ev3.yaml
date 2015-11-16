@@ -1,26 +1,25 @@
-ev3:
   # Publish all joint states -----------------------------------
-  OutPortState:
-    type: joint_state_controller/JointStateController
-    publish_rate: 10  
+OutPortState:
+  type: joint_state_controller/JointStateController
+  publish_rate: 10  
 
   # Position Controllers ---------------------------------------
-  OutPortA:
-    type: position_controllers/JointPositionController
-    joint: A_Joint
+OutPortA:
+  type: position_controllers/JointPositionController
+  joint: Joint_A
 
   # Position Controllers ---------------------------------------
-  OutPortB:
-    type: position_controllers/JointPositionController
-    joint: B_Joint
+OutPortB:
+  type: position_controllers/JointPositionController
+  joint: Joint_B
     
     
   # Position Controllers ---------------------------------------
-  OutPortC:
-    type: position_controllers/JointPositionController
-    joint: C_Joint
+OutPortC:
+  type: position_controllers/JointPositionController
+  joint: Joint_C
     
   # Position Controllers ---------------------------------------
-  OutPortD:
-    type: position_controllers/JointPositionController
-    joint: D_Joint
+OutPortD:
+  type: position_controllers/JointPositionController
+  joint: Joint_D
