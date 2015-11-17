@@ -1,8 +1,10 @@
 <launch>
 	
 	<group ns="ev3">
-		<node pkg="h4r_ev3_ctrl" type="ev3_ctrl_node" name="ev3_ctrl" output="screen" />
-		
+		<node pkg="h4r_ev3_ctrl" type="ev3_ctrl_node" name="ev3_ctrl" output="screen" >
+			<rosparam param="OutPorts">["outA","outB","outC","outD"]</rosparam>	
+			<rosparam param="InPorts">["in1","in2","in3","in4"]</rosparam>			
+		</node>
 	 	<!-- Load joint controller configurations from YAML file to parameter server -->
 	  	<rosparam file="$(find h4r_ev3_ctrl)/ctrl_cfg/ev3.yaml" command="load"/>
 	

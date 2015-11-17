@@ -56,14 +56,12 @@ int main(int argc, char** argv)
 	  spinner.start();
 
 
+	  std::vector<string> out_ports, in_ports;
+	  nh.getParam("OutPorts",out_ports);
+	  nh.getParam("InPorts", in_ports);
 
-	 vector<ev3dev::port_type>ifaces;
-	 ifaces.push_back(ev3dev::OUTPUT_A);
-	 ifaces.push_back(ev3dev::OUTPUT_B);
-	 ifaces.push_back(ev3dev::OUTPUT_C);
-	 ifaces.push_back(ev3dev::OUTPUT_D);
 
-	  h4r_ev3_ctrl::Ev3HardwareInterface robot(ifaces);
+	  h4r_ev3_ctrl::Ev3HardwareInterface robot(out_ports);
 	  controller_manager::ControllerManager cm(&robot,n);
 
 	  ros::Time ts = ros::Time::now();
