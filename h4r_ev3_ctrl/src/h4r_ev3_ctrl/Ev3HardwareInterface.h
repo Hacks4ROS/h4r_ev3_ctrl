@@ -25,11 +25,12 @@
 #include <hardware_interface/robot_hw.h>
 #include <hardware_interface/controller_info.h>
 #include <joint_limits_interface/joint_limits_interface.h>
+#include <ev3dev.h>
+#include <h4r_ev3_joint_setup/ev3_joint_settings_interface.h>
 #include <control_toolbox/pid.h>
 #include <list>
 #include <vector>
 #include <string>
-#include <ev3dev.h>
 #include <boost/shared_ptr.hpp>
 
 #ifndef EV3HARDWAREINTERFACE_H_
@@ -39,8 +40,6 @@ using namespace std;
 
 using namespace hardware_interface;
 
-
-
 namespace h4r_ev3_ctrl {
 
 class Ev3HardwareInterface : public hardware_interface::RobotHW
@@ -49,6 +48,8 @@ class Ev3HardwareInterface : public hardware_interface::RobotHW
 	{
 	public:
 		ev3dev::lego_port port;
+
+		ev3dev::Ev3JointSettings settings;
 		string joint_name;
 		double command;
 		double position_out;
@@ -68,48 +69,45 @@ class Ev3HardwareInterface : public hardware_interface::RobotHW
 		, last_command_(0)
 		{}
 
-
-
-		bool check()
-		{
-
-		}
-
-
 		void write()
 		{
-			if(command!=last_command_)
-			{
+			ROS_INFO_STREAM(joint_name<<":"<<settings.joint_mode<<"  -> "<<command);
 
-			}
+
 		}
 
 		void read()
 		{
-
+			ROS_INFO_STREAM(position_out<<" "<<velocity_out<<" "<<effort_out);
 		}
 
 
 	};
+
+	ros::NodeHandle *nh_;
 
 	std::vector<OutPortData*> out_data_;
 	hardware_interface::JointStateInterface jnt_state_interface;
 	hardware_interface::VelocityJointInterface jnt_vel_interface;
 	hardware_interface::PositionJointInterface jnt_pos_interface;
 	hardware_interface::EffortJointInterface jnt_eff_interface;
-	joint_limits_interface::PositionJointSoftLimitsInterface jnt_limits_interface;
 
+	joint_limits_interface::PositionJointSoftLimitsInterface jnt_limits_interface;
+	ev3dev::Ev3JointInterface jnt_ev3_joint_interface;
 
 public:
-	Ev3HardwareInterface(const std::vector<ev3dev::port_type> &out_ports);
+	Ev3HardwareInterface(
+			ros::NodeHandle &nh,
+			const std::vector<ev3dev::port_type> &in_ports,
+			const std::vector<ev3dev::port_type> &out_ports
+			);
 	virtual ~Ev3HardwareInterface();
 
 	void write(const ros::Duration &d);
-	void read(const ros::Duration &d);
+	void read();
 
 	bool canSwitch(const std::list<ControllerInfo> &start_list, const std::list<ControllerInfo> &stop_list) const;
 	void doSwitch(const std::list<ControllerInfo> &start_list,  const std::list<ControllerInfo> &stop_list);
-
 };
 
 } /* namespace h4r_ev3_ctrl */

@@ -12,6 +12,7 @@ find_package(catkin REQUIRED COMPONENTS
   hardware_interface
   joint_limits_interface
   control_toolbox
+  h4r_ev3_joint_setup
 )  
 
 

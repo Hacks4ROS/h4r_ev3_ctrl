@@ -12,11 +12,6 @@
   <url type="bugtracker">https://github.com/Hacks4ROS/h4r_ev3_ctrl/issues</url>
   
   <author email="cyborgx1@gmail.com">Christian Holl</author>
-
-<!--
-  <build_depend>message_generation</build_depend>
-  <run_depend>message_runtime</run_depend>
--->
   
   <buildtool_depend>catkin</buildtool_depend>
   
@@ -31,7 +26,7 @@
   
   <run_depend>roslib</run_depend>
   <build_depend>roslib</build_depend>
-    
+     
   <build_depend>diagnostic_msgs</build_depend>
   <run_depend>diagnostic_msgs</run_depend>
 
@@ -40,8 +35,10 @@
   
   <build_depend>hardware_interface</build_depend>
   <run_depend>hardware_interface</run_depend>
+
+  <build_depend>h4r_ev3_joint_setup</build_depend>  
+    <run_depend>h4r_ev3_joint_setup</run_depend>
   
   <export>
-
   </export>
 </package>

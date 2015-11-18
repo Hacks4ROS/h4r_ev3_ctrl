@@ -23,9 +23,13 @@
 #include "Ev3HardwareInterface.h"
 
 namespace h4r_ev3_ctrl {
-Ev3HardwareInterface::Ev3HardwareInterface(const std::vector<ev3dev::port_type> &out_ports)
+Ev3HardwareInterface::Ev3HardwareInterface(
+		ros::NodeHandle &nh,
+		const std::vector<ev3dev::port_type> &in_ports,
+		const std::vector<ev3dev::port_type> &out_ports
+		)
+:nh_(&nh)
 {
-
 	registerInterface(&jnt_eff_interface);
 	registerInterface(&jnt_pos_interface);
 	registerInterface(&jnt_vel_interface);
@@ -47,9 +51,6 @@ Ev3HardwareInterface::Ev3HardwareInterface(const std::vector<ev3dev::port_type> 
 		jnt_state_interface.registerHandle(state_handle);
 
 		hardware_interface::JointHandle joint_handle(jnt_state_interface.getHandle(joint_name), &out_data_[p]->command);
-
-
-
 		jnt_pos_interface.registerHandle(joint_handle);
 		jnt_vel_interface.registerHandle(joint_handle);
 		jnt_eff_interface.registerHandle(joint_handle);
@@ -58,14 +59,16 @@ Ev3HardwareInterface::Ev3HardwareInterface(const std::vector<ev3dev::port_type> 
 		//Joint limits
 		joint_limits_interface::JointLimits limits;
 		limits.has_velocity_limits=true;
-		limits.max_velocity=100;
+		limits.max_velocity=0.1;
 
 		joint_limits_interface::SoftJointLimits soft_limits;
 		joint_limits_interface::PositionJointSoftLimitsHandle pos_limit_handle(jnt_pos_interface.getHandle(joint_name), limits, soft_limits);
 		jnt_limits_interface.registerHandle(pos_limit_handle);
+
+		ev3dev::Ev3JointInterfaceHandle ev3_joint_handle(joint_handle,&out_data_[p]->settings);
+		jnt_ev3_joint_interface.registerHandle(ev3_joint_handle);
 	}
 }
-
 
 
 Ev3HardwareInterface::~Ev3HardwareInterface()
@@ -79,82 +82,34 @@ Ev3HardwareInterface::~Ev3HardwareInterface()
 
 void Ev3HardwareInterface::write(const ros::Duration &d)
 {
-    jnt_limits_interface.enforceLimits(d);
+    //jnt_limits_interface.enforceLimits(d);
 	for (int i = 0; i < out_data_.size(); ++i)
 	{
 		out_data_[i]->write();
 
+
 	}
 }
 
-void Ev3HardwareInterface::read(const ros::Duration &d)
+void Ev3HardwareInterface::read()
 {
+
 	for (int i = 0; i < out_data_.size(); ++i)
 	{
-
+		out_data_[i]->read();
 	}
 }
 
 
 bool Ev3HardwareInterface::canSwitch(const std::list<ControllerInfo> &start_list, const std::list<ControllerInfo> &stop_list) const
 {
-
-
-
-
-
-
-	cout<<"CAN";
-	cout<<"Start:"<<endl;
-	for (std::list<ControllerInfo>::const_iterator it = start_list.begin(); it != start_list.end(); it++)
-	{
-		std::cout << it->name<<" "<<it->type <<" "<< endl;
-		for (std::set<std::string>::const_iterator res = it->resources.begin(); res != it->resources.end(); res++)
-		{
-			std::cout<<"\t"<<*res<<endl;
-		}
-	}
-
-
-	cout<<"STOP:"<<endl;
-	for (std::list<ControllerInfo>::const_iterator it = stop_list.begin(); it != stop_list.end(); it++)
-			{
-				std::cout << it->name<<" "<<it->type <<" "<< endl;
-				for (std::set<std::string>::const_iterator res = it->resources.begin(); res != it->resources.end(); res++)
-				{
-					std::cout<<"\t"<<*res<<endl;
-				}
-			}
-
-
+	jnt_ev3_joint_interface.checkUpdateSettings(start_list, nh_);
 	return true;
 }
 
 void Ev3HardwareInterface::doSwitch(const std::list<ControllerInfo> &start_list, const std::list<ControllerInfo> &stop_list)
 {
-
-	cout<<"DO";
-	cout<<"Start:"<<endl;
-	for (std::list<ControllerInfo>::const_iterator it = start_list.begin(); it != start_list.end(); it++)
-	{
-		std::cout << it->name<<" "<<it->type <<" "<< endl;
-		for (std::set<std::string>::const_iterator res = it->resources.begin(); res != it->resources.end(); res++)
-		{
-			std::cout<<"\t"<<*res<<endl;
-		}
-	}
-
-
-	cout<<"STOP:"<<endl;
-	for (std::list<ControllerInfo>::const_iterator it = stop_list.begin(); it != stop_list.end(); it++)
-	{
-		std::cout << it->name<<" "<<it->type <<" "<< endl;
-		for (std::set<std::string>::const_iterator res = it->resources.begin(); res != it->resources.end(); res++)
-		{
-			std::cout<<"\t"<<*res<<endl;
-		}
-	}
-
+	jnt_ev3_joint_interface.updateSettings(start_list,nh_);
 }
 
 } /* namespace h4r_ev3_ctrl */

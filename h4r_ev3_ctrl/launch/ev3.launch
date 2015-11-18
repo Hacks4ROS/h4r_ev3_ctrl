@@ -1,5 +1,4 @@
 <launch>
-	
 	<group ns="ev3">
 		<node pkg="h4r_ev3_ctrl" type="ev3_ctrl_node" name="ev3_ctrl" output="screen" >
 			<rosparam param="OutPorts">["outA","outB","outC","outD"]</rosparam>	
@@ -10,7 +9,6 @@
 	
 	  	<!-- load the controllers -->
 	  	<node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
-	    output="screen" args="OutPortState OutPortA OutPortB OutPortC OutPortD"/>
-	</group>
-		
+	    output="screen" args="OutPortState OutPortA OutPortB mobile_base_controller"/>
+	</group>		
 </launch>

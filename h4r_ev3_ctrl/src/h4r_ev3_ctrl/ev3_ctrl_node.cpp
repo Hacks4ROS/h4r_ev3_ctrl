@@ -61,7 +61,7 @@ int main(int argc, char** argv)
 	  nh.getParam("InPorts", in_ports);
 
 
-	  h4r_ev3_ctrl::Ev3HardwareInterface robot(out_ports);
+	  h4r_ev3_ctrl::Ev3HardwareInterface robot(n,in_ports,out_ports);
 	  controller_manager::ControllerManager cm(&robot,n);
 
 	  ros::Time ts = ros::Time::now();
@@ -70,10 +70,10 @@ int main(int argc, char** argv)
 	  {
 	     ros::Duration d = ts - ros::Time::now();
 	     ts = ros::Time::now();
-	     robot.read(d);
-	     cm.update(ts, d);
+	     robot.read();
 	     robot.write(ros::Duration(1,0));
-	     usleep(50000);
+	     cm.update(ts, d);
+	     //usleep(50000);
 	  }
 
 	  spinner.stop();
