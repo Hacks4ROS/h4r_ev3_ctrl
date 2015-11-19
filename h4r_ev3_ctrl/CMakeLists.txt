@@ -199,6 +199,14 @@ install(DIRECTORY launch
    FILES_MATCHING PATTERN "*.launch"
 )
 
+## Mark other files for installation (e.g. launch and bag files, etc.)
+install(FILES
+    launch/ev3.launch
+    ctrl_cfg/ev3.yaml
+    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+)
+
+
 #############
 ## Testing ##
 #############
