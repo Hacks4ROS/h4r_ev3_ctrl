@@ -27,8 +27,10 @@ namespace ev3dev {
 class Ev3JointSettings {
 
 public:
+
 	typedef enum
 	{
+		EV3_JOINT_OFF,
 		EV3_JOINT_POSITION,
 		EV3_JOINT_VELOCITY,
 	} Ev3JointMode;

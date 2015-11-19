@@ -1,22 +1,22 @@
 /*
- * This file (Ev3HardwareInterface.h}) is part of h4r_ev3_ctrl.
- * Date: 13.11.2015
+ * This file (Ev3HardwareInterface.h) is part of h4r_ev3_ctrl.
+ * Date: 19.11.2015
  *
  * Author: Christian Holl
  * http://github.com/Hacks4ROS
  *
- * h4r_ev3_ctrl is free software: you can redistribute it and/or modify
+ * h4r_ev3_joint_settings is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * h4r_ev3_ctrl is distributed in the hope that it will be useful,
+ * h4r_ev3_joint_settings is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with h4r_ev3_ctrl.  If not, see <http://www.gnu.org/licenses/>.
+ * along with h4r_ev3_joint_settings.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
 
@@ -71,14 +71,52 @@ class Ev3HardwareInterface : public hardware_interface::RobotHW
 
 		void write()
 		{
-			ROS_INFO_STREAM(joint_name<<":"<<settings.joint_mode<<"  -> "<<command);
+			if(port.connected())
+			{
+				ev3dev::motor mot(port.port_name());
+				switch(settings.joint_mode)
+				{
+				case ev3dev::Ev3JointSettings::EV3_JOINT_POSITION:
+					mot.speed_regulation_off;
+					mot.set_position_p(command);
+					mot.run_to_abs_pos();
+					break;
 
+				case ev3dev::Ev3JointSettings::EV3_JOINT_VELOCITY:
+					mot.speed_regulation_on;
+					mot.set_duty_cycle_sp(command);
+					mot.run_forever();
+					break;
 
+				default:
+					break;
+				}
+			}
+			else
+			{
+				ROS_ERROR_STREAM("Port "<<port.port_name()<<"is not connected!");
+			}
 		}
 
 		void read()
 		{
-			ROS_INFO_STREAM(position_out<<" "<<velocity_out<<" "<<effort_out);
+			if(port.connected())
+			{
+				switch(settings.joint_mode)
+				{
+				case ev3dev::Ev3JointSettings::EV3_JOINT_POSITION:
+
+					break;
+
+				case ev3dev::Ev3JointSettings::EV3_JOINT_VELOCITY:
+
+					break;
+				}
+			}
+			else
+			{
+				ROS_ERROR_STREAM("Port "<<port.port_name()<<"is not connected!");
+			}
 		}
 
 
@@ -97,7 +135,6 @@ class Ev3HardwareInterface : public hardware_interface::RobotHW
 
 public:
 	Ev3HardwareInterface(
-			ros::NodeHandle &nh,
 			const std::vector<ev3dev::port_type> &in_ports,
 			const std::vector<ev3dev::port_type> &out_ports
 			);

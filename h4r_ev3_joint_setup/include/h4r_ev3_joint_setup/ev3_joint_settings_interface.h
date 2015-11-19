@@ -1,33 +1,33 @@
 /*
- * This file (ev3dev.h) is part of h4r_ev3_joint_setup.
- * Date: 17.11.2015
+ * This file (ev3_joint_settings_interface.h}) is part of h4r_ev3_joint_setting.
+ * Date: 19.11.2015
  *
  * Author: Christian Holl
  * http://github.com/Hacks4ROS
  *
- * h4r_ev3_joint_setup is free software: you can redistribute it and/or modify
+ * h4r_ev3_joint_setting is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * h4r_ev3_joint_setup is distributed in the hope that it will be useful,
+ * h4r_ev3_joint_setting is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with h4r_ev3_joint_setup.  If not, see <http://www.gnu.org/licenses/>.
+ * along with h4r_ev3_joint_setting.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef ev3dev_H_
-#define ev3dev_H_
+
+#ifndef EV3_JOINT_SETTINGS_INTERFACE_H
+#define EV3_JOINT_SETTINGS_INTERFACE_H
 
 
 #include <iostream>
 #include <h4r_ev3_joint_setup/ev3_joint_settings.h>
 #include <h4r_ev3_joint_setup/ev3_joint_settings_params.h>
 #include <h4r_ev3_joint_setup/ev3_joint_settings_exception.h>
-
 #include <ros/duration.h>
 #include <ros/ros.h>
 #include <boost/shared_ptr.hpp>
@@ -130,4 +130,4 @@ public:
 
 }
 
-#endif /* ev3dev_H_ */
+#endif /* EV3_JOINT_SETTINGS_INTERFACE_H */

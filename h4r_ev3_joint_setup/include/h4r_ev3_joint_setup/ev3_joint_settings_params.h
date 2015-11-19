@@ -20,8 +20,8 @@
  *
  */
 
-#ifndef ev3_joint_PARAMS_H_
-#define ev3_joint_PARAMS_H_
+#ifndef EV3_JOINT_SETTINGS_PARAMS_H_
+#define EV3_JOINT_SETTINGS_PARAMS_H_
 
 #include <string>
 #include <ros/ros.h>
@@ -107,4 +107,4 @@ namespace ev3dev
 }
 
 
-#endif /* ev3_joint_PARAMS_H_ */
+#endif /* EV3_JOINT_SETTINGS_PARAMS_H_ */

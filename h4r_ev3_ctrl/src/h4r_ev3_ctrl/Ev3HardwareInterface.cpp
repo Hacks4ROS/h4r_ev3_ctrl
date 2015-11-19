@@ -1,5 +1,5 @@
 /*
- * This file (Ev3HardwareInterface.cpp}) is part of h4r_ev3_ctrl.
+ * This file (Ev3HardwareInterface.cpp) is part of h4r_ev3_ctrl.
  * Date: 16.11.2015
  *
  * Author: Christian Holl
@@ -24,11 +24,9 @@
 
 namespace h4r_ev3_ctrl {
 Ev3HardwareInterface::Ev3HardwareInterface(
-		ros::NodeHandle &nh,
 		const std::vector<ev3dev::port_type> &in_ports,
 		const std::vector<ev3dev::port_type> &out_ports
 		)
-:nh_(&nh)
 {
 	registerInterface(&jnt_eff_interface);
 	registerInterface(&jnt_pos_interface);

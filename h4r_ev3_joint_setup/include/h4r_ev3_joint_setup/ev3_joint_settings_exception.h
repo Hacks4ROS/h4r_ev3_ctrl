@@ -20,8 +20,8 @@
  *
  */
 
-#ifndef ev3_joint_SETTINGS_EXCEPTION_H_
-#define ev3_joint_SETTINGS_EXCEPTION_H_
+#ifndef EV3_JOINT_SETTINGS_EXCEPTION_H_
+#define EV3_JOINT_SETTINGS_EXCEPTION_H_
 
 #include <string>
 #include <exception>
@@ -50,4 +50,4 @@ private:
 
 }
 
-#endif /* ev3_joint_SETTINGS_EXCEPTION_H_ */
+#endif /* EV3_JOINT_SETTINGS_EXCEPTION_H_ */

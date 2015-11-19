@@ -1,5 +1,5 @@
 /*
- * This file (ev3_ctrl_node.cpp}) is part of h4r_ev3_ctrl.
+ * This file (ev3_ctrl_node.cpp) is part of h4r_ev3_ctrl.
  * Date: 13.11.2015
  *
  * Author: Christian Holl
@@ -61,7 +61,7 @@ int main(int argc, char** argv)
 	  nh.getParam("InPorts", in_ports);
 
 
-	  h4r_ev3_ctrl::Ev3HardwareInterface robot(n,in_ports,out_ports);
+	  h4r_ev3_ctrl::Ev3HardwareInterface robot(in_ports,out_ports);
 	  controller_manager::ControllerManager cm(&robot,n);
 
 	  ros::Time ts = ros::Time::now();
