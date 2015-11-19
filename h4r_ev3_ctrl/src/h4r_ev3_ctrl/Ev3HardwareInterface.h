@@ -102,14 +102,15 @@ class Ev3HardwareInterface : public hardware_interface::RobotHW
 		{
 			if(port.connected())
 			{
+				ev3dev::motor mot(port.port_name());
 				switch(settings.joint_mode)
 				{
 				case ev3dev::Ev3JointSettings::EV3_JOINT_POSITION:
-
+					position_out=mot.position();
 					break;
 
 				case ev3dev::Ev3JointSettings::EV3_JOINT_VELOCITY:
-
+					velocity_out=mot.speed();
 					break;
 				}
 			}
