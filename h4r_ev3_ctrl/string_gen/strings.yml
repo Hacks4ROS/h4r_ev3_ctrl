@@ -1,4 +1,9 @@
 strings:
+  #Port Drivers
+  ev3_port_drivers:
+    legoev3-input-port:
+    legoev3-input-outport:
+
   #Port modes
   ev3_port_status:
     no-connect:
@@ -13,7 +18,6 @@ strings:
     lego-ev3-us:
     lego-ev3-gyro:
     
-
   #Gyro modess
   ev3_gyro_mode:
     GYRO-ANG: 
@@ -43,3 +47,13 @@ strings:
   
   ev3_touch_mode:
     TOUCH:
+    
+  ev3_motor_commands:
+    run-forever: 
+    run-to-abs-pos: 
+    run-to-rel-pos: 
+    run-timed:
+    run-direct: 
+    stop:
+    reset:
+    

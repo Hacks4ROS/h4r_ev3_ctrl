@@ -19,40 +19,6 @@ Ev3Strings(){}/*thou shalt never construct this!*/
 public:
 	typedef enum
 	{
-		EV3PORTSTATUS_NOT_FOUND=-1,
-		EV3PORTSTATUS_EV3_UART,
-		EV3PORTSTATUS_NO_CONNECT,
-		EV3PORTSTATUS_EV3_ANALOG,
-	}Ev3PortStatus;
-
-	static Ev3PortStatus Ev3PortStatusFromString(const string& str);
-	static string Ev3PortStatusToString(Ev3PortStatus val);
-
-private: 
-	static const map<Ev3PortStatus,string> ev3_port_status_string;
-	static const map<string, Ev3PortStatus> ev3_port_status_enum;
-
-public:
-	typedef enum
-	{
-		EV3GYROMODE_NOT_FOUND=-1,
-		EV3GYROMODE_GYRO_FAS,
-		EV3GYROMODE_GYRO_ANG,
-		EV3GYROMODE_GYRO_G_A,
-		EV3GYROMODE_GYRO_CAL,
-		EV3GYROMODE_GYRO_RATE,
-	}Ev3GyroMode;
-
-	static Ev3GyroMode Ev3GyroModeFromString(const string& str);
-	static string Ev3GyroModeToString(Ev3GyroMode val);
-
-private: 
-	static const map<Ev3GyroMode,string> ev3_gyro_mode_string;
-	static const map<string, Ev3GyroMode> ev3_gyro_mode_enum;
-
-public:
-	typedef enum
-	{
 		EV3ULTRASONICMODE_NOT_FOUND=-1,
 		EV3ULTRASONICMODE_US_DC_IN,
 		EV3ULTRASONICMODE_US_DIST_CM,
@@ -92,20 +58,6 @@ private:
 public:
 	typedef enum
 	{
-		EV3TOUCHMODE_NOT_FOUND=-1,
-		EV3TOUCHMODE_TOUCH,
-	}Ev3TouchMode;
-
-	static Ev3TouchMode Ev3TouchModeFromString(const string& str);
-	static string Ev3TouchModeToString(Ev3TouchMode val);
-
-private: 
-	static const map<Ev3TouchMode,string> ev3_touch_mode_string;
-	static const map<string, Ev3TouchMode> ev3_touch_mode_enum;
-
-public:
-	typedef enum
-	{
 		EV3DRIVERNAME_NOT_FOUND=-1,
 		EV3DRIVERNAME_LEGO_EV3_TOUCH,
 		EV3DRIVERNAME_LEGO_EV3_COLOR,
@@ -120,6 +72,89 @@ public:
 private: 
 	static const map<Ev3DriverName,string> ev3_driver_name_string;
 	static const map<string, Ev3DriverName> ev3_driver_name_enum;
+
+public:
+	typedef enum
+	{
+		EV3PORTSTATUS_NOT_FOUND=-1,
+		EV3PORTSTATUS_EV3_UART,
+		EV3PORTSTATUS_NO_CONNECT,
+		EV3PORTSTATUS_EV3_ANALOG,
+	}Ev3PortStatus;
+
+	static Ev3PortStatus Ev3PortStatusFromString(const string& str);
+	static string Ev3PortStatusToString(Ev3PortStatus val);
+
+private: 
+	static const map<Ev3PortStatus,string> ev3_port_status_string;
+	static const map<string, Ev3PortStatus> ev3_port_status_enum;
+
+public:
+	typedef enum
+	{
+		EV3GYROMODE_NOT_FOUND=-1,
+		EV3GYROMODE_GYRO_FAS,
+		EV3GYROMODE_GYRO_ANG,
+		EV3GYROMODE_GYRO_G_A,
+		EV3GYROMODE_GYRO_CAL,
+		EV3GYROMODE_GYRO_RATE,
+	}Ev3GyroMode;
+
+	static Ev3GyroMode Ev3GyroModeFromString(const string& str);
+	static string Ev3GyroModeToString(Ev3GyroMode val);
+
+private: 
+	static const map<Ev3GyroMode,string> ev3_gyro_mode_string;
+	static const map<string, Ev3GyroMode> ev3_gyro_mode_enum;
+
+public:
+	typedef enum
+	{
+		EV3MOTORCOMMANDS_NOT_FOUND=-1,
+		EV3MOTORCOMMANDS_RESET,
+		EV3MOTORCOMMANDS_RUN_TO_REL_POS,
+		EV3MOTORCOMMANDS_RUN_FOREVER,
+		EV3MOTORCOMMANDS_RUN_DIRECT,
+		EV3MOTORCOMMANDS_STOP,
+		EV3MOTORCOMMANDS_RUN_TIMED,
+		EV3MOTORCOMMANDS_RUN_TO_ABS_POS,
+	}Ev3MotorCommands;
+
+	static Ev3MotorCommands Ev3MotorCommandsFromString(const string& str);
+	static string Ev3MotorCommandsToString(Ev3MotorCommands val);
+
+private: 
+	static const map<Ev3MotorCommands,string> ev3_motor_commands_string;
+	static const map<string, Ev3MotorCommands> ev3_motor_commands_enum;
+
+public:
+	typedef enum
+	{
+		EV3TOUCHMODE_NOT_FOUND=-1,
+		EV3TOUCHMODE_TOUCH,
+	}Ev3TouchMode;
+
+	static Ev3TouchMode Ev3TouchModeFromString(const string& str);
+	static string Ev3TouchModeToString(Ev3TouchMode val);
+
+private: 
+	static const map<Ev3TouchMode,string> ev3_touch_mode_string;
+	static const map<string, Ev3TouchMode> ev3_touch_mode_enum;
+
+public:
+	typedef enum
+	{
+		EV3PORTDRIVERS_NOT_FOUND=-1,
+		EV3PORTDRIVERS_LEGOEV3_INPUT_PORT,
+		EV3PORTDRIVERS_LEGOEV3_INPUT_OUTPORT,
+	}Ev3PortDrivers;
+
+	static Ev3PortDrivers Ev3PortDriversFromString(const string& str);
+	static string Ev3PortDriversToString(Ev3PortDrivers val);
+
+private: 
+	static const map<Ev3PortDrivers,string> ev3_port_drivers_string;
+	static const map<string, Ev3PortDrivers> ev3_port_drivers_enum;
 
 };
 }
