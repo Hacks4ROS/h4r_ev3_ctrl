@@ -19,7 +19,7 @@
  * along with h4r_ev3_ctrl.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "syshelpers.h"
+#include <h4r_ev3_ctrl/syshelpers.h>
 
 
 bool pathExists(const std::string &path)
@@ -39,7 +39,7 @@ bool writeIntToSysFile(FILE *fileptr,int value)
 	   if(negative)
 		   out+='-';
 
-	   out=string ( out.rbegin(), out.rend() );
+	   out=std::string ( out.rbegin(), out.rend() );
 	   out+='\n';
 
 

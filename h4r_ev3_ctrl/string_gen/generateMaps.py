@@ -88,7 +88,7 @@ output_source+="\n *strings.yml and run it again!"
 output_source+="\n *WARNING WARNING WARNING WARNING WARNING\n"
 output_source+=" */\n"
 
-output_source+=" #include <ev3_driver_strings/Ev3Strings.h>\n"
+output_source+=" #include <h4r_ev3_ctrl/Ev3Strings.h>\n"
 output_source+="namespace ev3dev{\n"
 
 
@@ -149,22 +149,22 @@ for entry in entries:
 output_source+="}\n"
 
 
-directory="../include/ev3_driver_strings/"
+directory="../include/h4r_ev3_ctrl/"
 
 if not os.path.exists(directory):
     os.makedirs(directory)
     
-directory="../src/ev3_driver_strings/"
+directory="../src/h4r_ev3_ctrl/"
 
 if not os.path.exists(directory):
     os.makedirs(directory)
     
     
 
-header_file = open("../include/ev3_driver_strings/Ev3Strings.h", "w")
+header_file = open("../include/h4r_ev3_ctrl/Ev3Strings.h", "w")
 header_file.write(output_header)
 header_file.close()
 
-source_file = open("../src/ev3_driver_strings/Ev3Strings.cpp", "w")
+source_file = open("../src/h4r_ev3_ctrl/Ev3Strings.cpp", "w")
 source_file.write(output_source)
 source_file.close()

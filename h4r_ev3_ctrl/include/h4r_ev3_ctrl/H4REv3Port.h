@@ -30,9 +30,12 @@
 #include <dirent.h>
 #include <map>
 
-using namespace std;
+#include <h4r_ev3_ctrl/syshelpers.h>
+#include <h4r_ev3_ctrl/Ev3Strings.h>
 
 
+namespace ev3dev
+{
 
 
 class H4REv3Port
@@ -92,7 +95,7 @@ public:
 	bool writeInt(const std::string &filename, int value, bool device_dir=true);
 
 	template <typename T>
-	bool writeKey(const std::string &filename, const std::map<T,string> &strmap, T key, bool device_dir=true)
+	bool writeKey(const std::string &filename, const std::map<T,std::string> &strmap, T key, bool device_dir=true)
 	{
 		FILE * file=get_fileptr_(filename, OpenFile::MODE_W, device_dir);
 
@@ -105,7 +108,7 @@ public:
 
 
 	template <typename T>
-	bool readKey(const std::string &filename, const std::map<string,T> &strmap, T &key, bool device_dir=true)
+	bool readKey(const std::string &filename, const std::map<std::string,T> &strmap, T &key, bool device_dir=true)
 	{
 		FILE * file=get_fileptr_(filename, OpenFile::MODE_R, device_dir);
 
@@ -126,7 +129,7 @@ public:
 		return writeInt("position",value);
 	}
 
-	bool setCommand(ev3dev::Ev3Strings::Ev3MotorCommands command)
+	bool setCommand(ev3dev::Ev3Strings::Ev3MotorCommands  command)
 	{
 		return writeKey("command",ev3dev::Ev3Strings::ev3_motor_commands_string, command);
 	}
@@ -134,6 +137,9 @@ public:
 
 
 };
+
+
+}/* ev3dev */
 
 
 #endif /* H4REV3PORT_H_ */

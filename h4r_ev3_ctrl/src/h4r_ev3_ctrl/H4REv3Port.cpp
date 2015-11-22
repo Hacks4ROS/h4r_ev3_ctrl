@@ -21,6 +21,9 @@
  */
 #include <h4r_ev3_ctrl/H4REv3Port.h>
 
+namespace ev3dev
+{
+
 H4REv3Port::H4REv3Port(const std::string &port_name, H4Ev3IoPortType port_type)
 :port_name_(port_name)
 ,port_type_(port_type)
@@ -139,7 +142,7 @@ FILE* H4REv3Port::openFile(const std::string fullpath, OpenFile::FileMode mode)
 
 }
 
-FILE* H4REv3Port::get_fileptr_(const std::string &filename, OpenFile::FileMode mode,bool device_dir=true)
+FILE* H4REv3Port::get_fileptr_(const std::string &filename, OpenFile::FileMode mode,bool device_dir)
 {
 	std::string file;
 	if(device_dir)
@@ -158,7 +161,7 @@ FILE* H4REv3Port::get_fileptr_(const std::string &filename, OpenFile::FileMode m
 	return openFile(file,mode);
 }
 
-bool H4REv3Port::readInt(const std::string &filename, int &value, bool device_dir=true)
+bool H4REv3Port::readInt(const std::string &filename, int &value, bool device_dir)
 {
 	FILE * file=get_fileptr_(filename, OpenFile::MODE_R, device_dir);
 
@@ -168,7 +171,7 @@ bool H4REv3Port::readInt(const std::string &filename, int &value, bool device_di
 	return readIntFromSysFile(file,value);
 }
 
-bool H4REv3Port::writeInt(const std::string &filename, int value, bool device_dir=true)
+bool H4REv3Port::writeInt(const std::string &filename, int value, bool device_dir)
 {
 	FILE * file=get_fileptr_(filename, OpenFile::MODE_W, device_dir);
 
@@ -177,3 +180,5 @@ bool H4REv3Port::writeInt(const std::string &filename, int value, bool device_di
 
 	return writeIntToSysFile(file,value);
 }
+
+}/*ev3dev*/

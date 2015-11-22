@@ -24,12 +24,12 @@
 
 
 #include <string>
+#include <map>
 #include <unistd.h>
 #include <fcntl.h>
 #include <stdio.h>
 #include <dirent.h>
 
-#include "Ev3Strings.h"
 
 /**
  * Check if path exists (file or folder possible)
@@ -62,9 +62,9 @@ bool readIntFromSysFile(FILE *fileptr, int &value);
  * @return True if everything was successful, false otherwise
  */
 template <typename T>
-bool writeKeyToSysFile(FILE *fileptr,const std::map<T,string> &strmap, T key)
+bool writeKeyToSysFile(FILE *fileptr,const std::map<T,std::string> &strmap, T key)
 {
-	   typename std::map<T,string>::const_iterator it=strmap.find(key);
+	   typename std::map<T,std::string>::const_iterator it=strmap.find(key);
 	   std::string out=it->second;
 	   out+='\n';
 
@@ -85,7 +85,7 @@ bool writeKeyToSysFile(FILE *fileptr,const std::map<T,string> &strmap, T key)
  * @return True if everything was ok, false otherwise
  */
 template <typename T>
-bool readKeyFromSysFile(FILE *fileptr,const std::map<string,T> &strmap, T &value)
+bool readKeyFromSysFile(FILE *fileptr,const std::map<std::string,T> &strmap, T &value)
 {
 	   fflush(fileptr);
 	   rewind(fileptr);
@@ -103,7 +103,7 @@ bool readKeyFromSysFile(FILE *fileptr,const std::map<string,T> &strmap, T &value
     	   if(l==0)
     	   {
     		   buffer[read-1]=0x00;//remove linefeed!
-    		   typename std::map<string,T>::const_iterator it=strmap.find(string(buffer));
+    		   typename std::map<std::string,T>::const_iterator it=strmap.find(std::string(buffer));
     		   if(it!=strmap.end())
     		   {
     			   value=it->second;

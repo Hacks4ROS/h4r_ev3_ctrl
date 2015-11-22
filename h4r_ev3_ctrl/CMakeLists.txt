@@ -141,12 +141,14 @@ add_definitions(-std=c++11)
 # EV3 Driver Strings Library#
 #############################
 add_library(ev3_driver_strings
-   src/ev3_driver_strings/Ev3Strings.cpp
+   src/h4r_ev3_ctrl/Ev3Strings.cpp
 )
 
 add_executable(ev3_ctrl_node 
 src/h4r_ev3_ctrl/ev3_ctrl_node.cpp  
 src/h4r_ev3_ctrl/Ev3HardwareInterface.cpp
+src/h4r_ev3_ctrl/syshelpers.cpp
+src/h4r_ev3_ctrl/H4REv3Port.cpp
 )
 
 target_link_libraries(ev3_ctrl_node

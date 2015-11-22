@@ -47,11 +47,12 @@ class Ev3HardwareInterface : public hardware_interface::RobotHW
 	class OutPortData
 	{
 	public:
-		ev3dev::lego_port port;
-
-		ev3dev::Ev3JointSettings settings;
+		std::string port_name;
 		string joint_name;
+		ev3dev::Ev3JointSettings settings;
+
 		double command;
+
 		double position_out;
 		double velocity_out;
 		double effort_out;
@@ -60,8 +61,8 @@ class Ev3HardwareInterface : public hardware_interface::RobotHW
 		double last_command_;
 
 	public:
-		OutPortData(const ev3dev::port_type &type)
-		: port(type)
+		OutPortData(const std::string &name)
+		: port_name(name)
 		, command(0)
 		, position_out(0)
 		, velocity_out(0)
@@ -69,55 +70,37 @@ class Ev3HardwareInterface : public hardware_interface::RobotHW
 		, last_command_(0)
 		{}
 
-		void write()
+
+		bool checkOutPort()
 		{
-			if(port.connected())
-			{
-				ev3dev::motor mot(port.port_name());
+
+
+			return true;
+		}
+
+
+		bool write()
+		{
+
 				switch(settings.joint_mode)
 				{
 				case ev3dev::Ev3JointSettings::EV3_JOINT_POSITION:
-					mot.speed_regulation_off;
-					mot.set_position_p(command);
-					mot.run_to_abs_pos();
+
 					break;
 
 				case ev3dev::Ev3JointSettings::EV3_JOINT_VELOCITY:
-					mot.speed_regulation_on;
-					mot.set_duty_cycle_sp(command);
-					mot.run_forever();
+
 					break;
 
 				default:
 					break;
 				}
-			}
-			else
-			{
-				ROS_ERROR_STREAM("Port "<<port.port_name()<<"is not connected!");
-			}
+
 		}
 
-		void read()
+		bool read()
 		{
-			if(port.connected())
-			{
-				ev3dev::motor mot(port.port_name());
-				switch(settings.joint_mode)
-				{
-				case ev3dev::Ev3JointSettings::EV3_JOINT_POSITION:
-					position_out=mot.position();
-					break;
 
-				case ev3dev::Ev3JointSettings::EV3_JOINT_VELOCITY:
-					velocity_out=mot.speed();
-					break;
-				}
-			}
-			else
-			{
-				ROS_ERROR_STREAM("Port "<<port.port_name()<<"is not connected!");
-			}
 		}
 
 

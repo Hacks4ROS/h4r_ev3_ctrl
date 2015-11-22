@@ -5,7 +5,7 @@
  *strings.yml and run it again!
  *WARNING WARNING WARNING WARNING WARNING
  */
- #include <ev3_driver_strings/Ev3Strings.h>
+ #include <h4r_ev3_ctrl/Ev3Strings.h>
 namespace ev3dev{
 map<Ev3Strings::Ev3Switch,string> init_ev3_switch_string_map()
 {
