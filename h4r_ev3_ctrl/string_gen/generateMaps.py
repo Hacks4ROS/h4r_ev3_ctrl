@@ -69,7 +69,6 @@ for entry in entries:
     output_header+="\tstatic " + entry[1] +" "+entry[1] + "FromString(const string& str);\n"
     output_header+="\tstatic string "+entry[1]+"ToString("+entry[1]+" val);\n\n"
 
-    output_header+="private: \n"
     output_header+="\tstatic const map<"+ entry[1] +",string> " + entry[0] +"_string;\n"
     output_header+="\tstatic const map<string, "+ entry[1] +"> " + entry[0] +"_enum;\n\n"
     
