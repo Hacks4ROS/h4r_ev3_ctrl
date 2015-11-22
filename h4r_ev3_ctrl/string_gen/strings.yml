@@ -57,3 +57,9 @@ strings:
     stop:
     reset:
     
+  ev3_switch:
+    'on':  #TODO: Why do i need to set that in '', WTF ?
+    'off':
+ 
+
+    

@@ -7,6 +7,42 @@
  */
  #include <ev3_driver_strings/Ev3Strings.h>
 namespace ev3dev{
+map<Ev3Strings::Ev3Switch,string> init_ev3_switch_string_map()
+{
+	map<Ev3Strings::Ev3Switch,string> mp;
+	mp.insert(pair<Ev3Strings::Ev3Switch,string>(Ev3Strings::EV3SWITCH_ON,"on"));
+	mp.insert(pair<Ev3Strings::Ev3Switch,string>(Ev3Strings::EV3SWITCH_OFF,"off"));
+	return mp;
+}
+
+map<string, Ev3Strings::Ev3Switch> init_ev3_switch_enum_map()
+{
+	map<string, Ev3Strings::Ev3Switch> mp;
+	mp.insert(pair<string, Ev3Strings::Ev3Switch>("on",Ev3Strings::EV3SWITCH_ON));
+	mp.insert(pair<string, Ev3Strings::Ev3Switch>("off",Ev3Strings::EV3SWITCH_OFF));
+	return mp;
+}
+
+Ev3Strings::Ev3Switch Ev3Strings::Ev3SwitchFromString(const string& str)
+{
+	map<string, Ev3Strings::Ev3Switch>::const_iterator it=Ev3Strings::ev3_switch_enum.find(str);
+	if(it!=Ev3Strings::ev3_switch_enum.end())
+	{return it->second;}
+	return EV3SWITCH_NOT_FOUND;
+}
+
+string Ev3Strings::Ev3SwitchToString(Ev3Switch val)
+{
+	map<Ev3Strings::Ev3Switch, string>::const_iterator it=Ev3Strings::ev3_switch_string.find(val);
+	if(it!=Ev3Strings::ev3_switch_string.end()){return it->second;}
+
+	return "";
+}
+const map<Ev3Strings::Ev3Switch,string>Ev3Strings::ev3_switch_string=  init_ev3_switch_string_map();
+const map<string, Ev3Strings::Ev3Switch>Ev3Strings::ev3_switch_enum=  init_ev3_switch_enum_map();
+
+
+
 map<Ev3Strings::Ev3UltrasonicMode,string> init_ev3_ultrasonic_mode_string_map()
 {
 	map<Ev3Strings::Ev3UltrasonicMode,string> mp;
