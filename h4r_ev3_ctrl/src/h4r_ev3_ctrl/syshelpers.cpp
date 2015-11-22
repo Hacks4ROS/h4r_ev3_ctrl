@@ -129,4 +129,75 @@ bool readIntFromSysFile(FILE *fileptr, int &value)
 	   return true;
 }
 
+bool matchFileContentInEqualSubdirectories(const std::string & parent,
+		                                   const std::string &file,
+										   const std::string &content,
+										   std::string &match_dir)
+{
+	bool found=false;
+			 DIR *dp;
+			  struct dirent *subdir;
+
+		       dp = opendir (parent.c_str());
+
+			  if (dp != NULL)
+			  {
+			    while (subdir = readdir (dp))
+			    {
+			    	std::string directory;
+			    	directory+=subdir->d_name;
+
+			    	if(directory!="." && directory !="..")
+			    	{
+			    		directory=parent;
+			    		directory+="/";
+			    		directory+=subdir->d_name;
+
+
+
+			    		FILE *fileptr=fopen((directory+"/"+file).c_str(),"r");
+
+			    		if(fileptr==NULL)
+			    			continue;
+
+
+					   int64_t value_out;
+
+					   char buffer[256];
+					   char *buf=&buffer[0];
+					   char **bufptr=&buf;
+
+					   bool negative;
+					   ssize_t read;
+					   size_t len=256;
+					   int l=0;
+
+					   while ((read = getline(bufptr, &len, fileptr)) != -1) {
+						   if(l==0)
+						   {
+							   buffer[read-1]=0x00;//remove linefeed!
+							   if(content==buffer)
+							   {
+								   match_dir=directory;
+								   found=true;
+								   break;
+							   }
+						   }
+						   else
+						   {
+							   break;
+						   }
+					   }
+			    		fclose(fileptr);
+			    	}
+			    }
+
+			    closedir (dp);
+			    return found;
+			  }
+			  else
+			  {
+				  return false;
+			  }
+}
 

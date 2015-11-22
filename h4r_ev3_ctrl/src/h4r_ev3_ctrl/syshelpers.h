@@ -27,6 +27,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <stdio.h>
+#include <dirent.h>
 
 #include "Ev3Strings.h"
 
@@ -123,5 +124,19 @@ bool readKeyFromSysFile(FILE *fileptr,const std::map<string,T> &strmap, T &value
 	   fscanf(fileptr,"%[^\n]",buffer);
 	   return true;
 }
+
+/**
+ * Searches for the same file with the same one line string content in multiple subdirectories
+ * Used for identifying a device by name file in sys directories
+ * @param parent The class directory to search
+ * @param file The file to search in the directories
+ * @param content The content which should match
+ * @param[out] match_dir The first matching directory
+ * @return True if found, false otherwise
+ */
+bool matchFileContentInEqualSubdirectories(const std::string & parent,
+		                                   const std::string &file,
+										   const std::string &content,
+										   std::string &match_dir);
 
 #endif /* SYSHELPERS_H_ */
