@@ -83,6 +83,7 @@ protected:
 	FILE *get_fileptr_(const std::string &filename, OpenFile::FileMode mode,bool device_dir=true);
 	bool getDeviceDirectory();
 	bool getPortDirectory();
+	bool checkDirectoryStatus();
 
 public:
 

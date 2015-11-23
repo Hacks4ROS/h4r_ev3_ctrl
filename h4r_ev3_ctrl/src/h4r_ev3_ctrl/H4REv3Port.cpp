@@ -43,6 +43,41 @@ H4REv3Port::~H4REv3Port()
 	//TODO Close files
 }
 
+bool H4REv3Port::checkDirectoryStatus()
+{
+	//Directory exists?
+	if(sys_device_directory_.size() != 0)
+	{
+
+		if(!pathExists(sys_device_directory_))
+		{//If path does not exist anymore, close files and erase the in filecache
+			while(1)
+			{
+				FileCache::iterator f_it= file_cache.begin();
+				if(f_it!=file_cache.end())
+				{
+					fclose(f_it->second.ptr);
+					file_cache.erase(f_it);
+				}
+				else
+				{
+					break;
+				}
+			}
+			getDeviceDirectory();
+			return false; //Even if available again, it think it is good to notify once that it was missing.
+		}
+		else
+		{
+			return true;
+		}
+	}
+	else
+	{
+		return getDeviceDirectory();
+	}
+}
+
 
 bool H4REv3Port::getPortDirectory()
 {
@@ -58,9 +93,6 @@ bool H4REv3Port::getDeviceDirectory()
 	case H4REV3PORT_IN:
 		if(matchFileContentInEqualSubdirectories("/sys/class/lego-sensor","port_name",port_name_,sys_device_directory_))
 		{
-
-
-
 			connected_=true;
 		}
 		break;
@@ -69,7 +101,6 @@ bool H4REv3Port::getDeviceDirectory()
 	case H4REV3PORT_OUT:
 		if(matchFileContentInEqualSubdirectories("/sys/class/tacho-motor","port_name",port_name_,sys_device_directory_))
 		{
-
 			connected_=true;
 		}
 		break;
@@ -144,6 +175,11 @@ FILE* H4REv3Port::openFile(const std::string fullpath, OpenFile::FileMode mode)
 
 FILE* H4REv3Port::get_fileptr_(const std::string &filename, OpenFile::FileMode mode,bool device_dir)
 {
+	if(!checkDirectoryStatus())
+	{
+		return 0;
+	}
+
 	std::string file;
 	if(device_dir)
 	{
