@@ -32,7 +32,7 @@
 #include <vector>
 #include <string>
 #include <boost/shared_ptr.hpp>
-
+#include <h4r_ev3_ctrl/H4REv3Port.h>
 #ifndef EV3HARDWAREINTERFACE_H_
 #define EV3HARDWAREINTERFACE_H_
 
@@ -47,7 +47,7 @@ class Ev3HardwareInterface : public hardware_interface::RobotHW
 	class OutPortData
 	{
 	public:
-		std::string port_name;
+		ev3dev::H4REv3Motor port;
 		string joint_name;
 		ev3dev::Ev3JointSettings settings;
 
@@ -62,7 +62,7 @@ class Ev3HardwareInterface : public hardware_interface::RobotHW
 
 	public:
 		OutPortData(const std::string &name)
-		: port_name(name)
+		: port(name)
 		, command(0)
 		, position_out(0)
 		, velocity_out(0)

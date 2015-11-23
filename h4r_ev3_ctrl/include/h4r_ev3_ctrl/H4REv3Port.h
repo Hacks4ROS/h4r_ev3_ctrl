@@ -47,7 +47,7 @@ public:
 		H4REV3PORT_IN,
 	}H4Ev3IoPortType;
 
-private:
+protected:
 	std::string port_name_;
 	H4Ev3IoPortType port_type_;
 	std::string sys_port_directory_;
@@ -79,21 +79,49 @@ private:
 	typedef std::map<std::string, OpenFile>  FileCache;
 	typedef std::pair<std::string, OpenFile> FileCachePair;
 	FileCache file_cache;
-
-	H4REv3Port(const std::string &port_name, H4Ev3IoPortType port_type);
-	~H4REv3Port();
-
+	FILE* openFile(const std::string fullpath, OpenFile::FileMode mode);
+	FILE *get_fileptr_(const std::string &filename, OpenFile::FileMode mode,bool device_dir=true);
 	bool getDeviceDirectory();
 	bool getPortDirectory();
 
-	FILE* openFile(const std::string fullpath, OpenFile::FileMode mode);
-	FILE *get_fileptr_(const std::string &filename, OpenFile::FileMode mode,bool device_dir=true);
-
-
 public:
+
+	/**
+	 * The constructor
+	 * @param port_name port_name
+	 * @param port_type input or output port
+	 */
+	H4REv3Port(const std::string &port_name, H4Ev3IoPortType port_type);
+	~H4REv3Port();
+
+
+
+	/**
+	 * Reads a integer string from a sys file
+	 * @param filename The sys file to be read from (only filename without directory)
+	 * @param[out] value output variable for the value only valid on return true
+	 * @param device_dir True if it should open the file in the device_directory, false it will search the port directory for the file
+	 * @return True if read successful, false otherwise
+	 */
 	bool readInt(const std::string &filename, int &value, bool device_dir=true);
+
+	/**
+	 * Writes a integer string from a sys file
+	 * @param filename The sys file to be read from (only filename without directory)
+	 * @param value The value to be written to the file
+	 * @param device_dir True if it should open the file in the device_directory, false it will search the port directory for the file
+	 * @return True if read successful, false otherwise
+	 */
 	bool writeInt(const std::string &filename, int value, bool device_dir=true);
 
+	/**
+	 * Writes a string file from a map into a /sys file according to the given key.
+	 * @param filename The sys file to be written to (only filename without directory)
+	 * @param strmap The string map
+	 * @param key The key of the string (if return TRUE!)
+	 * @param device_dir True if it should open the file in the device_directory, false it will search the port directory for the file
+	 * @return True if read successful, false otherwise
+	 */
 	template <typename T>
 	bool writeKey(const std::string &filename, const std::map<T,std::string> &strmap, T key, bool device_dir=true)
 	{
@@ -107,6 +135,14 @@ public:
 	}
 
 
+	/**
+	 * Reads a /sys string file and compares the read string with a given map of strings and gets it's number from the map
+	 * @param filename The sys file to be read
+	 * @param strmap The string map
+	 * @param key The key of the string (if return TRUE!)
+	 * @param device_dir True if it should search in the device_directory, false it will search the port directory for the file
+	 * @return True if read successful, false otherwise
+	 */
 	template <typename T>
 	bool readKey(const std::string &filename, const std::map<std::string,T> &strmap, T &key, bool device_dir=true)
 	{
@@ -119,24 +155,91 @@ public:
 		return readKeyFromSysFile(file,strmap,key);
 	}
 
-	bool setSpeedSP(int value)
-	{
-		return writeInt("speed_sp",value);
-	}
 
-	bool setPositionSP(int value)
-	{
-		return writeInt("position",value);
-	}
-
+	/**
+	 * Setting the command (especially for motors)
+	 * @param command The
+	 * @return True if successful, false otherwise
+	 */
 	bool setCommand(ev3dev::Ev3Strings::Ev3MotorCommands  command)
 	{
 		return writeKey("command",ev3dev::Ev3Strings::ev3_motor_commands_string, command);
 	}
 
+};
 
+
+class H4REv3Motor : public H4REv3Port
+{
+public:
+
+	H4REv3Motor(const std::string &port_name)
+	:H4REv3Port(port_name,H4REV3PORT_OUT)
+	{}
+
+	/**
+	 * Sets the pwm duty cycle value
+	 * @param value The pwm value
+	 * @return True if successful, false otherwise
+	 */
+	bool setDutyCycleSP(int value)
+	{
+		return writeInt("duty_cycle_sp", value);
+	}
+
+	/**
+	 * This function enables or disables the speed regulation functionality
+	 * @param onoff On/Off
+	 * @return True if successful, false otherwise
+	 */
+	bool setSpeedRegulation(ev3dev::Ev3Strings::Ev3Switch onoff)
+	{
+		return writeKey("speed_regulation", ev3dev::Ev3Strings::ev3_switch_string, onoff);
+	}
+
+	/**
+	 * Set speed setpoint
+	 * @param value The speed value in 1/10 rounds per second
+	 * @return True if successful, false otherwise
+	 */
+	bool setSpeedSP(int value)
+	{
+		return writeInt("speed_sp",value);
+	}
+
+	/**
+	 * Set Position setpoint for position control
+	 * @param value The position value
+	 * @return True if successful, false otherwise
+	 */
+	bool setPositionSP(int value)
+	{
+		return writeInt("position_sp",value);
+	}
+
+	/**
+	 * Get the current position of the motor
+	 * @param[out] value The position value if return is true
+	 * @return True if successful, false otherwise
+	 */
+	bool position(int &value)
+	{
+		return readInt("position",value);
+	}
+
+	/**
+	 * Get the current speed of the motor
+	 * @param[out] value The position value if return is true
+	 * @return True if successful, false otherwise
+	 */
+	bool speed(int &value)
+	{
+		return readInt("speed",value);
+	}
 
 };
+
+
 
 
 }/* ev3dev */
