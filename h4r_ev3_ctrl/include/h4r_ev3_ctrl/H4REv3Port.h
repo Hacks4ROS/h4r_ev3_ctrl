@@ -50,7 +50,6 @@ protected:
 	H4Ev3IoPortType port_type_;
 	std::string sys_port_directory_;
 	std::string sys_device_directory_;
-	bool port_found_;
 	bool connected_;
 
 
