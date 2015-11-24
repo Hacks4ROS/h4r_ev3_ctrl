@@ -23,7 +23,7 @@
 #ifndef EV3_JOINT_SETTINGS_H_
 #define EV3_JOINT_SETTINGS_H_
 
-namespace ev3dev {
+namespace h4r_ev3_ctrl {
 class Ev3JointSettings {
 
 public:

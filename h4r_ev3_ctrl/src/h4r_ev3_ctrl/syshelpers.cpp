@@ -21,6 +21,9 @@
  */
 #include <h4r_ev3_ctrl/syshelpers.h>
 
+namespace h4r_ev3_ctrl
+{
+
 
 bool pathExists(const std::string &path)
 {
@@ -201,3 +204,5 @@ bool matchFileContentInEqualSubdirectories(const std::string & parent,
 			  }
 }
 
+
+}/*h4r_ev3_ctrl*/

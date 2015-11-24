@@ -63,7 +63,7 @@ Ev3HardwareInterface::Ev3HardwareInterface(
 		joint_limits_interface::PositionJointSoftLimitsHandle pos_limit_handle(jnt_pos_interface.getHandle(joint_name), limits, soft_limits);
 		jnt_limits_interface.registerHandle(pos_limit_handle);
 
-		ev3dev::Ev3JointInterfaceHandle ev3_joint_handle(joint_handle,&out_data_[p]->settings);
+		Ev3JointInterfaceHandle ev3_joint_handle(joint_handle,&out_data_[p]->settings);
 		jnt_ev3_joint_interface.registerHandle(ev3_joint_handle);
 	}
 }

@@ -18,7 +18,6 @@ find_package(catkin REQUIRED COMPONENTS
 
 ## System dependencies are found with CMake's conventions
 find_package(Boost REQUIRED COMPONENTS system thread program_options )
-find_library(LIBEV3DEV libev3dev.so /usr/lib/libev3dev.so)
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
@@ -106,7 +105,7 @@ find_library(LIBEV3DEV libev3dev.so /usr/lib/libev3dev.so)
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
   INCLUDE_DIRS include
-  LIBRARIES ev3_driver_strings
+  LIBRARIES libh4rctrl
   CATKIN_DEPENDS roscpp 
 #  roslib 
 #  message_runtime
@@ -137,23 +136,28 @@ add_definitions(-std=c++11)
 
 
 
-#############################
-# EV3 Driver Strings Library#
-#############################
-add_library(ev3_driver_strings
+#######################
+# H4R EV3 Port Library#
+#######################
+add_library(libh4rctrl
    src/h4r_ev3_ctrl/Ev3Strings.cpp
+   src/h4r_ev3_ctrl/H4REv3Port.cpp
+   src/h4r_ev3_ctrl/syshelpers.cpp
 )
 
+
+#####################
+# H4R EV3 CTRL NODE #
+#####################
 add_executable(ev3_ctrl_node 
 src/h4r_ev3_ctrl/ev3_ctrl_node.cpp  
 src/h4r_ev3_ctrl/Ev3HardwareInterface.cpp
 src/h4r_ev3_ctrl/syshelpers.cpp
 src/h4r_ev3_ctrl/H4REv3Port.cpp
+src/h4r_ev3_ctrl/Ev3Strings.cpp
 )
 
 target_link_libraries(ev3_ctrl_node
-   ${LIBEV3DEV}
-   ${ev3_driver_strings}
    ${catkin_LIBRARIES}
 )
 
@@ -182,7 +186,7 @@ target_link_libraries(ev3_ctrl_node
 # )
 
 ## Mark executables and/or libraries for installation
-install(TARGETS ev3_ctrl_node ev3_driver_strings
+install(TARGETS ev3_ctrl_node libh4rctrl
    ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
    LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
    RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}

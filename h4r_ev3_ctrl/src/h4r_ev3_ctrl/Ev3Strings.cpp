@@ -6,7 +6,11 @@
  *WARNING WARNING WARNING WARNING WARNING
  */
  #include <h4r_ev3_ctrl/Ev3Strings.h>
-namespace ev3dev{
+
+namespace h4r_ev3_ctrl
+{
+
+
 map<Ev3Strings::Ev3Switch,string> init_ev3_switch_string_map()
 {
 	map<Ev3Strings::Ev3Switch,string> mp;

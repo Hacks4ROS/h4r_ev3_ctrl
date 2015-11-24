@@ -21,7 +21,7 @@
  */
 #include <h4r_ev3_ctrl/H4REv3Port.h>
 
-namespace ev3dev
+namespace h4r_ev3_ctrl
 {
 
 H4REv3Port::H4REv3Port(const std::string &port_name, H4Ev3IoPortType port_type)
@@ -217,4 +217,4 @@ bool H4REv3Port::writeInt(const std::string &filename, int value, bool device_di
 	return writeIntToSysFile(file,value);
 }
 
-}/*ev3dev*/
+}/*h4r_ev3_ctrl*/

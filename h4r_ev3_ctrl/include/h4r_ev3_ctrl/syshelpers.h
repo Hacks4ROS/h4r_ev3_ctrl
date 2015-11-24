@@ -30,6 +30,8 @@
 #include <stdio.h>
 #include <dirent.h>
 
+namespace h4r_ev3_ctrl
+{
 
 /**
  * Check if path exists (file or folder possible)
@@ -139,4 +141,5 @@ bool matchFileContentInEqualSubdirectories(const std::string & parent,
 										   const std::string &content,
 										   std::string &match_dir);
 
+} /*h4r_ev3_ctrl*/
 #endif /* SYSHELPERS_H_ */

@@ -28,7 +28,7 @@
 #include <h4r_ev3_joint_setup/ev3_joint_settings.h>
 
 
-namespace ev3dev
+namespace h4r_ev3_ctrl
 {
 
 	inline bool getJointSettings(const std::string& joint_name, Ev3JointSettings& settings)

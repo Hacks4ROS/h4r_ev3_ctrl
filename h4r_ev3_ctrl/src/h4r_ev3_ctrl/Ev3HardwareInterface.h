@@ -37,7 +37,6 @@
 #define EV3HARDWAREINTERFACE_H_
 
 using namespace std;
-
 using namespace hardware_interface;
 
 namespace h4r_ev3_ctrl {
@@ -47,9 +46,9 @@ class Ev3HardwareInterface : public hardware_interface::RobotHW
 	class OutPortData
 	{
 	public:
-		ev3dev::H4REv3Motor port;
+		H4REv3Motor port;
 		string joint_name;
-		ev3dev::Ev3JointSettings settings;
+		Ev3JointSettings settings;
 
 		double command;
 
@@ -81,14 +80,17 @@ class Ev3HardwareInterface : public hardware_interface::RobotHW
 
 		bool write()
 		{
-
+				using h4r_ev3_ctrl::Ev3Strings;
 				switch(settings.joint_mode)
 				{
-				case ev3dev::Ev3JointSettings::EV3_JOINT_POSITION:
+				case Ev3JointSettings::EV3_JOINT_POSITION:
+
+					port.setDutyCycleSP(100);
+					port.setMotorCommand(Ev3Strings::EV3MOTORCOMMANDS_RESET);
 
 					break;
 
-				case ev3dev::Ev3JointSettings::EV3_JOINT_VELOCITY:
+				case Ev3JointSettings::EV3_JOINT_VELOCITY:
 
 					break;
 
@@ -115,12 +117,12 @@ class Ev3HardwareInterface : public hardware_interface::RobotHW
 	hardware_interface::EffortJointInterface jnt_eff_interface;
 
 	joint_limits_interface::PositionJointSoftLimitsInterface jnt_limits_interface;
-	ev3dev::Ev3JointInterface jnt_ev3_joint_interface;
+	Ev3JointInterface jnt_ev3_joint_interface;
 
 public:
 	Ev3HardwareInterface(
-			const std::vector<ev3dev::port_type> &in_ports,
-			const std::vector<ev3dev::port_type> &out_ports
+			const std::vector<std::string> &in_ports,
+			const std::vector<std::string> &out_ports
 			);
 	virtual ~Ev3HardwareInterface();
 

@@ -47,7 +47,7 @@ output_header+=" #include <map>\n"
 output_header+=" #include <string>\n"
 output_header+=" using namespace std;\n\n"
 
-output_header+="namespace ev3dev{\n"
+output_header+="namespace h4r_ev3_ctrl{\n"
 output_header+="class Ev3Strings\n{\n"
 
 output_header+="private: \n"
@@ -89,7 +89,7 @@ output_source+="\n *WARNING WARNING WARNING WARNING WARNING\n"
 output_source+=" */\n"
 
 output_source+=" #include <h4r_ev3_ctrl/Ev3Strings.h>\n"
-output_source+="namespace ev3dev{\n"
+output_source+="namespace h4r_ev3_ctrl{\n"
 
 
 for entry in entries:

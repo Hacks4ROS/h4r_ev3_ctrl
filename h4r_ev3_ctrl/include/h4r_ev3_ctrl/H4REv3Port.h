@@ -33,10 +33,8 @@
 #include <h4r_ev3_ctrl/syshelpers.h>
 #include <h4r_ev3_ctrl/Ev3Strings.h>
 
-
-namespace ev3dev
+namespace h4r_ev3_ctrl
 {
-
 
 class H4REv3Port
 {
@@ -123,8 +121,8 @@ public:
 	 * @param device_dir True if it should open the file in the device_directory, false it will search the port directory for the file
 	 * @return True if read successful, false otherwise
 	 */
-	template <typename T>
-	bool writeKey(const std::string &filename, const std::map<T,std::string> &strmap, T key, bool device_dir=true)
+	template < typename T >
+	bool writeKey(const std::string &filename, const std::map< T, std::string > &strmap, T key, bool device_dir=true)
 	{
 		FILE * file=get_fileptr_(filename, OpenFile::MODE_W, device_dir);
 
@@ -157,15 +155,7 @@ public:
 	}
 
 
-	/**
-	 * Setting the command (especially for motors)
-	 * @param command The
-	 * @return True if successful, false otherwise
-	 */
-	bool setCommand(ev3dev::Ev3Strings::Ev3MotorCommands  command)
-	{
-		return writeKey("command",ev3dev::Ev3Strings::ev3_motor_commands_string, command);
-	}
+
 
 };
 
@@ -193,9 +183,9 @@ public:
 	 * @param onoff On/Off
 	 * @return True if successful, false otherwise
 	 */
-	bool setSpeedRegulation(ev3dev::Ev3Strings::Ev3Switch onoff)
+	bool setSpeedRegulation(Ev3Strings::Ev3Switch onoff)
 	{
-		return writeKey("speed_regulation", ev3dev::Ev3Strings::ev3_switch_string, onoff);
+		return writeKey("speed_regulation", Ev3Strings::ev3_switch_string, onoff);
 	}
 
 	/**
@@ -238,12 +228,22 @@ public:
 		return readInt("speed",value);
 	}
 
+	/**
+	 * Setting the command (especially for motors)
+	 * @param command The
+	 * @return True if successful, false otherwise
+	 */
+	bool setMotorCommand(Ev3Strings::Ev3MotorCommands  command)
+	{
+		return writeKey("command",Ev3Strings::ev3_motor_commands_string, command);
+	}
+
 };
 
 
 
 
-}/* ev3dev */
+}/*h4r_ev3_ctrl*/
 
 
 #endif /* H4REV3PORT_H_ */

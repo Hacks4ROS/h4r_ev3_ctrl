@@ -40,7 +40,7 @@
 
 
 
-namespace ev3dev
+namespace h4r_ev3_ctrl
 {
 using namespace hardware_interface;
 using namespace std;

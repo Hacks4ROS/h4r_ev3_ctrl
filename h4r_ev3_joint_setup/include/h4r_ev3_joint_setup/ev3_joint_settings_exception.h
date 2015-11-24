@@ -27,7 +27,7 @@
 #include <exception>
 
 
-namespace ev3dev
+namespace h4r_ev3_ctrl
 {
 
 class Ev3JointInterfaceException: public std::exception
