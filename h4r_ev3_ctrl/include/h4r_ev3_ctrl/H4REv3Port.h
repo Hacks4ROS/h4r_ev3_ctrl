@@ -92,8 +92,6 @@ public:
 	H4REv3Port(const std::string &port_name, H4Ev3IoPortType port_type);
 	~H4REv3Port();
 
-
-
 	/**
 	 * Reads a integer string from a sys file
 	 * @param filename The sys file to be read from (only filename without directory)
@@ -111,6 +109,24 @@ public:
 	 * @return True if read successful, false otherwise
 	 */
 	bool writeInt(const std::string &filename, int value, bool device_dir=true);
+
+
+	/**
+	 * @return The name of the port
+	 */
+	const std::string& getPortName() const
+	{
+		return port_name_;
+	}
+
+
+	/**
+	 * @return The ports type
+	 */
+	H4Ev3IoPortType getPortType() const
+	{
+		return port_type_;
+	}
 
 	/**
 	 * Writes a string file from a map into a /sys file according to the given key.
