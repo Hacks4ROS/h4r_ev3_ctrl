@@ -60,6 +60,22 @@ int main(int argc, char** argv)
 	  nh.getParam("OutPorts",out_ports);
 	  nh.getParam("InPorts", in_ports);
 
+	  if(out_ports.size()==0)
+	  {
+		  out_ports.push_back("outA");
+		  out_ports.push_back("outB");
+		  out_ports.push_back("outC");
+		  out_ports.push_back("outD");
+	  }
+
+	  if(in_ports.size()==0)
+	  {
+		  in_ports.push_back("in1");
+		  in_ports.push_back("in2");
+		  in_ports.push_back("in3");
+		  in_ports.push_back("in4");
+	  }
+
 
 	  h4r_ev3_ctrl::Ev3HardwareInterface robot(in_ports,out_ports);
 	  controller_manager::ControllerManager cm(&robot,n);
