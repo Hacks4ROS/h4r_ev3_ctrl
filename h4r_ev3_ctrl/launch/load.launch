@@ -1,0 +1,10 @@
+<launch>
+	 <group ns="ev3">
+	 		<!-- Load joint controller configurations from YAML file to parameter server -->
+	  	<rosparam file="$(find h4r_ev3_ctrl)/ctrl_cfg/ev3.yaml" command="load"/>
+	
+	  	<!-- load the controllers -->
+	  	<node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
+	    output="screen" args="OutPortState OutPortA"/>
+	</group>	  	
+</launch>
