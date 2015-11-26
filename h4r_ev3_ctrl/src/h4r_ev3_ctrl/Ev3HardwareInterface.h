@@ -80,6 +80,8 @@ class Ev3HardwareInterface : public hardware_interface::RobotHW
 
 		bool write()
 		{
+
+				ROS_INFO_STREAM("Command: "<<command);
 				switch(settings.joint_mode)
 				{
 				case Ev3JointSettings::EV3_JOINT_POSITION:
@@ -91,7 +93,7 @@ class Ev3HardwareInterface : public hardware_interface::RobotHW
 					!port.setMotorCommand(Ev3Strings::EV3MOTORCOMMANDS_RUN_TO_ABS_POS)
 					)
 					{
-						ROS_ERROR_STREAM("Port "<<port.getPortName()<<" write Error!");
+						ROS_ERROR_STREAM("Port "<<port.getPortName()<<"position write Error!");
 					}
 
 					break;
@@ -105,7 +107,7 @@ class Ev3HardwareInterface : public hardware_interface::RobotHW
 						!port.setMotorCommand(Ev3Strings::EV3MOTORCOMMANDS_RUN_FOREVER)
 					)
 					{
-						ROS_ERROR_STREAM("Port "<<port.getPortName()<<" write Error!");
+						ROS_ERROR_STREAM("Port "<<port.getPortName()<<"velocity write Error!");
 					}
 					break;
 
