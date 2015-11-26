@@ -105,7 +105,7 @@ class Ev3HardwareInterface : public hardware_interface::RobotHW
 						!port.setMotorCommand(Ev3Strings::EV3MOTORCOMMANDS_RUN_FOREVER)
 					)
 					{
-						ROS_ERROR_STREAM("Port "<<port.getPortName()<<" read Error!");
+						ROS_ERROR_STREAM("Port "<<port.getPortName()<<" write Error!");
 					}
 					break;
 
