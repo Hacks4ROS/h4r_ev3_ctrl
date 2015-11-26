@@ -82,7 +82,7 @@ class Ev3HardwareInterface : public hardware_interface::RobotHW
 		{
 			cout<<
 			port.setDutyCycleSP(100)<<
-			port.setPositionSP(command)<<
+			port.setSpeedSP(command)<<
 			port.setSpeedRegulation(Ev3Strings::EV3SWITCH_ON)<<
 			port.setMotorCommand(Ev3Strings::EV3MOTORCOMMANDS_RUN_FOREVER)<<endl;
 			return 1;
