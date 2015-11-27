@@ -1,5 +1,5 @@
 /*
- * This file (ev3_joint_params.h) is part of h4r_outport_setup.
+ * This file (ev3_joint_params.h) is part of h4r_ev3_ctrl.
  * Date: 16.11.2015
  *
  * Author: Christian Holl

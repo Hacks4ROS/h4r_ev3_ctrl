@@ -1,5 +1,5 @@
 /*
- * This file (ev3_joint_settings_interface.h}) is part of h4r_ev3_joint_setting.
+ * This file (ev3_joint_settings_interface.h) is part of h4r_ev3_ctrl.
  * Date: 19.11.2015
  *
  * Author: Christian Holl

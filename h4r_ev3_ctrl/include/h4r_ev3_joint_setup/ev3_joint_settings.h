@@ -1,5 +1,5 @@
 /*
- * This file (ev3_joint_settings.h) is part of h4r_ev3_joint_setup.
+ * This file (ev3_joint_settings.h) is part of h4r_ev3_ctrl.
  * Date: 16.11.2015
  *
  * Author: Christian Holl
@@ -38,6 +38,8 @@ public:
 	Ev3JointMode joint_mode;
 	std::string driver_name;
 	std::vector<double> pid;
+
+
 
 	Ev3JointSettings()
 	:joint_mode(EV3_JOINT_VELOCITY)

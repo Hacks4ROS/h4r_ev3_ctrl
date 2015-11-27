@@ -1,5 +1,5 @@
 /*
- * This file (ev3_joint_settings_exception.h) is part of ev3_joint_setup.
+ * This file (ev3_joint_settings_exception.h) is part of h4r_ev3_ctrl.
  * Date: 17.11.2015
  *
  * Author: Christian Holl
