@@ -80,12 +80,6 @@ class Ev3HardwareInterface : public hardware_interface::RobotHW
 
 		bool write()
 		{
-			cout<<
-			port.setDutyCycleSP(100)<<
-			port.setSpeedSP(command)<<
-			port.setSpeedRegulation(Ev3Strings::EV3SWITCH_ON)<<
-			port.setMotorCommand(Ev3Strings::EV3MOTORCOMMANDS_RUN_FOREVER)<<endl;
-			return 1;
 
 
 				ROS_INFO_STREAM("Command: "<<command);
@@ -93,35 +87,36 @@ class Ev3HardwareInterface : public hardware_interface::RobotHW
 				{
 				case Ev3JointSettings::EV3_JOINT_POSITION:
 
-					if(
-							!port.setDutyCycleSP(100)||
-							!port.setPositionSP(command)||
-							!port.setSpeedRegulation(Ev3Strings::EV3SWITCH_OFF)||
-							!port.setMotorCommand(Ev3Strings::EV3MOTORCOMMANDS_RUN_TO_ABS_POS)
+					if
+					(
+							port.setDutyCycleSP(100)+
+							port.setPositionSP(command)+
+							port.setSpeedRegulation(Ev3Strings::EV3SWITCH_OFF)+
+							port.setMotorCommand(Ev3Strings::EV3MOTORCOMMANDS_RUN_TO_ABS_POS)
+							!=4
 					)
-					{
-						ROS_ERROR_STREAM("Port "<<port.getPortName()<<"position write Error!");
-					}
+					return false;
 
 					break;
 
 				case Ev3JointSettings::EV3_JOINT_VELOCITY:
 					if
 					(
-						!port.setDutyCycleSP(100)||
-						!port.setSpeedSP(command)||
-						!port.setSpeedRegulation(Ev3Strings::EV3SWITCH_ON)||
-						!port.setMotorCommand(Ev3Strings::EV3MOTORCOMMANDS_RUN_FOREVER)
+					port.setDutyCycleSP(100)+
+					port.setSpeedSP(command)+
+					port.setSpeedRegulation(Ev3Strings::EV3SWITCH_ON)+
+					port.setMotorCommand(Ev3Strings::EV3MOTORCOMMANDS_RUN_FOREVER)
+						!= 4
 					)
-					{
-						ROS_ERROR_STREAM("Port "<<port.getPortName()<<"velocity write Error!");
-					}
+					return false;
+
 					break;
 
 				default:
 					break;
 				}
 
+				return true;
 		}
 
 		bool read()
