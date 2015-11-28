@@ -253,6 +253,16 @@ public:
 		return writeKey("command",Ev3Strings::ev3_motor_commands_string, command);
 	}
 
+	/**
+	 * Sets the rotation direction of the motor
+	 * @param pol The direction
+	 * @return True if successful
+	 */
+	bool setMotorPolarity(Ev3Strings::Ev3Polarity pol)
+	{
+		return writeKey("command",Ev3Strings::ev3_polarity_string, pol);
+	}
+
 };
 
 

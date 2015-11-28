@@ -6,11 +6,7 @@
  *WARNING WARNING WARNING WARNING WARNING
  */
  #include <h4r_ev3_ctrl/Ev3Strings.h>
-
-namespace h4r_ev3_ctrl
-{
-
-
+namespace h4r_ev3_ctrl{
 map<Ev3Strings::Ev3Switch,string> init_ev3_switch_string_map()
 {
 	map<Ev3Strings::Ev3Switch,string> mp;
@@ -176,6 +172,42 @@ string Ev3Strings::Ev3DriverNameToString(Ev3DriverName val)
 }
 const map<Ev3Strings::Ev3DriverName,string>Ev3Strings::ev3_driver_name_string=  init_ev3_driver_name_string_map();
 const map<string, Ev3Strings::Ev3DriverName>Ev3Strings::ev3_driver_name_enum=  init_ev3_driver_name_enum_map();
+
+
+
+map<Ev3Strings::Ev3Polarity,string> init_ev3_polarity_string_map()
+{
+	map<Ev3Strings::Ev3Polarity,string> mp;
+	mp.insert(pair<Ev3Strings::Ev3Polarity,string>(Ev3Strings::EV3POLARITY_INVERSED,"inversed"));
+	mp.insert(pair<Ev3Strings::Ev3Polarity,string>(Ev3Strings::EV3POLARITY_NORMAL,"normal"));
+	return mp;
+}
+
+map<string, Ev3Strings::Ev3Polarity> init_ev3_polarity_enum_map()
+{
+	map<string, Ev3Strings::Ev3Polarity> mp;
+	mp.insert(pair<string, Ev3Strings::Ev3Polarity>("inversed",Ev3Strings::EV3POLARITY_INVERSED));
+	mp.insert(pair<string, Ev3Strings::Ev3Polarity>("normal",Ev3Strings::EV3POLARITY_NORMAL));
+	return mp;
+}
+
+Ev3Strings::Ev3Polarity Ev3Strings::Ev3PolarityFromString(const string& str)
+{
+	map<string, Ev3Strings::Ev3Polarity>::const_iterator it=Ev3Strings::ev3_polarity_enum.find(str);
+	if(it!=Ev3Strings::ev3_polarity_enum.end())
+	{return it->second;}
+	return EV3POLARITY_NOT_FOUND;
+}
+
+string Ev3Strings::Ev3PolarityToString(Ev3Polarity val)
+{
+	map<Ev3Strings::Ev3Polarity, string>::const_iterator it=Ev3Strings::ev3_polarity_string.find(val);
+	if(it!=Ev3Strings::ev3_polarity_string.end()){return it->second;}
+
+	return "";
+}
+const map<Ev3Strings::Ev3Polarity,string>Ev3Strings::ev3_polarity_string=  init_ev3_polarity_string_map();
+const map<string, Ev3Strings::Ev3Polarity>Ev3Strings::ev3_polarity_enum=  init_ev3_polarity_enum_map();
 
 
 

@@ -61,5 +61,9 @@ strings:
     'on':  #TODO: Why do i need to set that in '', WTF ?
     'off':
  
+  ev3_polarity:
+    normal:
+    inversed:
+
 
     

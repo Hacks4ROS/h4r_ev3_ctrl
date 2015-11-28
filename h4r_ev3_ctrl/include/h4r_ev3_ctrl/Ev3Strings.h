@@ -87,6 +87,20 @@ public:
 public:
 	typedef enum
 	{
+		EV3POLARITY_NOT_FOUND=-1,
+		EV3POLARITY_INVERSED,
+		EV3POLARITY_NORMAL,
+	}Ev3Polarity;
+
+	static Ev3Polarity Ev3PolarityFromString(const string& str);
+	static string Ev3PolarityToString(Ev3Polarity val);
+
+	static const map<Ev3Polarity,string> ev3_polarity_string;
+	static const map<string, Ev3Polarity> ev3_polarity_enum;
+
+public:
+	typedef enum
+	{
 		EV3PORTSTATUS_NOT_FOUND=-1,
 		EV3PORTSTATUS_EV3_UART,
 		EV3PORTSTATUS_NO_CONNECT,
