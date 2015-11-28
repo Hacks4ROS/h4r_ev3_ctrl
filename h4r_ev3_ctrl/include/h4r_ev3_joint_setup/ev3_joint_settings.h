@@ -85,6 +85,9 @@ public:
 
 	bool write()
 	{
+		if(!port.isConnected())
+			return false;
+
 			ROS_INFO_STREAM("Command: "<<command);
 			switch(ev3settings.joint_mode)
 			{
@@ -155,6 +158,10 @@ public:
 
 	bool read()
 	{
+		if(!port.isConnected())
+			return false;
+
+
 		int pos;
 		int vel;
 

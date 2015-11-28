@@ -92,6 +92,16 @@ public:
 	H4REv3Port(const std::string &port_name, H4Ev3IoPortType port_type);
 	~H4REv3Port();
 
+
+	/**
+	 * @return true if a device is connected to that port
+	 */
+	bool isConnected()
+	{
+		return pathExists(sys_device_directory_);
+	}
+
+
 	/**
 	 * Reads a integer string from a sys file
 	 * @param filename The sys file to be read from (only filename without directory)
