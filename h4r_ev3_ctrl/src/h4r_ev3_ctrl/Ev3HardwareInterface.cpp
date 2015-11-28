@@ -37,7 +37,7 @@ Ev3HardwareInterface::Ev3HardwareInterface(
 	{
 		//int p=0;
 		//Create new out port data - pointer because of vector reallocations...
-		out_data_.push_back(new OutPortData(out_ports[p]));
+		joint_settings_.push_back(new Ev3JointSettings(out_ports[p]));
 
 		//Create jointname with letter
 		string joint_name;
@@ -45,10 +45,10 @@ Ev3HardwareInterface::Ev3HardwareInterface(
 		joint_name+='A'+p;
 
 		//Register motor joints
-		hardware_interface::JointStateHandle state_handle(joint_name, &out_data_[p]->position_out, &out_data_[p]->velocity_out, &out_data_[p]->effort_out);
+		hardware_interface::JointStateHandle state_handle(joint_name, &joint_settings_[p]->position_out, &joint_settings_[p]->velocity_out, &joint_settings_[p]->effort_out);
 		jnt_state_interface.registerHandle(state_handle);
 
-		hardware_interface::JointHandle joint_handle(jnt_state_interface.getHandle(joint_name), &out_data_[p]->command);
+		hardware_interface::JointHandle joint_handle(jnt_state_interface.getHandle(joint_name), &joint_settings_[p]->command);
 		jnt_pos_interface.registerHandle(joint_handle);
 		jnt_vel_interface.registerHandle(joint_handle);
 		jnt_eff_interface.registerHandle(joint_handle);
@@ -63,7 +63,7 @@ Ev3HardwareInterface::Ev3HardwareInterface(
 		joint_limits_interface::PositionJointSoftLimitsHandle pos_limit_handle(jnt_pos_interface.getHandle(joint_name), limits, soft_limits);
 		jnt_limits_interface.registerHandle(pos_limit_handle);
 
-		Ev3JointInterfaceHandle ev3_joint_handle(joint_handle,&out_data_[p]->settings);
+		Ev3JointInterfaceHandle ev3_joint_handle(joint_handle,joint_settings_[p]);
 		jnt_ev3_joint_interface.registerHandle(ev3_joint_handle);
 	}
 }
@@ -71,19 +71,19 @@ Ev3HardwareInterface::Ev3HardwareInterface(
 
 Ev3HardwareInterface::~Ev3HardwareInterface()
 {
-	for (int i = 0; i < out_data_.size(); ++i)
+	for (int i = 0; i < joint_settings_.size(); ++i)
 	{
-		delete out_data_[i];
+		delete joint_settings_[i];
 	}
-	out_data_.clear();
+	joint_settings_.clear();
 }
 
 void Ev3HardwareInterface::write(const ros::Duration &d)
 {
     //jnt_limits_interface.enforceLimits(d);
-	for (int i = 0; i < out_data_.size(); ++i)
+	for (int i = 0; i < joint_settings_.size(); ++i)
 	{
-		out_data_[i]->write();
+		joint_settings_[i]->write();
 
 
 	}
@@ -92,22 +92,21 @@ void Ev3HardwareInterface::write(const ros::Duration &d)
 void Ev3HardwareInterface::read()
 {
 
-	for (int i = 0; i < out_data_.size(); ++i)
+	for (int i = 0; i < joint_settings_.size(); ++i)
 	{
-		out_data_[i]->read();
+		joint_settings_[i]->read();
 	}
 }
 
 
 bool Ev3HardwareInterface::canSwitch(const std::list<ControllerInfo> &start_list, const std::list<ControllerInfo> &stop_list) const
 {
-	jnt_ev3_joint_interface.checkUpdateSettings(start_list, nh_);
-	return true;
+	return jnt_ev3_joint_interface.ControllerTestChange(start_list);
 }
 
 void Ev3HardwareInterface::doSwitch(const std::list<ControllerInfo> &start_list, const std::list<ControllerInfo> &stop_list)
 {
-	jnt_ev3_joint_interface.updateSettings(start_list,nh_);
+	jnt_ev3_joint_interface.ControllerChange(start_list);
 }
 
 } /* namespace h4r_ev3_ctrl */

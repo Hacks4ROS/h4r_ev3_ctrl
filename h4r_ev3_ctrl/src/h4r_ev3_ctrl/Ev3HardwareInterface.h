@@ -43,93 +43,9 @@ namespace h4r_ev3_ctrl {
 
 class Ev3HardwareInterface : public hardware_interface::RobotHW
 {
-	class OutPortData
-	{
-	public:
-		H4REv3Motor port;
-		string joint_name;
-		Ev3JointSettings settings;
-
-		double command;
-
-		double position_out;
-		double velocity_out;
-		double effort_out;
-
-	private:
-		double last_command_;
-
-	public:
-		OutPortData(const std::string &name)
-		: port(name)
-		, command(0)
-		, position_out(0)
-		, velocity_out(0)
-		, effort_out(0)
-		, last_command_(0)
-		{}
-
-
-		bool checkOutPort()
-		{
-
-
-			return true;
-		}
-
-
-		bool write()
-		{
-
-
-				ROS_INFO_STREAM("Command: "<<command);
-				switch(settings.joint_mode)
-				{
-				case Ev3JointSettings::EV3_JOINT_POSITION:
-
-					if
-					(
-							port.setDutyCycleSP(100)+
-							port.setPositionSP(command)+
-							port.setSpeedRegulation(Ev3Strings::EV3SWITCH_OFF)+
-							port.setMotorCommand(Ev3Strings::EV3MOTORCOMMANDS_RUN_TO_ABS_POS)
-							!=4
-					)
-					return false;
-
-					break;
-
-				case Ev3JointSettings::EV3_JOINT_VELOCITY:
-					if
-					(
-					port.setDutyCycleSP(100)+
-					port.setSpeedSP(command)+
-					port.setSpeedRegulation(Ev3Strings::EV3SWITCH_ON)+
-					port.setMotorCommand(Ev3Strings::EV3MOTORCOMMANDS_RUN_FOREVER)
-						!= 4
-					)
-					return false;
-
-					break;
-
-				default:
-					break;
-				}
-
-				return true;
-		}
-
-		bool read()
-		{
-
-		}
-
-
-	};
-
 	ros::NodeHandle *nh_;
 
-	std::vector<OutPortData*> out_data_;
+	std::vector<Ev3JointSettings*> joint_settings_;
 	hardware_interface::JointStateInterface jnt_state_interface;
 	hardware_interface::VelocityJointInterface jnt_vel_interface;
 	hardware_interface::PositionJointInterface jnt_pos_interface;

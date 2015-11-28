@@ -23,8 +23,11 @@
 #ifndef EV3_JOINT_SETTINGS_H_
 #define EV3_JOINT_SETTINGS_H_
 
+#include <h4r_ev3_ctrl/H4REv3Port.h>
+
 namespace h4r_ev3_ctrl {
-class Ev3JointSettings {
+class Ev3JointSettings
+{
 
 public:
 
@@ -35,17 +38,95 @@ public:
 		EV3_JOINT_VELOCITY,
 	} Ev3JointMode;
 
-	Ev3JointMode joint_mode;
-	std::string driver_name;
-	std::vector<double> pid;
+	class Ev3HwSettings
+ 	{
+	public:
+		Ev3HwSettings()
+		:joint_mode(EV3_JOINT_VELOCITY)
+		{}
+
+		Ev3JointMode joint_mode;
+		std::string driver_name;
+		std::vector<double> pid;
+	};
 
 
+	H4REv3Motor port;
+	Ev3HwSettings ev3settings;
 
-	Ev3JointSettings()
-	:joint_mode(EV3_JOINT_VELOCITY)
+	double command;
+	double last_command;
+	double velocity_out;
+	double position_out;
+	double effort_out; //not supported by ev3 afaik but needed for joint state handle
+
+	Ev3JointSettings(const std::string &out_port)
+	:port(out_port)
+	,command(0)
+	,last_command(0)
+	,velocity_out(0)
+	,position_out(0)
+	,effort_out(0)
+	{}
+
+
+	bool load(const Ev3HwSettings &settings, bool testOnly)
 	{
-		//TODO add standard for pid
+		ROS_INFO("Loading controller...");
+		return true;
 	}
+
+	bool write()
+	{
+			ROS_INFO_STREAM("Command: "<<command);
+			switch(ev3settings.joint_mode)
+			{
+			case Ev3JointSettings::EV3_JOINT_POSITION:
+
+				if
+				(
+						port.setDutyCycleSP(100)+
+						port.setPositionSP(command)+
+						port.setSpeedRegulation(Ev3Strings::EV3SWITCH_OFF)+
+						port.setMotorCommand(Ev3Strings::EV3MOTORCOMMANDS_RUN_TO_ABS_POS)
+						!=4
+				)
+				{
+					ROS_ERROR()
+					return false;
+				}
+
+				break;
+
+			case Ev3JointSettings::EV3_JOINT_VELOCITY:
+				if
+				(
+				port.setDutyCycleSP(100)+
+				port.setSpeedSP(command)+
+				port.setSpeedRegulation(Ev3Strings::EV3SWITCH_ON)+
+				port.setMotorCommand(Ev3Strings::EV3MOTORCOMMANDS_RUN_FOREVER)
+					!= 4
+				)
+				return false;
+
+				break;
+
+			default:
+				break;
+			}
+
+			return true;
+	}
+
+	bool read()
+	{
+		return
+		(
+				port.position(position_out)+
+				port.speed(velocity_out)
+		)==2;
+	}
+
 };
 
 }

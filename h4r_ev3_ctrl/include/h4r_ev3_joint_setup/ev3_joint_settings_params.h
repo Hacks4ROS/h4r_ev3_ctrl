@@ -31,8 +31,12 @@
 namespace h4r_ev3_ctrl
 {
 
-	inline bool getJointSettings(const std::string& joint_name, Ev3JointSettings& settings)
+	inline bool getJointSettings(const std::string& joint_name,
+			                     Ev3JointSettings::Ev3HwSettings& settings)
 	{
+
+
+
 
 		  ros::NodeHandle setup_nh;
 		  const std::string joint_setup = "Ev3devJoints/"+joint_name;
@@ -85,9 +89,11 @@ namespace h4r_ev3_ctrl
 
 		//PID
 		settings.pid.clear();
-		if(!setup_nh.getParam("pid", settings.pid))
+		if(!setup_nh.getParam("speed_pid_sp", settings.pid))
 		{
-			ROS_INFO("No PID Settings found");
+			ROS_INFO("No PID Settings found, using standard Kp:0, Ki:60, Kp:1000");
+
+			//TODO set pid
 		}
 		else
 		{
@@ -98,6 +104,7 @@ namespace h4r_ev3_ctrl
 			else
 			{
 				ROS_INFO_STREAM("P: "<<settings.pid[0]<<"  I: "<<settings.pid[1]<<"   D: "<<settings.pid[2]);
+				//TODO set pid
 			}
 		}
 		ROS_INFO_STREAM("</-------------EV3 Joint "<<joint_name<<"---------------->");

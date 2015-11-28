@@ -96,31 +96,35 @@ public:
 	    }
 	  }
 
-	 bool checkUpdateSettings(const std::list<ControllerInfo> &start_list, ros::NodeHandle *nh) const
+	 bool ControllerTestChange(const std::list<ControllerInfo> &start_list) const
 	 {
-		 return true;
+			return true;
 	 }
 
-	 void updateSettings(const std::list<ControllerInfo> &start_list, ros::NodeHandle *nh)
+
+	 bool ControllerChange(const std::list<ControllerInfo> &start_list)
 	 {
-
-			for (std::list<ControllerInfo>::const_iterator it = start_list.begin(); it != start_list.end(); it++)
+		for (std::list<ControllerInfo>::const_iterator it = start_list.begin(); it != start_list.end(); it++)
+		{
+			for (std::set<std::string>::const_iterator res = it->resources.begin(); res != it->resources.end(); res++)
 			{
-				for (std::set<std::string>::const_iterator res = it->resources.begin(); res != it->resources.end(); res++)
-				{
-					ROS_INFO_STREAM(it->type<<" requests Joint "<<it->name<<" "<<*res);
+				ROS_INFO_STREAM(it->type<<" requests Joint "<<it->name<<" "<<*res);
 
-				    try
-					{
-				    	Ev3JointInterfaceHandle handle=getHandle(*res);
-				    	getJointSettings(*res, handle.getSettings());
-					}
-					catch(const Ev3JointInterfaceException& e)
-					{
-						ROS_ERROR_STREAM("Did not find handle: "<<*res);
-					}
+				try
+				{
+					Ev3JointInterfaceHandle handle=getHandle(*res);
+					Ev3JointSettings::Ev3HwSettings ev3settings;
+					getJointSettings(*res, ev3settings);
+					handle.getSettings().load(ev3settings,true);
+
+				}
+				catch(const Ev3JointInterfaceException& e)
+				{
+					ROS_ERROR_STREAM("Did not find handle: "<<*res);
 				}
 			}
+		}
+		return true;
 	 }
 
 

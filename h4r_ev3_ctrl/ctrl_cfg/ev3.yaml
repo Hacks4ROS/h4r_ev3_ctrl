@@ -1,7 +1,7 @@
 Ev3devJoints:
   Joint_A:
     pid: [1.1 , 2.0, 3.0] 
-    mode: position
+    mode: velocity
   Joint_B:
     pid: [1.1 , 2.0, 3.0] 
     mode: position
