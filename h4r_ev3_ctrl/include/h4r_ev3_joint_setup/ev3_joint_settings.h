@@ -87,7 +87,6 @@ public:
 	{
 		if(!port.isConnected())
 		{
-			port.s
 			return false;
 		}
 
