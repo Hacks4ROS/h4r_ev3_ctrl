@@ -111,6 +111,7 @@ public:
 				{
 					if(!port.setMotorPolarity(Ev3Strings::EV3POLARITY_NORMAL))
 					{
+						ROS_ERROR("NORMAL!");
 						return false;
 					}
 				}
@@ -119,6 +120,7 @@ public:
 					cmd=-command;
 					if(!port.setMotorPolarity(Ev3Strings::EV3POLARITY_INVERSED))
 					{
+						ROS_ERROR("INVERSED!");
 						return false;
 					}
 				}
@@ -129,6 +131,8 @@ public:
 				}
 				else
 				{
+
+					ROS_INFO("CMD: %i",cmd);
 					if
 					(
 					port.setDutyCycleSP(100)+
