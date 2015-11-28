@@ -260,7 +260,7 @@ public:
 	 */
 	bool setMotorPolarity(Ev3Strings::Ev3Polarity pol)
 	{
-		return writeKey("command",Ev3Strings::ev3_polarity_string, pol);
+		return writeKey("polarity",Ev3Strings::ev3_polarity_string, pol);
 	}
 
 };
