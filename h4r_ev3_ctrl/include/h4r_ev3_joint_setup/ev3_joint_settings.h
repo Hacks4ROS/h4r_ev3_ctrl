@@ -92,7 +92,6 @@ public:
 						!=4
 				)
 				{
-					ROS_ERROR()
 					return false;
 				}
 
