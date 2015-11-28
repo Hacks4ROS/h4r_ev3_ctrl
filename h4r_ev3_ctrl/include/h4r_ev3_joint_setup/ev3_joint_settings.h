@@ -90,7 +90,7 @@ public:
 			return false;
 		}
 
-		unsigned cmd=command;
+		int cmd=command;
 		if(cmd>=0)
 		{
 			if(!port.setMotorPolarity(Ev3Strings::EV3POLARITY_NORMAL))
