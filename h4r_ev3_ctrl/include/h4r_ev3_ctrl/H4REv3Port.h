@@ -98,7 +98,13 @@ public:
 	 */
 	bool isConnected()
 	{
-		return pathExists(sys_device_directory_);
+		if(!pathExists(sys_device_directory_))
+		{
+			getDeviceDirectory(); //Check if device is there again...
+			return false;
+		}
+
+		return true;
 	}
 
 
