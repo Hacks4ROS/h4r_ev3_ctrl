@@ -107,11 +107,20 @@ public:
 			case Ev3JointSettings::EV3_JOINT_VELOCITY:
 			{
 				unsigned cmd=command;
-				bool forward=true;
-				if(cmd<0)
+				if(cmd>=0)
 				{
-					cmd=command*(-1);
-					forward=false;
+					if(!port.setMotorPolarity(Ev3Strings::EV3POLARITY_NORMAL))
+					{
+						return false;
+					}
+				}
+				else
+				{
+					cmd=-command;
+					if(!port.setMotorPolarity(Ev3Strings::EV3POLARITY_INVERSED))
+					{
+						return false;
+					}
 				}
 
 				if(cmd==0)
@@ -120,8 +129,6 @@ public:
 				}
 				else
 				{
-
-
 					if
 					(
 					port.setDutyCycleSP(100)+
