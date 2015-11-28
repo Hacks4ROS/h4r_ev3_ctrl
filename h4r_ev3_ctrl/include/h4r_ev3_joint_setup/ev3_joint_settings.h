@@ -86,17 +86,41 @@ public:
 	bool write()
 	{
 		if(!port.isConnected())
+		{
+			port.s
 			return false;
+		}
 
-			ROS_INFO_STREAM("Command: "<<command);
+		unsigned cmd=command;
+		if(cmd>=0)
+		{
+			if(!port.setMotorPolarity(Ev3Strings::EV3POLARITY_NORMAL))
+			{
+				ROS_ERROR("NORMAL!");
+				return false;
+			}
+		}
+		else
+		{
+			cmd=-command;
+			if(!port.setMotorPolarity(Ev3Strings::EV3POLARITY_INVERSED))
+			{
+				ROS_ERROR("INVERSED!");
+				return false;
+			}
+		}
+
+
 			switch(ev3settings.joint_mode)
 			{
+			ROS_INFO_STREAM("Position: "<<command);
+
 			case Ev3JointSettings::EV3_JOINT_POSITION:
 
 				if
 				(
 						port.setDutyCycleSP(100)+
-						port.setPositionSP(command)+
+						port.setPositionSP(cmd)+
 						port.setSpeedRegulation(Ev3Strings::EV3SWITCH_OFF)+
 						port.setMotorCommand(Ev3Strings::EV3MOTORCOMMANDS_RUN_TO_ABS_POS)
 						!=4
@@ -109,24 +133,8 @@ public:
 
 			case Ev3JointSettings::EV3_JOINT_VELOCITY:
 			{
-				unsigned cmd=command;
-				if(cmd>=0)
-				{
-					if(!port.setMotorPolarity(Ev3Strings::EV3POLARITY_NORMAL))
-					{
-						ROS_ERROR("NORMAL!");
-						return false;
-					}
-				}
-				else
-				{
-					cmd=-command;
-					if(!port.setMotorPolarity(Ev3Strings::EV3POLARITY_INVERSED))
-					{
-						ROS_ERROR("INVERSED!");
-						return false;
-					}
-				}
+				ROS_INFO_STREAM("Velocity: "<<command);
+
 
 				if(cmd==0)
 				{
