@@ -116,7 +116,8 @@ public:
 					Ev3JointSettings::Ev3HwSettings ev3settings;
 					getJointSettings(*res, ev3settings);
 					handle.getSettings().load(ev3settings,true);
-
+					//Reset motor
+					handle.getSettings().port.setMotorCommand(Ev3Strings::EV3MOTORCOMMANDS_RESET);
 				}
 				catch(const Ev3JointInterfaceException& e)
 				{

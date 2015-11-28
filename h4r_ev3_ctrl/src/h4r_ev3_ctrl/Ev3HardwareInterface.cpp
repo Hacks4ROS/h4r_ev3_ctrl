@@ -71,8 +71,12 @@ Ev3HardwareInterface::Ev3HardwareInterface(
 
 Ev3HardwareInterface::~Ev3HardwareInterface()
 {
+
 	for (int i = 0; i < joint_settings_.size(); ++i)
 	{
+		//reset motors so running motors will be stopped...
+		joint_settings_[i]->port.setMotorCommand(Ev3Strings::EV3MOTORCOMMANDS_RESET);
+
 		delete joint_settings_[i];
 	}
 	joint_settings_.clear();
@@ -88,6 +92,8 @@ void Ev3HardwareInterface::write(const ros::Duration &d)
 
 	}
 }
+
+
 
 void Ev3HardwareInterface::read()
 {
