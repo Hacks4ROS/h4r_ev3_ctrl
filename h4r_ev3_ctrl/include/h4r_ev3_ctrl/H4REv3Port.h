@@ -228,17 +228,9 @@ public:
 	 * @param[out] value The position value if return is true
 	 * @return True if successful, false otherwise
 	 */
-	bool position(double &value)
+	bool position(int value)
 	{
-		int ivalue;
-		bool ret=readInt("position",ivalue);
-
-		if(ret)
-		{
-			value=ivalue;
-		}
-
-		return ret;
+		return readInt("position",value);
 	}
 
 	/**
@@ -246,17 +238,9 @@ public:
 	 * @param[out] value The position value if return is true
 	 * @return True if successful, false otherwise
 	 */
-	bool speed(double &value)
+	bool speed(int &value)
 	{
-		int ivalue;
-		bool ret=readInt("speed",ivalue);
-
-		if(ret)
-		{
-			value=ivalue;
-		}
-
-		return ret;
+		return readInt("speed",value);
 	}
 
 	/**

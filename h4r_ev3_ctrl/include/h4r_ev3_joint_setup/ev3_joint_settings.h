@@ -72,6 +72,13 @@ public:
 
 	bool load(const Ev3HwSettings &settings, bool testOnly)
 	{
+
+		if(!testOnly)
+		{
+			port.setMotorCommand(Ev3Strings::EV3MOTORCOMMANDS_RESET);
+		}
+
+
 		ROS_INFO("Loading controller...");
 		return true;
 	}
@@ -98,16 +105,34 @@ public:
 				break;
 
 			case Ev3JointSettings::EV3_JOINT_VELOCITY:
-				if
-				(
-				port.setDutyCycleSP(100)+
-				port.setSpeedSP(command)+
-				port.setSpeedRegulation(Ev3Strings::EV3SWITCH_ON)+
-				port.setMotorCommand(Ev3Strings::EV3MOTORCOMMANDS_RUN_FOREVER)
-					!= 4
-				)
-				return false;
+			{
+				unsigned cmd=command;
+				bool forward=true;
+				if(cmd<0)
+				{
+					cmd=command*(-1);
+					forward=false;
+				}
 
+				if(cmd==0)
+				{
+					return port.setMotorCommand(Ev3Strings::EV3MOTORCOMMANDS_STOP);
+				}
+				else
+				{
+
+
+					if
+					(
+					port.setDutyCycleSP(100)+
+					port.setSpeedSP(cmd)+
+					port.setSpeedRegulation(Ev3Strings::EV3SWITCH_ON)+
+					port.setMotorCommand(Ev3Strings::EV3MOTORCOMMANDS_RUN_FOREVER)
+						!= 4
+					)
+					return false;
+				}
+			}
 				break;
 
 			default:
@@ -119,11 +144,23 @@ public:
 
 	bool read()
 	{
-		return
-		(
-				port.position(position_out)+
-				port.speed(velocity_out)
-		)==2;
+		int pos;
+		int vel;
+
+		if(
+				port.position(pos)+port.speed(vel)  == 2
+		  )
+		{
+			//Todo calculate the right values
+			velocity_out=vel;
+			position_out=pos;
+
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 };
