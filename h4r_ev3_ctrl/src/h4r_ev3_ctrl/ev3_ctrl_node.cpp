@@ -22,6 +22,7 @@
 
 #include <ros/ros.h>
 #include <ros/master.h>
+#include <iostream>
 #include <ros/callback_queue.h>
 #include "controller_manager/controller_manager.h"
 
@@ -85,11 +86,12 @@ int main(int argc, char** argv)
 	  while (ros::ok())
 	  {
 	     ros::Duration d = ts - ros::Time::now();
+	     cout<<d.sec<<"-"<<d.nsec<<"=("<<ts.sec<<" "<<ts.nsec<<")-("<<ts.sec<<" "<<ts.nsec<<")"<<endl;
 	     ts = ros::Time::now();
 	     robot.read();
 	     robot.write(ros::Duration(1,0));
 	     cm.update(ts, d);
-	     //usleep(50000);
+	     usleep(50000);
 	  }
 
 	  spinner.stop();
