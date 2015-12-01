@@ -78,7 +78,9 @@ bool readIntFromSysFile(FILE *fileptr, int &value)
     	 	   for (int b = 0; b < read; ++b)
     	 	   {
     	 		   if(buffer[b]=='\n')
+    	 		   {
     	 			   break; //Just in case...
+    	 		   }
 
     	 		   value*=10;
     	 		   switch(buffer[b])
@@ -90,6 +92,8 @@ bool readIntFromSysFile(FILE *fileptr, int &value)
     	 			   }
     	 			   else
     	 			   {
+        	 			   std::cout<<"- when b !=0"<<std::endl;
+
     	 				   return false;
     	 			   }
     	 			   break;
@@ -106,7 +110,9 @@ bool readIntFromSysFile(FILE *fileptr, int &value)
     	 		   case '9':
     	 			   value+=buffer[b]-48;
     	 			   break;
-    	 		   default: return false;
+    	 		   default:
+    	 			   std::cout<<"DEFAULT"<<std::endl;
+    	 			   return false;
 
     	 		   }
     	       }
@@ -116,6 +122,7 @@ bool readIntFromSysFile(FILE *fileptr, int &value)
     	   }
     	   else
     	   {
+ 			   std::cout<<"Other line than 0!"<<std::endl;
     		   return false;
     	   }
        }
