@@ -188,8 +188,12 @@ public:
 		}
 		else
 		{
+			ROS_INFO_STREAM("fvel: "<<vel);
+			ROS_INFO_STREAM("fpos: "<<pos);
 			return false;
 		}
+
+
 	}
 
 };
