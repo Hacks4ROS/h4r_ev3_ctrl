@@ -20,7 +20,7 @@
  *
  */
 #include <h4r_ev3_ctrl/syshelpers.h>
-
+#include <iostream>
 namespace h4r_ev3_ctrl
 {
 
