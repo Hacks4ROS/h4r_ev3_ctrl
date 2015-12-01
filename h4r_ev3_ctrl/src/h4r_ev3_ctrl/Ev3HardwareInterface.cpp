@@ -82,29 +82,29 @@ Ev3HardwareInterface::~Ev3HardwareInterface()
 
 void Ev3HardwareInterface::write(const ros::Duration &d)
 {
-
-
-	std::set<std::string> claims=jnt_pos_interface.getClaims();
-
-	for (std::set<std::string>::iterator it = claims.begin(); it != claims.end(); ++it) {
-		ROS_INFO_STREAM("P:::"<<*it);
-	}
-	claims.clear();
-
-	claims=jnt_vel_interface.getClaims();
-
-	for (std::set<std::string>::iterator it = claims.begin(); it != claims.end(); ++it) {
-		ROS_INFO_STREAM("V:::"<<*it);
-	}
-
-	claims.clear();
-	claims=jnt_state_interface.getClaims();
-
-	for (std::set<std::string>::iterator it = claims.begin(); it != claims.end(); ++it)
-	{
-		ROS_INFO_STREAM("S:::"<<*it);
-	}
-
+//
+//
+//	std::set<std::string> claims=jnt_pos_interface.getClaims();
+//
+//	for (std::set<std::string>::iterator it = claims.begin(); it != claims.end(); ++it) {
+//		ROS_INFO_STREAM("P:::"<<*it);
+//	}
+//	claims.clear();
+//
+//	claims=jnt_vel_interface.getClaims();
+//
+//	for (std::set<std::string>::iterator it = claims.begin(); it != claims.end(); ++it) {
+//		ROS_INFO_STREAM("V:::"<<*it);
+//	}
+//
+//	claims.clear();
+//	claims=jnt_state_interface.getClaims();
+//
+//	for (std::set<std::string>::iterator it = claims.begin(); it != claims.end(); ++it)
+//	{
+//		ROS_INFO_STREAM("S:::"<<*it);
+//	}
+//
 
 
     //jnt_limits_interface.enforceLimits(d);
