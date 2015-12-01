@@ -175,8 +175,8 @@ public:
 		  )
 		{
 			//Todo calculate the right values
-			velocity_out=vel;
-			position_out=pos;
+			velocity_out=vel/180.0*M_PI;
+			position_out=pos/180.0*M_PI;
 
 			return true;
 		}
