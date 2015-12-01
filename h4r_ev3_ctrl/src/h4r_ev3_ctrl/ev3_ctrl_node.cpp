@@ -83,7 +83,7 @@ int main(int argc, char** argv)
 
 	  ros::Time ts = ros::Time::now();
 
-	  ros::Rate loop_rate(50);
+	  ros::Rate loop_rate(10);
 	  while (ros::ok())
 	  {
 	     ros::Duration d = ros::Time::now() - ts;
