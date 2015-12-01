@@ -95,13 +95,6 @@ bool readIntFromSysFile(FILE *fileptr, int &value)
     	 			   break;
 
     	 		   case '0':
-    	 			   if(value==0)
-    	 			   {
-    	 				 return false;
-    	 			   }
-
-    	 			   break;
-
     	 		   case '1':
     	 		   case '2':
     	 		   case '3':
