@@ -4,7 +4,7 @@ Ev3devJoints:
     mode: velocity
   Joint_B:
     pid: [1.1 , 2.0, 3.0] 
-    mode: position
+    mode: velocity
   Joint_C:
     pid: [1.1 , 2.0, 3.0] 
     mode: velocity
@@ -17,32 +17,32 @@ OutPortState:
   type: joint_state_controller/JointStateController
   publish_rate: 10
 
-# Position Controllers ---------------------------------------
+# Joint velocity controller
 OutPortA:
-  type: position_controllers/JointPositionController
+  type: velocity_controllers/JointVelocityController
   joint: Joint_A
-  driver_name: test
 
-# Position Controllers ---------------------------------------
 OutPortB:
-  type: position_controllers/JointPositionController
+  type: velocity_controllers/JointVelocityController
   joint: Joint_B
     
-## Position Controllers ---------------------------------------
-#OutPortC:
-#  type: position_controllers/JointPositionController
-#  joint: Joint_C
-#  
-## Position Controllers ---------------------------------------
-#OutPortD:
-#  type: position_controllers/JointPositionController
-#  joint: Joint_D
+OutPortC:
+  type: velocity_controllers/JointVelocityController
+  joint: Joint_C
 
-mobile_base_controller:
+OutPortD:
+  type: position_controllers/JointPositionController
+  joint: Joint_D
+
+
+
+
+####
+diffDrv:
   type        : "diff_drive_controller/DiffDriveController"
   left_wheel  : 'Joint_C'
   right_wheel : 'Joint_D'
-  publish_rate: 50.0               # default: 50
+  publish_rate: 10.0               # default: 50
   pose_covariance_diagonal : [0.000, 0.000, 0.0, 0.0, 0.0, 0.0]
   twist_covariance_diagonal: [0.000, 0.000, 0.0, 0.0, 0.0, 0.0]
 
@@ -50,7 +50,7 @@ mobile_base_controller:
   # diff_drive_controller will attempt to read either one or both from the
   # URDF if not specified as a parameter
   wheel_separation : 1.0
-  wheel_radius : 0.3
+  wheel_radius : 0.15
 
   # Wheel separation and radius multipliers
   wheel_separation_multiplier: 1.0 # default: 1.0
@@ -68,10 +68,10 @@ mobile_base_controller:
     x:
       has_velocity_limits    : true
       max_velocity           : 1.0  # m/s
-      min_velocity           : -0.5 # m/s
+      min_velocity           : -1.0 # m/s
       has_acceleration_limits: true
       max_acceleration       : 0.8  # m/s^2
-      min_acceleration       : -0.4 # m/s^2
+      min_acceleration       : 0.2# m/s^2
   angular:
     z:
       has_velocity_limits    : true
