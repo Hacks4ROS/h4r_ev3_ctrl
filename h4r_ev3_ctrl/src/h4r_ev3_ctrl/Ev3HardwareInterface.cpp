@@ -28,9 +28,8 @@ Ev3HardwareInterface::Ev3HardwareInterface(
 		const std::vector<ev3dev::port_type> &out_ports
 		)
 {
-	registerInterface(&jnt_eff_interface);
-	registerInterface(&jnt_pos_interface);
 	registerInterface(&jnt_vel_interface);
+	registerInterface(&jnt_pos_interface);
 	registerInterface(&jnt_state_interface);
 
 	for (int p = 0; p < out_ports.size(); ++p)
@@ -49,10 +48,8 @@ Ev3HardwareInterface::Ev3HardwareInterface(
 		jnt_state_interface.registerHandle(state_handle);
 
 		hardware_interface::JointHandle joint_handle(jnt_state_interface.getHandle(joint_name), &joint_settings_[p]->command);
-		jnt_pos_interface.registerHandle(joint_handle);
 		jnt_vel_interface.registerHandle(joint_handle);
-		jnt_eff_interface.registerHandle(joint_handle);
-
+		jnt_pos_interface.registerHandle(joint_handle);
 
 		//Joint limits
 		joint_limits_interface::JointLimits limits;
@@ -65,6 +62,7 @@ Ev3HardwareInterface::Ev3HardwareInterface(
 
 		Ev3JointInterfaceHandle ev3_joint_handle(joint_handle,joint_settings_[p]);
 		jnt_ev3_joint_interface.registerHandle(ev3_joint_handle);
+
 	}
 }
 
@@ -84,6 +82,31 @@ Ev3HardwareInterface::~Ev3HardwareInterface()
 
 void Ev3HardwareInterface::write(const ros::Duration &d)
 {
+
+
+	std::set<std::string> claims=jnt_pos_interface.getClaims();
+
+	for (std::set<std::string>::iterator it = claims.begin(); it != claims.end(); ++it) {
+		ROS_INFO_STREAM("P:::"<<*it);
+	}
+	claims.clear();
+
+	claims=jnt_vel_interface.getClaims();
+
+	for (std::set<std::string>::iterator it = claims.begin(); it != claims.end(); ++it) {
+		ROS_INFO_STREAM("V:::"<<*it);
+	}
+
+	claims.clear();
+	claims=jnt_state_interface.getClaims();
+
+	for (std::set<std::string>::iterator it = claims.begin(); it != claims.end(); ++it)
+	{
+		ROS_INFO_STREAM("S:::"<<*it);
+	}
+
+
+
     //jnt_limits_interface.enforceLimits(d);
 	for (int i = 0; i < joint_settings_.size(); ++i)
 	{
@@ -101,7 +124,9 @@ void Ev3HardwareInterface::read()
 	for (int i = 0; i < joint_settings_.size(); ++i)
 	{
 		joint_settings_[i]->read();
+		cout<<endl;
 	}
+
 }
 
 
@@ -112,6 +137,7 @@ bool Ev3HardwareInterface::canSwitch(const std::list<ControllerInfo> &start_list
 
 void Ev3HardwareInterface::doSwitch(const std::list<ControllerInfo> &start_list, const std::list<ControllerInfo> &stop_list)
 {
+	jnt_state_interface.getClaims();
 	jnt_ev3_joint_interface.ControllerChange(start_list);
 }
 

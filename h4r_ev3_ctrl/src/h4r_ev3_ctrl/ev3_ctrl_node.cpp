@@ -83,15 +83,15 @@ int main(int argc, char** argv)
 
 	  ros::Time ts = ros::Time::now();
 
+	  ros::Rate loop_rate(50);
 	  while (ros::ok())
 	  {
-	     ros::Duration d = ts - ros::Time::now();
-	     cout<<d.sec<<"-"<<d.nsec<<"=("<<ts.sec<<" "<<ts.nsec<<")-("<<ts.sec<<" "<<ts.nsec<<")"<<endl;
-	     ts = ros::Time::now();
+	     ros::Duration d = ros::Time::now() - ts;
 	     robot.read();
-	     robot.write(ros::Duration(1,0));
+	     ts = ros::Time::now();
 	     cm.update(ts, d);
-	     usleep(50000);
+	     robot.write(d);
+	     loop_rate.sleep();
 	  }
 
 	  spinner.stop();
