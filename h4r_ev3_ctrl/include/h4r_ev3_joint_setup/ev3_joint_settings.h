@@ -109,6 +109,7 @@ public:
 			}
 		}
 
+		ROS_INFO_STREAM("Command: "<<cmd);
 
 			switch(ev3settings.joint_mode)
 			{
@@ -173,9 +174,15 @@ public:
 				port.position(pos)+port.speed(vel)  == 2
 		  )
 		{
+
+
+
+			ROS_INFO_STREAM("vel: "<<vel);
+			ROS_INFO_STREAM("pos: "<<pos);
+
 			//Todo calculate the right values
-			velocity_out=vel/180.0*M_PI;
-			position_out=pos/180.0*M_PI;
+			velocity_out=((double)vel)/180.0*M_PI;
+			position_out=((double)pos)/180.0*M_PI;
 
 			return true;
 		}
