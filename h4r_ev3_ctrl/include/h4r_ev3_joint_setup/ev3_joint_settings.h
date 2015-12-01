@@ -79,14 +79,12 @@ public:
 		}
 
 
-		ROS_INFO("Loading controller...");
 		return true;
 	}
 
 	bool write()
 	{
 
-		cout<<" "<<command<<" ";
 		if(!port.isConnected())
 		{
 			return false;
@@ -142,7 +140,6 @@ public:
 				else
 				{
 
-					ROS_INFO("CMD: %i",cmd);
 					if
 					(
 					port.setDutyCycleSP(100)+
