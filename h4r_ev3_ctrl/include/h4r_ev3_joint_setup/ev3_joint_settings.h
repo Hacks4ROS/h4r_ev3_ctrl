@@ -101,7 +101,7 @@ public:
 		}
 		else
 		{
-			cmd=-command;
+			cmd=-cmd;
 			if(!port.setMotorPolarity(Ev3Strings::EV3POLARITY_INVERSED))
 			{
 				ROS_ERROR("INVERSED!");
