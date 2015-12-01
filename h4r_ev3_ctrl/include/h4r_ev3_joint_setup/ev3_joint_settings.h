@@ -90,7 +90,7 @@ public:
 			return false;
 		}
 
-		int cmd=command;
+		int cmd=(command*180.0/M_PI);
 		if(cmd>=0)
 		{
 			if(!port.setMotorPolarity(Ev3Strings::EV3POLARITY_NORMAL))
@@ -112,7 +112,6 @@ public:
 
 			switch(ev3settings.joint_mode)
 			{
-			ROS_INFO_STREAM("Position: "<<command);
 
 			case Ev3JointSettings::EV3_JOINT_POSITION:
 
@@ -132,7 +131,6 @@ public:
 
 			case Ev3JointSettings::EV3_JOINT_VELOCITY:
 			{
-				ROS_INFO_STREAM("Velocity: "<<command);
 
 
 				if(cmd==0)
