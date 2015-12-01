@@ -85,6 +85,8 @@ public:
 
 	bool write()
 	{
+
+		cout<<" "<<command<<" ";
 		if(!port.isConnected())
 		{
 			return false;
