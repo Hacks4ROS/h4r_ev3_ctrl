@@ -124,7 +124,6 @@ void Ev3HardwareInterface::read()
 	for (int i = 0; i < joint_settings_.size(); ++i)
 	{
 		joint_settings_[i]->read();
-		cout<<endl;
 	}
 
 }
