@@ -126,9 +126,6 @@ bool readIntFromSysFile(FILE *fileptr, int &value)
     		   return false;
     	   }
        }
-
-
-	   fscanf(fileptr,"%[^\n]",buffer);
 	   return true;
 }
 
