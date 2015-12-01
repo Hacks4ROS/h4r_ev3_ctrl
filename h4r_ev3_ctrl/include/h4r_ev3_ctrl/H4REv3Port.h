@@ -238,7 +238,7 @@ public:
 	 * @param[out] value The position value if return is true
 	 * @return True if successful, false otherwise
 	 */
-	bool position(int value)
+	bool position(int &value)
 	{
 		return readInt("position",value);
 	}

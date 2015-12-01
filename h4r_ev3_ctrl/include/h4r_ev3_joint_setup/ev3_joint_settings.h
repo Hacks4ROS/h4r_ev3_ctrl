@@ -166,33 +166,21 @@ public:
 		if(!port.isConnected())
 			return false;
 
+		int pos;
+		int vel;
 
-		int pos=123;
-		int vel=123;
-
-
-		if(port.position(pos))
+		if(
+				port.position(pos)+port.speed(vel)  == 2
+		  )
 		{
-			ROS_INFO_STREAM("pos: "<<pos);
-			position_out=((double)pos)/180.0*M_PI;
-		}
-		else
-		{
-			return false;
-		}
-
-		if(port.speed(vel))
-		{
-			ROS_INFO_STREAM("speed: "<<vel);
 			velocity_out=((double)vel)/180.0*M_PI;
+			position_out=((double)pos)/180.0*M_PI;
+			return true;
 		}
 		else
 		{
 			return false;
 		}
-
-
-		return true;
 	}
 
 };
