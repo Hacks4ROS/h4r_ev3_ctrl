@@ -36,8 +36,6 @@
   <build_depend>hardware_interface</build_depend>
   <run_depend>hardware_interface</run_depend>
 
-  <build_depend>h4r_ev3_joint_setup</build_depend>  
-    <run_depend>h4r_ev3_joint_setup</run_depend>
   
   <export>
   </export>
