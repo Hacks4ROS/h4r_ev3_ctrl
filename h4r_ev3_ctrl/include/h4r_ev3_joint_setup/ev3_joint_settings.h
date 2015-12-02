@@ -108,9 +108,6 @@ public:
 				return false;
 			}
 		}
-
-		ROS_INFO_STREAM("Command: "<<cmd);
-
 			switch(ev3settings.joint_mode)
 			{
 
@@ -132,8 +129,6 @@ public:
 
 			case Ev3JointSettings::EV3_JOINT_VELOCITY:
 			{
-
-
 				if(cmd==0)
 				{
 					return port.setMotorCommand(Ev3Strings::EV3MOTORCOMMANDS_STOP);
