@@ -14,6 +14,7 @@ find_package(catkin REQUIRED COMPONENTS
 
 include_directories(
   include
+  ${Boost_INCLUDE_DIR}
   ${catkin_INCLUDE_DIRS}
 )
 
@@ -24,9 +25,9 @@ catkin_package(
   )
 
 
-#add_library(h4r_ev3_sensor_controller
-#  src/Ev3SensorController.cpp include/h4r_ev3_sensor_control/Ev3SensorController.h)
-#target_link_libraries(ev3_sensor_controller ${catkin_LIBRARIES})
+add_library(ev3_ultrasonic_range_controller
+  src/ev3_ultrasonic_range_controller.cpp include/h4r_ev3_sensor_control/ev3_ultrasonic_range_controller.h)
+target_link_libraries(ev3_ultrasonic_range_controller ${catkin_LIBRARIES})
 
 
 
@@ -34,7 +35,7 @@ catkin_package(
 install(DIRECTORY include/${PROJECT_NAME}/
   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION})
   
-install(TARGETS 
+install(TARGETS ev3_ultrasonic_range_controller
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}

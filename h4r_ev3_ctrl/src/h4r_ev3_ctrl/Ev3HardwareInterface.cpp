@@ -22,6 +22,7 @@
 
 #include "Ev3HardwareInterface.h"
 
+
 namespace h4r_ev3_ctrl {
 Ev3HardwareInterface::Ev3HardwareInterface(
 		const std::vector<ev3dev::port_type> &in_ports,
@@ -31,6 +32,15 @@ Ev3HardwareInterface::Ev3HardwareInterface(
 	registerInterface(&jnt_vel_interface);
 	registerInterface(&jnt_pos_interface);
 	registerInterface(&jnt_state_interface);
+	registerInterface(&sensor_interface);
+
+
+	for(int p=0; p < in_ports.size(); ++p)
+	{
+		h4r_ev3_sensor_control::Ev3SensorHandle handle(in_ports[p]);
+		sensor_interface.registerHandle(handle);
+	}
+
 
 	for (int p = 0; p < out_ports.size(); ++p)
 	{

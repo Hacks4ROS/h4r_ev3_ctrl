@@ -37,6 +37,10 @@
   <run_depend>hardware_interface</run_depend>
 
   
+  <build_depend>h4r_ev3_sensor_control</build_depend>
+  <run_depend>h4r_ev3_sensor_control</run_depend>
+  
+  
   <export>
   </export>
 </package>

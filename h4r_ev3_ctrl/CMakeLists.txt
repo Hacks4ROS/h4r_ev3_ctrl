@@ -12,6 +12,7 @@ find_package(catkin REQUIRED COMPONENTS
   hardware_interface
   joint_limits_interface
   control_toolbox
+  h4r_ev3_sensor_control
 )  
 
 
@@ -104,7 +105,7 @@ find_package(Boost REQUIRED COMPONENTS system thread program_options )
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
   INCLUDE_DIRS include
-  LIBRARIES libh4rctrl
+  LIBRARIES h4r_ev3_ctrl
   CATKIN_DEPENDS roscpp 
 #  roslib 
 #  message_runtime
@@ -138,7 +139,7 @@ add_definitions(-std=c++11)
 #######################
 # H4R EV3 Port Library#
 #######################
-add_library(libh4rctrl
+add_library(h4r_ev3_ctrl
    src/h4r_ev3_ctrl/Ev3Strings.cpp
    src/h4r_ev3_ctrl/H4REv3Port.cpp
    src/h4r_ev3_ctrl/syshelpers.cpp
@@ -185,7 +186,7 @@ target_link_libraries(ev3_ctrl_node
 # )
 
 ## Mark executables and/or libraries for installation
-install(TARGETS ev3_ctrl_node libh4rctrl
+install(TARGETS ev3_ctrl_node h4r_ev3_ctrl
    ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
    LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
    RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}

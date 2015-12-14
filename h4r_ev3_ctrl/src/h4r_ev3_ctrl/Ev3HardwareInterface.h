@@ -33,6 +33,7 @@
 #include <string>
 #include <boost/shared_ptr.hpp>
 #include <h4r_ev3_ctrl/H4REv3Port.h>
+#include "h4r_ev3_sensor_control/Ev3SensorInterface.h"
 #ifndef EV3HARDWAREINTERFACE_H_
 #define EV3HARDWAREINTERFACE_H_
 
@@ -50,6 +51,7 @@ class Ev3HardwareInterface : public hardware_interface::RobotHW
 	hardware_interface::VelocityJointInterface jnt_vel_interface;
 	hardware_interface::PositionJointInterface jnt_pos_interface;
 	hardware_interface::EffortJointInterface jnt_eff_interface;
+	h4r_ev3_sensor_control::Ev3SensorInterface sensor_interface;
 
 	joint_limits_interface::PositionJointSoftLimitsInterface jnt_limits_interface;
 	Ev3JointInterface jnt_ev3_joint_interface;
