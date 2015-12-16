@@ -25,7 +25,8 @@
 
 #include <string>
 #include <ros/ros.h>
-#include <h4r_ev3_joint_setup/ev3_joint_settings.h>
+
+#include "../../../h4r_ev3_manager/include/h4r_ev3_joint_setup/ev3_joint_settings.h"
 
 
 namespace h4r_ev3_ctrl

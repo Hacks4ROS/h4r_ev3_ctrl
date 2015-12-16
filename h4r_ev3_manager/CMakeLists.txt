@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(h4r_ev3_ctrl)
+project(h4r_ev3_manager)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -12,7 +12,7 @@ find_package(catkin REQUIRED COMPONENTS
   hardware_interface
   joint_limits_interface
   control_toolbox
-  h4r_ev3_sensor_control
+  h4r_ev3_control
 )  
 
 
@@ -105,7 +105,7 @@ find_package(Boost REQUIRED COMPONENTS system thread program_options )
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
   INCLUDE_DIRS include
-  LIBRARIES h4r_ev3_ctrl
+#  LIBRARIES h4r_ev3_ctrl
   CATKIN_DEPENDS roscpp 
 #  roslib 
 #  message_runtime
@@ -127,37 +127,23 @@ include_directories(
 ## Declare a C++ library
 
 
-add_definitions(-std=c++11)
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
 # add_dependencies(h4r_ev3_ctrl ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
-
-
-
-#######################
-# H4R EV3 Port Library#
-#######################
-add_library(h4r_ev3_ctrl
-   src/h4r_ev3_ctrl/Ev3Strings.cpp
-   src/h4r_ev3_ctrl/H4REv3Port.cpp
-   src/h4r_ev3_ctrl/syshelpers.cpp
-)
-
+#C++ 11
+add_definitions(-std=c++11)
 
 #####################
 # H4R EV3 CTRL NODE #
 #####################
-add_executable(ev3_ctrl_node 
-src/h4r_ev3_ctrl/ev3_ctrl_node.cpp  
-src/h4r_ev3_ctrl/Ev3HardwareInterface.cpp
-src/h4r_ev3_ctrl/syshelpers.cpp
-src/h4r_ev3_ctrl/H4REv3Port.cpp
-src/h4r_ev3_ctrl/Ev3Strings.cpp
+add_executable(ev3_manager_node 
+src/${PROJECT_NAME}/ev3_ctrl_node.cpp  
+src/${PROJECT_NAME}/Ev3HardwareInterface.cpp
 )
 
-target_link_libraries(ev3_ctrl_node
+target_link_libraries(ev3_manager_node
    ${catkin_LIBRARIES}
 )
 
@@ -186,7 +172,7 @@ target_link_libraries(ev3_ctrl_node
 # )
 
 ## Mark executables and/or libraries for installation
-install(TARGETS ev3_ctrl_node h4r_ev3_ctrl
+install(TARGETS ev3_manager_node
    ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
    LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
    RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}

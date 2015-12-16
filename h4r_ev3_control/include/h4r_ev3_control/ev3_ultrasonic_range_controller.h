@@ -22,12 +22,13 @@
 #ifndef EV3ULTRASONICCONTROLLER_H_
 #define EV3ULTRASONICCONTROLLER_H_
 
-#include <h4r_ev3_sensor_control/Ev3SensorInterface.h>
 #include <controller_interface/controller.h>
 #include <pluginlib/class_list_macros.h>
 #include <realtime_tools/realtime_publisher.h>
 #include <boost/shared_ptr.hpp>
 #include <sensor_msgs/Range.h>
+
+#include "../h4r_ev3_control/Ev3SensorInterface.h"
 
 namespace h4r_ev3_sensor_control
 {

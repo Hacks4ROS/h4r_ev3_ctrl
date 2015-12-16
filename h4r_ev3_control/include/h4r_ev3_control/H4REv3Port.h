@@ -30,16 +30,16 @@
 #include <dirent.h>
 #include <map>
 
-#include <h4r_ev3_ctrl/syshelpers.h>
-#include <h4r_ev3_ctrl/Ev3Strings.h>
-#include <h4r_ev3_ctrl/FixedBuffer.h>
-
 #include <string>
 #include <map>
 #include <unistd.h>
 #include <fcntl.h>
 #include <stdio.h>
 #include <dirent.h>
+
+#include <h4r_ev3_control/Ev3Strings.h>
+#include <h4r_ev3_control/FixedBuffer.h>
+#include <h4r_ev3_control/syshelpers.h>
 
 namespace h4r_ev3_ctrl
 {

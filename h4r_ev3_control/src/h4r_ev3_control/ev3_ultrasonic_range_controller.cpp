@@ -8,7 +8,7 @@
  *      All rights reserved! (©2015)
  */
 
-#include <h4r_ev3_sensor_control/ev3_ultrasonic_range_controller.h>
+#include "../include/h4r_ev3_control/ev3_ultrasonic_range_controller.h"
 
 namespace h4r_ev3_sensor_control
 {

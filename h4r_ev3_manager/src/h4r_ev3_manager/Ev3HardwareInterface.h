@@ -26,14 +26,15 @@
 #include <hardware_interface/controller_info.h>
 #include <joint_limits_interface/joint_limits_interface.h>
 #include <ev3dev.h>
-#include <h4r_ev3_joint_setup/ev3_joint_settings_interface.h>
 #include <control_toolbox/pid.h>
 #include <list>
 #include <vector>
 #include <string>
 #include <boost/shared_ptr.hpp>
-#include <h4r_ev3_ctrl/H4REv3Port.h>
-#include "h4r_ev3_sensor_control/Ev3SensorInterface.h"
+#include <h4r_ev3_control/Ev3SensorInterface.h>
+#include <h4r_ev3_joint_setup/ev3_joint_settings_interface.h>
+#include <h4r_ev3_control/H4REv3Port.h>
+
 #ifndef EV3HARDWAREINTERFACE_H_
 #define EV3HARDWAREINTERFACE_H_
 

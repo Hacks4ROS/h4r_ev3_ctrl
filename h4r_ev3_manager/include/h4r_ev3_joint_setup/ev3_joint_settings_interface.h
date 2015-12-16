@@ -25,9 +25,6 @@
 
 
 #include <iostream>
-#include <h4r_ev3_joint_setup/ev3_joint_settings.h>
-#include <h4r_ev3_joint_setup/ev3_joint_settings_params.h>
-#include <h4r_ev3_joint_setup/ev3_joint_settings_exception.h>
 #include <ros/duration.h>
 #include <ros/ros.h>
 #include <boost/shared_ptr.hpp>
@@ -37,6 +34,9 @@
 #include <hardware_interface/internal/resource_manager.h>
 
 #include <ev3dev.h>
+#include "../../../h4r_ev3_manager/include/h4r_ev3_joint_setup/ev3_joint_settings.h"
+#include "../../../h4r_ev3_manager/include/h4r_ev3_joint_setup/ev3_joint_settings_exception.h"
+#include "../../../h4r_ev3_manager/include/h4r_ev3_joint_setup/ev3_joint_settings_params.h"
 
 
 

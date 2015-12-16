@@ -23,7 +23,7 @@
 #ifndef EV3_JOINT_SETTINGS_H_
 #define EV3_JOINT_SETTINGS_H_
 
-#include <h4r_ev3_ctrl/H4REv3Port.h>
+#include <h4r_ev3_control/H4REv3Port.h>
 
 namespace h4r_ev3_ctrl {
 class Ev3JointSettings

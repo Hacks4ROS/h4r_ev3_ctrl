@@ -47,7 +47,7 @@ output_header+=" #include <map>\n"
 output_header+=" #include <string>\n"
 output_header+=" using namespace std;\n\n"
 
-output_header+="namespace h4r_ev3_ctrl{\n"
+output_header+="namespace h4r_ev3_control{\n"
 output_header+="class Ev3Strings\n{\n"
 
 output_header+="private: \n"
@@ -88,8 +88,8 @@ output_source+="\n *strings.yml and run it again!"
 output_source+="\n *WARNING WARNING WARNING WARNING WARNING\n"
 output_source+=" */\n"
 
-output_source+=" #include <h4r_ev3_ctrl/Ev3Strings.h>\n"
-output_source+="namespace h4r_ev3_ctrl{\n"
+output_source+=" #include <h4r_ev3_control/Ev3Strings.h>\n"
+output_source+="namespace h4r_ev3_control{\n"
 
 
 for entry in entries:
@@ -149,22 +149,22 @@ for entry in entries:
 output_source+="}\n"
 
 
-directory="../include/h4r_ev3_ctrl/"
+directory="../include/h4r_ev3_control/"
 
 if not os.path.exists(directory):
     os.makedirs(directory)
     
-directory="../src/h4r_ev3_ctrl/"
+directory="../src/h4r_ev3_control/"
 
 if not os.path.exists(directory):
     os.makedirs(directory)
     
     
 
-header_file = open("../include/h4r_ev3_ctrl/Ev3Strings.h", "w")
+header_file = open("../include/h4r_ev3_control/Ev3Strings.h", "w")
 header_file.write(output_header)
 header_file.close()
 
-source_file = open("../src/h4r_ev3_ctrl/Ev3Strings.cpp", "w")
+source_file = open("../src/h4r_ev3_control/Ev3Strings.cpp", "w")
 source_file.write(output_source)
 source_file.close()

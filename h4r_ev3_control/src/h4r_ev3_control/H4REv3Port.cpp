@@ -19,7 +19,7 @@
  * along with h4r_ev3_ctrl.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include <h4r_ev3_ctrl/H4REv3Port.h>
+#include <h4r_ev3_control/H4REv3Port.h>
 
 
 namespace h4r_ev3_ctrl

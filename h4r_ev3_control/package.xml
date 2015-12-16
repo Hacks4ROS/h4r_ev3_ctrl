@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package>
-  <name>h4r_ev3_sensor_control</name>
+  <name>h4r_ev3_control</name>
   <version>0.0.0</version>
-  <description>The h4r_ev3_sensor_control package</description>
+  <description>The h4r_ev3_control package</description>
 
   <maintainer email="cyborgx1@gmail.com">Christian Holl</maintainer>
 
@@ -30,6 +30,6 @@
   <run_depend>sensor_msgs</run_depend>
   
   <export>
-    <controller_interface plugin="${prefix}/ev3_sensor_controller_plugins.xml"/>
+    <controller_interface plugin="${prefix}/ev3_controller_plugins.xml"/>
   </export>
 </package>

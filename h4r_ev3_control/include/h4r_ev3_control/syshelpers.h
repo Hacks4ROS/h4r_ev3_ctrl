@@ -29,7 +29,8 @@
 #include <fcntl.h>
 #include <stdio.h>
 #include <dirent.h>
-#include <h4r_ev3_ctrl/FixedBuffer.h>
+
+#include <h4r_ev3_control/FixedBuffer.h>
 
 namespace h4r_ev3_ctrl
 {

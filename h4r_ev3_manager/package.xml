@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package>
-  <name>h4r_ev3_ctrl</name>
+  <name>h4r_ev3_manager</name>
   <version>0.0.0</version>
-  <description>The h4r_ev3_ctrl package</description>
+  <description>The h4r_ev3_manager package</description>
   <maintainer email="cyborgx1@gmail.com">Christian Holl</maintainer>
   <license>GPLv3</license>
 
@@ -37,8 +37,8 @@
   <run_depend>hardware_interface</run_depend>
 
   
-  <build_depend>h4r_ev3_sensor_control</build_depend>
-  <run_depend>h4r_ev3_sensor_control</run_depend>
+  <build_depend>h4r_ev3_control</build_depend>
+  <run_depend>h4r_ev3_control</run_depend>
   
   
   <export>

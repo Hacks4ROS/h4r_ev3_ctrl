@@ -19,7 +19,7 @@
  * along with h4r_ev3_ctrl.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include <h4r_ev3_ctrl/syshelpers.h>
+#include <h4r_ev3_control/syshelpers.h>
 #include <iostream>
 namespace h4r_ev3_ctrl
 {
