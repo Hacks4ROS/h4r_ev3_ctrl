@@ -57,14 +57,14 @@ public:
 		switch(index)
 		{
 		case 0:
-			value =0;
+			value =1.11;
 			return true;
 		case 1:
-			value=1;
+			value=2.22;
 			return true;
 
 		case 2:
-			value=2;
+			value=3.33;
 			return true;
 		}//DUMMY
 
