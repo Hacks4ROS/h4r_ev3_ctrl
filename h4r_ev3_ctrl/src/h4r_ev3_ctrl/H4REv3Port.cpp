@@ -45,7 +45,7 @@ H4REv3Port::~H4REv3Port()
 	//TODO Close files
 }
 
-bool H4REv3Port::deviceConnected()
+bool H4REv3Port::isConnected()
 {
 	connected_ = pathExists(sys_device_directory_.c_str());
 

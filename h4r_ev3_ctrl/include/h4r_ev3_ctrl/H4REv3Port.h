@@ -114,7 +114,7 @@ public:
 	 * Check if a device is connected to the port
 	 * @return True if connected
 	 */
-	bool deviceConnected();
+	bool isConnected();
 
 
 	/**
