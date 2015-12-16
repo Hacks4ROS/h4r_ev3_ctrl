@@ -36,9 +36,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <stdio.h>
 #include <stdarg.h>
 
-#ifndef size_t
-typedef unsigned size_t;
-#endif
 
 namespace FixedBuffer
 {
