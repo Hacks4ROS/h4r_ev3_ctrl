@@ -24,10 +24,9 @@
 namespace h4r_ev3_ctrl
 {
 
-
-bool pathExists(const std::string &path)
+bool pathExists(const char* path)
 {
-	 return (access( path.c_str(), F_OK ) != -1);
+	 return (access( path, F_OK ) != -1);
 }
 
 bool writeIntToSysFile(FILE *fileptr,int value)
@@ -129,16 +128,17 @@ bool readIntFromSysFile(FILE *fileptr, int &value)
 	   return true;
 }
 
-bool matchFileContentInEqualSubdirectories(const std::string & parent,
-		                                   const std::string &file,
-										   const std::string &content,
-										   std::string &match_dir)
+bool matchFileContentInEqualSubdirectories(const char* parent,
+		                                   const char* file,
+										   const char* content,
+										   FileNameBuffer &match_dir)
 {
-	bool found=false;
+
+			 bool found=false;
 			 DIR *dp;
 			  struct dirent *subdir;
 
-		       dp = opendir (parent.c_str());
+		       dp = opendir (parent);
 
 			  if (dp != NULL)
 			  {
@@ -149,13 +149,10 @@ bool matchFileContentInEqualSubdirectories(const std::string & parent,
 
 			    	if(directory!="." && directory !="..")
 			    	{
-			    		directory=parent;
-			    		directory+="/";
-			    		directory+=subdir->d_name;
 
+			    		match_dir.format("%s/%s/%s",parent,subdir->d_name,file);
 
-
-			    		FILE *fileptr=fopen((directory+"/"+file).c_str(),"r");
+			    		FILE *fileptr=fopen(match_dir.c_str(),"r");
 
 			    		if(fileptr==NULL)
 			    			continue;
@@ -176,9 +173,10 @@ bool matchFileContentInEqualSubdirectories(const std::string & parent,
 						   if(l==0)
 						   {
 							   buffer[read-1]=0x00;//remove linefeed!
-							   if(content==buffer)
+							   std::cout<<content<<std::endl;
+							   if(!strcmp(content,buffer))
 							   {
-								   match_dir=directory;
+								   match_dir.format("%s/%s",parent,subdir->d_name);
 								   found=true;
 								   break;
 							   }

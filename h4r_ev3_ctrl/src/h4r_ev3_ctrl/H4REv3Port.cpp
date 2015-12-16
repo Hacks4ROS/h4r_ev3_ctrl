@@ -21,6 +21,7 @@
  */
 #include <h4r_ev3_ctrl/H4REv3Port.h>
 
+
 namespace h4r_ev3_ctrl
 {
 
@@ -28,6 +29,7 @@ H4REv3Port::H4REv3Port(const std::string &port_name, H4Ev3IoPortType port_type)
 :port_name_(port_name)
 ,port_type_(port_type)
 ,connected_(false)
+,reconnect_(false)
 {
 	if(!getPortDirectory())
 	{
@@ -43,45 +45,18 @@ H4REv3Port::~H4REv3Port()
 	//TODO Close files
 }
 
-bool H4REv3Port::checkDirectoryStatus()
+bool H4REv3Port::deviceConnected()
 {
-	//Directory exists?
-	if(sys_device_directory_.size() != 0)
-	{
+	connected_ = pathExists(sys_device_directory_.c_str());
 
-		if(!pathExists(sys_device_directory_))
-		{//If path does not exist anymore, close files and erase the in filecache
-			while(1)
-			{
-				FileCache::iterator f_it= file_cache.begin();
-				if(f_it!=file_cache.end())
-				{
-					fclose(f_it->second.ptr);
-					file_cache.erase(f_it);
-				}
-				else
-				{
-					break;
-				}
-			}
-			getDeviceDirectory();
-			return false; //Even if available again, it think it is good to notify once that it was missing.
-		}
-		else
-		{
-			return true;
-		}
-	}
-	else
-	{
-		return getDeviceDirectory();
-	}
+	return connected_;
 }
+
 
 
 bool H4REv3Port::getPortDirectory()
 {
-	return matchFileContentInEqualSubdirectories("/sys/class/lego-port","port_name",port_name_,sys_port_directory_);
+	return matchFileContentInEqualSubdirectories("/sys/class/lego-port","port_name",port_name_.c_str(),sys_port_directory_);
 }
 
 bool H4REv3Port::getDeviceDirectory()
@@ -91,7 +66,7 @@ bool H4REv3Port::getDeviceDirectory()
 	switch(port_type_)
 	{
 	case H4REV3PORT_IN:
-		if(matchFileContentInEqualSubdirectories("/sys/class/lego-sensor","port_name",port_name_,sys_device_directory_))
+		if(matchFileContentInEqualSubdirectories("/sys/class/lego-sensor","port_name",port_name_.c_str(), sys_device_directory_))
 		{
 			connected_=true;
 		}
@@ -99,7 +74,7 @@ bool H4REv3Port::getDeviceDirectory()
 
 
 	case H4REV3PORT_OUT:
-		if(matchFileContentInEqualSubdirectories("/sys/class/tacho-motor","port_name",port_name_,sys_device_directory_))
+		if(matchFileContentInEqualSubdirectories("/sys/class/tacho-motor","port_name",port_name_.c_str(), sys_device_directory_))
 		{
 			connected_=true;
 		}
@@ -113,93 +88,57 @@ bool H4REv3Port::getDeviceDirectory()
 }
 
 
-FILE* H4REv3Port::openFile(const std::string fullpath, OpenFile::FileMode mode)
+FILE* H4REv3Port::get_fileptr_(const char* filename, OpenFile::FileMode mode, OpenFile &file, bool device_dir)
 {
-	OpenFile file;
-	FileCache::iterator it=file_cache.find(fullpath);
-	std::string smode;
 
-	switch(mode)
-	{
-	case OpenFile::MODE_R:
-			smode="r";
-		break;
-	case OpenFile::MODE_W:
-			smode="w";
-		break;
-	case OpenFile::MODE_RW:
-			smode="rw";
-	}
 
-	bool open=false;
-	bool rw=false;
-	if(it==file_cache.end())
-	{
-		open=true;
-	}
-	else
-	{
-		if(it->second.mode!=mode && it->second.mode != OpenFile::MODE_RW)
+		if(file.ptr!=NULL && !reconnect_)
 		{
-			smode="rw";
-			mode=OpenFile::MODE_RW;
-			fclose(it->second.ptr);
-			file_cache.erase(it);
-			open=true;
-		}
-		else
-		{
-			return it->second.ptr;
-		}
-	}
-
-
-	if(open)
-	{
-		file.mode=mode;
-		file.ptr=fopen(fullpath.c_str(),smode.c_str());
-
-		if(file.ptr!=NULL)
-		{
-			FileCachePair pr=FileCachePair(fullpath,file);
-			file_cache.insert(pr);
 			return file.ptr;
 		}
 		else
 		{
-			return NULL;
+			reconnect_=false;
+			if(!connected_)
+				return NULL;
+
+				char const *smode;
+				switch(mode)
+				{
+				case OpenFile::MODE_R:
+						smode="r";
+					break;
+				case OpenFile::MODE_W:
+						smode="w";
+					break;
+				case OpenFile::MODE_RW:
+						smode="rw";
+				}
+
+				char const *dir;
+				if(device_dir)
+				{
+					dir=sys_device_directory_.c_str();
+				}
+				else
+				{
+					dir=sys_port_directory_.c_str();
+				}
+
+
+
+				file.fullpath.format("%s/%s",dir,filename);
+				std::cout<<"opening"<<file.fullpath.c_str()<<std::endl;
+				file.ptr=fopen(file.fullpath.c_str(),smode);
+
+				return file.ptr;
 		}
-	}
-
 }
 
-FILE* H4REv3Port::get_fileptr_(const std::string &filename, OpenFile::FileMode mode,bool device_dir)
+
+bool H4REv3Port::readInt(const char *filename, int &value, OpenFile& openFile, bool device_dir)
 {
-	if(!checkDirectoryStatus())
-	{
-		return 0;
-	}
-
-	std::string file;
-	if(device_dir)
-	{
-		file=sys_device_directory_;
-	}
-	else
-	{
-		file=sys_port_directory_;
-	}
-
-
-	file+="/";
-	file+=filename;
-
-	return openFile(file,mode);
-}
-
-bool H4REv3Port::readInt(const std::string &filename, int &value, bool device_dir)
-{
-	FILE * file=get_fileptr_(filename, OpenFile::MODE_R, device_dir);
+	FILE *file=get_fileptr_(filename, OpenFile::MODE_R, openFile, device_dir);
 
 	if(file==NULL)
 		return false;
@@ -207,9 +146,9 @@ bool H4REv3Port::readInt(const std::string &filename, int &value, bool device_di
 	return readIntFromSysFile(file,value);
 }
 
-bool H4REv3Port::writeInt(const std::string &filename, int value, bool device_dir)
+bool H4REv3Port::writeInt(const char *filename, int value, OpenFile& openFile, bool device_dir)
 {
-	FILE * file=get_fileptr_(filename, OpenFile::MODE_W, device_dir);
+	FILE *file=get_fileptr_(filename, OpenFile::MODE_W, openFile, device_dir);
 
 	if(file==NULL)
 		return false;

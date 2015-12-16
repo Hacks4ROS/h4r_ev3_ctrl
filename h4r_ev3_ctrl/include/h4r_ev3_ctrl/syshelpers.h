@@ -29,16 +29,23 @@
 #include <fcntl.h>
 #include <stdio.h>
 #include <dirent.h>
+#include <h4r_ev3_ctrl/FixedBuffer.h>
 
 namespace h4r_ev3_ctrl
 {
 
 /**
- * Check if path exists (file or folder possible)
- * @param path The path to a file or folder
- * @return True if it exists, false otherwise
+ * A file name buffer without memory allocation
  */
-bool pathExists(const std::string &path);
+typedef FixedBuffer::FixedBuffer<256> FileNameBuffer;
+
+/**
+ * Check if file exists
+ * @param path Path to be checked of access
+ * @return True if it exists
+ */
+bool pathExists(const char* path);
+
 
 /**
  * Write int value into a opened (sys) file.
@@ -136,10 +143,10 @@ bool readKeyFromSysFile(FILE *fileptr,const std::map<std::string,T> &strmap, T &
  * @param[out] match_dir The first matching directory
  * @return True if found, false otherwise
  */
-bool matchFileContentInEqualSubdirectories(const std::string & parent,
-		                                   const std::string &file,
-										   const std::string &content,
-										   std::string &match_dir);
+bool matchFileContentInEqualSubdirectories(const char* parent,
+		                                   const char* file,
+										   const char* content,
+										   FileNameBuffer &match_dir);
 
 } /*h4r_ev3_ctrl*/
 #endif /* SYSHELPERS_H_ */

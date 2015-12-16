@@ -32,6 +32,14 @@
 
 #include <h4r_ev3_ctrl/syshelpers.h>
 #include <h4r_ev3_ctrl/Ev3Strings.h>
+#include <h4r_ev3_ctrl/FixedBuffer.h>
+
+#include <string>
+#include <map>
+#include <unistd.h>
+#include <fcntl.h>
+#include <stdio.h>
+#include <dirent.h>
 
 namespace h4r_ev3_ctrl
 {
@@ -45,44 +53,53 @@ public:
 		H4REV3PORT_IN,
 	}H4Ev3IoPortType;
 
-protected:
-	std::string port_name_;
-	H4Ev3IoPortType port_type_;
-	std::string sys_port_directory_;
-	std::string sys_device_directory_;
-	bool connected_;
 
 
 	class OpenFile
 	{
-
 	public:
-		OpenFile()
-		:ptr(0)
-		,mode(MODE_RW)
-		{};
-
 		typedef enum
 		{
 			MODE_RW,
 			MODE_R,
 			MODE_W,
 		}FileMode;
-
+		OpenFile()
+		:ptr(0)
+		{}
+		FileNameBuffer fullpath;
 		FILE *ptr;
-		FileMode mode;
 	};
 
-	typedef std::map<std::string, OpenFile>  FileCache;
-	typedef std::pair<std::string, OpenFile> FileCachePair;
-	FileCache file_cache;
-	FILE* openFile(const std::string fullpath, OpenFile::FileMode mode);
-	FILE *get_fileptr_(const std::string &filename, OpenFile::FileMode mode,bool device_dir=true);
+
+
+
+protected:
+	const std::string port_name_;
+	bool connected_;
+	bool reconnect_;
+
+	H4Ev3IoPortType port_type_;
+	FileNameBuffer sys_port_directory_;
+	FileNameBuffer sys_device_directory_;
+
+//	FILE* openFile(FileNameBuffer fullpath, FileMode mode);
+	FILE* get_fileptr_(const char* filename, OpenFile::FileMode mode, OpenFile &file, bool device_dir=true);
+;
+
 	bool getDeviceDirectory();
 	bool getPortDirectory();
-	bool checkDirectoryStatus();
+
+
+
 
 public:
+
+	void reconnect()
+	{
+		reconnect_=true;
+		getDeviceDirectory();
+	}
 
 	/**
 	 * The constructor
@@ -94,12 +111,10 @@ public:
 
 
 	/**
-	 * @return true if a device is connected to that port
+	 * Check if a device is connected to the port
+	 * @return True if connected
 	 */
-	bool isConnected()
-	{
-		return	checkDirectoryStatus();
-	}
+	bool deviceConnected();
 
 
 	/**
@@ -107,18 +122,20 @@ public:
 	 * @param filename The sys file to be read from (only filename without directory)
 	 * @param[out] value output variable for the value only valid on return true
 	 * @param device_dir True if it should open the file in the device_directory, false it will search the port directory for the file
+	 * @param openFile Storage for file pointer
 	 * @return True if read successful, false otherwise
 	 */
-	bool readInt(const std::string &filename, int &value, bool device_dir=true);
+	bool readInt(const char *filename, int &value, OpenFile& openFile, bool device_dir=true);
 
 	/**
 	 * Writes a integer string from a sys file
 	 * @param filename The sys file to be read from (only filename without directory)
 	 * @param value The value to be written to the file
 	 * @param device_dir True if it should open the file in the device_directory, false it will search the port directory for the file
+	 * @param openFile Storage for file pointer
 	 * @return True if read successful, false otherwise
 	 */
-	bool writeInt(const std::string &filename, int value, bool device_dir=true);
+	bool writeInt(const char *filename, int value, OpenFile& openFile, bool device_dir=true);
 
 
 	/**
@@ -144,13 +161,14 @@ public:
 	 * @param strmap The string map
 	 * @param key The key of the string (if return TRUE!)
 	 * @param device_dir True if it should open the file in the device_directory, false it will search the port directory for the file
+	 * @param openFile Storage for file pointer
 	 * @return True if read successful, false otherwise
 	 */
 	template < typename T >
-	bool writeKey(const std::string &filename, const std::map< T, std::string > &strmap, T key, bool device_dir=true)
+	bool writeKey(const char *filename, const std::map< T, std::string > &strmap, T key, OpenFile& openFile, bool device_dir=true)
 	{
-		FILE * file=get_fileptr_(filename, OpenFile::MODE_W, device_dir);
 
+		FILE *file=get_fileptr_(filename, OpenFile::MODE_W, openFile, device_dir);
 
 		if(file==NULL)
 			return false;
@@ -165,13 +183,14 @@ public:
 	 * @param strmap The string map
 	 * @param key The key of the string (if return TRUE!)
 	 * @param device_dir True if it should search in the device_directory, false it will search the port directory for the file
+	 * @param openFile Storage for file pointer
 	 * @return True if read successful, false otherwise
 	 */
 	template <typename T>
-	bool readKey(const std::string &filename, const std::map<std::string,T> &strmap, T &key, bool device_dir=true)
+	bool readKey(const char *filename, const std::map< T, std::string > &strmap, T &key, OpenFile& openFile, bool device_dir=true)
 	{
-		FILE * file=get_fileptr_(filename, OpenFile::MODE_R, device_dir);
 
+		FILE *file=get_fileptr_(filename, OpenFile::MODE_W, openFile, device_dir);
 
 		if(file==NULL)
 			return false;
@@ -182,11 +201,24 @@ public:
 
 
 
+
+
 };
 
 
 class H4REv3Motor : public H4REv3Port
 {
+
+	OpenFile f_DutyCycleSP;
+	OpenFile f_SpeedRegulation;
+	OpenFile f_SpeedSP;
+	OpenFile f_PositionSP;
+	OpenFile f_Speed;
+	OpenFile f_Position;
+	OpenFile f_MotorCommand;
+	OpenFile f_MotorPolarity;
+
+
 public:
 
 	H4REv3Motor(const std::string &port_name)
@@ -200,7 +232,7 @@ public:
 	 */
 	bool setDutyCycleSP(int value)
 	{
-		return writeInt("duty_cycle_sp", value);
+		return writeInt("duty_cycle_sp", value, f_DutyCycleSP);
 	}
 
 	/**
@@ -210,7 +242,7 @@ public:
 	 */
 	bool setSpeedRegulation(Ev3Strings::Ev3Switch onoff)
 	{
-		return writeKey("speed_regulation", Ev3Strings::ev3_switch_string, onoff);
+		return writeKey("speed_regulation", Ev3Strings::ev3_switch_string, onoff, f_DutyCycleSP);
 	}
 
 	/**
@@ -220,7 +252,7 @@ public:
 	 */
 	bool setSpeedSP(int value)
 	{
-		return writeInt("speed_sp",value);
+		return writeInt("speed_sp",value,f_SpeedSP);
 	}
 
 	/**
@@ -230,7 +262,7 @@ public:
 	 */
 	bool setPositionSP(int value)
 	{
-		return writeInt("position_sp",value);
+		return writeInt("position_sp",value,f_PositionSP);
 	}
 
 	/**
@@ -240,7 +272,7 @@ public:
 	 */
 	bool position(int &value)
 	{
-		return readInt("position",value);
+		return readInt("position",value, f_Position);
 	}
 
 	/**
@@ -250,7 +282,7 @@ public:
 	 */
 	bool speed(int &value)
 	{
-		return readInt("speed",value);
+		return readInt("speed",value, f_Speed);
 	}
 
 	/**
@@ -260,7 +292,7 @@ public:
 	 */
 	bool setMotorCommand(Ev3Strings::Ev3MotorCommands  command)
 	{
-		return writeKey("command",Ev3Strings::ev3_motor_commands_string, command);
+		return writeKey("command",Ev3Strings::ev3_motor_commands_string, command, f_MotorCommand);
 	}
 
 	/**
@@ -270,12 +302,49 @@ public:
 	 */
 	bool setMotorPolarity(Ev3Strings::Ev3Polarity pol)
 	{
-		return writeKey("polarity",Ev3Strings::ev3_polarity_string, pol);
+		return writeKey<Ev3Strings::Ev3Polarity>("polarity",Ev3Strings::ev3_polarity_string, pol, f_MotorPolarity);
 	}
 
 };
 
 
+class H4REv3Sensor : public H4REv3Port
+{
+public:
+	H4REv3Sensor(const std::string &port_name)
+	:H4REv3Port(port_name,H4REV3PORT_IN)
+	{}
+
+private:
+	OpenFile f_NumValues;
+	OpenFile f_Value[8];
+
+public:
+	unsigned num_values()
+	{
+		int val=0;
+		readInt("num_values",val,f_NumValues);
+		return val;
+	}
+
+	bool value(unsigned number, int &value)
+	{
+
+		char numstring[]="value0";
+
+		numstring[5]+=number;
+
+		if(number<num_values() && number<=7)
+		{
+			return readInt(numstring,value,f_Value[number]);
+		}
+		else
+		{
+			return false;
+		}
+
+	}
+};
 
 
 }/*h4r_ev3_ctrl*/
