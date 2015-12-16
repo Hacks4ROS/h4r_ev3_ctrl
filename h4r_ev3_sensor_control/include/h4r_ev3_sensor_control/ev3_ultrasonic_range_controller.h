@@ -114,7 +114,7 @@ public:
 
 
 		          int value;
-		          if(handle_.getValue(0,value))
+		          if(!handle_.getValue(0,value))
 		          {
 		        	  ROS_ERROR("Could not get sensor value!");
 		        	  realtime_range_publisher_->unlock();
@@ -125,7 +125,7 @@ public:
 
 
 		          realtime_range_publisher_->msg_.header.stamp = time;
-		          realtime_range_publisher_->msg_.range=value/1000;
+		          realtime_range_publisher_->msg_.range=((double) value)/1000.0;
 		          realtime_range_publisher_->unlockAndPublish();
 		        }
 		      }
