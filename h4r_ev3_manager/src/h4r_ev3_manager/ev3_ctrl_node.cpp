@@ -1,22 +1,22 @@
 /*
- * This file (ev3_ctrl_node.cpp) is part of h4r_ev3_ctrl.
+ * This file (ev3_ctrl_node.cpp) is part of h4r_ev3_manager.
  * Date: 13.11.2015
  *
  * Author: Christian Holl
  * http://github.com/Hacks4ROS
  *
- * h4r_ev3_ctrl is free software: you can redistribute it and/or modify
+ * h4r_ev3_manager is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * h4r_ev3_ctrl is distributed in the hope that it will be useful,
+ * h4r_ev3_manager is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with h4r_ev3_ctrl.  If not, see <http://www.gnu.org/licenses/>.
+ * along with ev3_control.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
 
@@ -78,7 +78,7 @@ int main(int argc, char** argv)
 	  }
 
 
-	  h4r_ev3_ctrl::Ev3HardwareInterface robot(in_ports,out_ports);
+	  ev3_control::Ev3HardwareInterface robot(in_ports,out_ports);
 	  controller_manager::ControllerManager cm(&robot,n);
 
 	  ros::Time ts = ros::Time::now();

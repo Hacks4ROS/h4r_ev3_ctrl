@@ -11,7 +11,7 @@
  #include <string>
  using namespace std;
 
-namespace h4r_ev3_ctrl{
+namespace ev3_control{
 class Ev3Strings
 {
 private: 

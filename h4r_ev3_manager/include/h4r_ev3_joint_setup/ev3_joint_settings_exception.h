@@ -1,16 +1,16 @@
 /*
- * This file (ev3_joint_settings_exception.h) is part of h4r_ev3_ctrl.
+ * This file (ev3_joint_settings_exception.h) is part of h4r_ev3_manager.
  * Date: 17.11.2015
  *
  * Author: Christian Holl
  * http://github.com/Hacks4ROS
  *
- * ev3_joint_setup is free software: you can redistribute it and/or modify
+ * h4r_ev3_manager is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * ev3_joint_setup is distributed in the hope that it will be useful,
+ * h4r_ev3_manager is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
@@ -27,7 +27,7 @@
 #include <exception>
 
 
-namespace h4r_ev3_ctrl
+namespace ev3_control
 {
 
 class Ev3JointInterfaceException: public std::exception

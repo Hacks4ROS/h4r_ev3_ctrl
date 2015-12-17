@@ -1,16 +1,16 @@
 /*
- * This file (Ev3HardwareInterface.h) is part of h4r_ev3_ctrl.
+ * This file (Ev3HardwareInterface.h) is part of h4r_ev3_manager.
  * Date: 19.11.2015
  *
  * Author: Christian Holl
  * http://github.com/Hacks4ROS
  *
- * h4r_ev3_joint_settings is free software: you can redistribute it and/or modify
+ * h4r_ev3_manager is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * h4r_ev3_joint_settings is distributed in the hope that it will be useful,
+ * h4r_ev3_manager is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
@@ -41,7 +41,7 @@
 using namespace std;
 using namespace hardware_interface;
 
-namespace h4r_ev3_ctrl {
+namespace ev3_control {
 
 class Ev3HardwareInterface : public hardware_interface::RobotHW
 {
@@ -52,7 +52,7 @@ class Ev3HardwareInterface : public hardware_interface::RobotHW
 	hardware_interface::VelocityJointInterface jnt_vel_interface;
 	hardware_interface::PositionJointInterface jnt_pos_interface;
 	hardware_interface::EffortJointInterface jnt_eff_interface;
-	h4r_ev3_sensor_control::Ev3SensorInterface sensor_interface;
+	ev3_control::Ev3SensorInterface sensor_interface;
 
 	joint_limits_interface::PositionJointSoftLimitsInterface jnt_limits_interface;
 	Ev3JointInterface jnt_ev3_joint_interface;
@@ -71,6 +71,6 @@ public:
 	void doSwitch(const std::list<ControllerInfo> &start_list,  const std::list<ControllerInfo> &stop_list);
 };
 
-} /* namespace h4r_ev3_ctrl */
+} /* namespace ev3_control */
 
 #endif /* EV3HARDWAREINTERFACE_H_ */

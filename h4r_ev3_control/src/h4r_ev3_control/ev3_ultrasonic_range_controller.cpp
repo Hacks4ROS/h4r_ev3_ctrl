@@ -1,16 +1,28 @@
 /*
- * Ev3UltraSonicController.cpp
+ * This file (ev3_ultrasonic_range_controller.cpp) is part of h4r_ev3_control.
+ * Date: 17.12.2015
  *
- *  Created on: 10.12.2015
- *      Author: Christian Holl
- *      
- * @todo insert LICENSE!
- *      All rights reserved! (©2015)
+ * Author: Christian Holl
+ * http://github.com/Hacks4ROS
+ *
+ * h4r_ev3_control is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * h4r_ev3_control is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with h4r_ev3_control.  If not, see <http://www.gnu.org/licenses/>.
+ *
  */
 
 #include "../include/h4r_ev3_control/ev3_ultrasonic_range_controller.h"
 
-namespace h4r_ev3_sensor_control
+namespace ev3_control
 {
 
 Ev3UltraSonicRangeController::Ev3UltraSonicRangeController()
@@ -25,6 +37,6 @@ Ev3UltraSonicRangeController::~Ev3UltraSonicRangeController()
 }
 
 
-PLUGINLIB_EXPORT_CLASS(h4r_ev3_sensor_control::Ev3UltraSonicRangeController, controller_interface::ControllerBase)
+PLUGINLIB_EXPORT_CLASS(ev3_control::Ev3UltraSonicRangeController, controller_interface::ControllerBase)
 
-} /* namespace h4r_ev3_ctrl */
+} /* namespace ev3_control */

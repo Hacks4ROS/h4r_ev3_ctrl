@@ -1,29 +1,29 @@
 /*
- * This file (Ev3HardwareInterface.cpp) is part of h4r_ev3_ctrl.
+ * This file (Ev3HardwareInterface.cpp) is part of h4r_ev3_manager.
  * Date: 16.11.2015
  *
  * Author: Christian Holl
  * http://github.com/Hacks4ROS
  *
- * h4r_ev3_ctrl is free software: you can redistribute it and/or modify
+ * h4r_ev3_manager is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * h4r_ev3_ctrl is distributed in the hope that it will be useful,
+ * h4r_ev3_manager is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with h4r_ev3_ctrl.  If not, see <http://www.gnu.org/licenses/>.
+ * along with ev3_control.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
 
 #include "../h4r_ev3_manager/Ev3HardwareInterface.h"
 
 
-namespace h4r_ev3_ctrl {
+namespace ev3_control {
 Ev3HardwareInterface::Ev3HardwareInterface(
 		const std::vector<ev3dev::port_type> &in_ports,
 		const std::vector<ev3dev::port_type> &out_ports
@@ -37,7 +37,7 @@ Ev3HardwareInterface::Ev3HardwareInterface(
 
 	for(int p=0; p < in_ports.size(); ++p)
 	{
-		h4r_ev3_sensor_control::Ev3SensorHandle handle(in_ports[p]);
+		ev3_control::Ev3SensorHandle handle(in_ports[p]);
 		sensor_interface.registerHandle(handle);
 	}
 
@@ -150,4 +150,4 @@ void Ev3HardwareInterface::doSwitch(const std::list<ControllerInfo> &start_list,
 	jnt_ev3_joint_interface.ControllerChange(start_list);
 }
 
-} /* namespace h4r_ev3_ctrl */
+} /* namespace ev3_control */

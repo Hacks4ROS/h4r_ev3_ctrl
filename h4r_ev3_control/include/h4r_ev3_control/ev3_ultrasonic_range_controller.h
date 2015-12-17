@@ -1,22 +1,22 @@
 /*
- * This file (Ev3UltraSonicController.h) is part of h4r_ev3_ctrl.
+ * This file (Ev3UltraSonicController.h) is part of h4r_ev3_control.
  * Date: 10.12.2015
  *
  * Author: Christian Holl
  * http://github.com/Hacks4ROS
  *
- * h4r_ev3_ctrl is free software: you can redistribute it and/or modify
+ * h4r_ev3_control is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * h4r_ev3_ctrl is distributed in the hope that it will be useful,
+ * h4r_ev3_control is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with h4r_ev3_ctrl.  If not, see <http://www.gnu.org/licenses/>.
+ * along with ev3_control.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
 #ifndef EV3ULTRASONICCONTROLLER_H_
@@ -30,7 +30,7 @@
 
 #include "../h4r_ev3_control/Ev3SensorInterface.h"
 
-namespace h4r_ev3_sensor_control
+namespace ev3_control
 {
 
 class Ev3UltraSonicRangeController: public controller_interface::Controller<Ev3SensorInterface>
@@ -140,6 +140,6 @@ public:
 
 };
 
-} /* namespace h4r_ev3_ctrl */
+} /* namespace ev3_control */
 
 #endif /* EV3ULTRASONICCONTROLLER_H_ */
