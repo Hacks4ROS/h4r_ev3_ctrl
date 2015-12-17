@@ -29,7 +29,6 @@ H4REv3Port::H4REv3Port(const std::string &port_name, H4Ev3IoPortType port_type)
 :port_name_(port_name)
 ,port_type_(port_type)
 ,connected_(false)
-,reconnect_(false)
 {
 	if(!getPortDirectory())
 	{
@@ -68,6 +67,7 @@ bool H4REv3Port::getDeviceDirectory()
 	case H4REV3PORT_IN:
 		if(matchFileContentInEqualSubdirectories("/sys/class/lego-sensor","port_name",port_name_.c_str(), sys_device_directory_))
 		{
+			connect_id_++;
 			connected_=true;
 		}
 		break;
@@ -76,6 +76,7 @@ bool H4REv3Port::getDeviceDirectory()
 	case H4REV3PORT_OUT:
 		if(matchFileContentInEqualSubdirectories("/sys/class/tacho-motor","port_name",port_name_.c_str(), sys_device_directory_))
 		{
+			connect_id_++;
 			connected_=true;
 		}
 		break;
@@ -91,47 +92,59 @@ bool H4REv3Port::getDeviceDirectory()
 FILE* H4REv3Port::get_fileptr_(const char* filename, OpenFile::FileMode mode, OpenFile &file, bool device_dir)
 {
 
+		if(connected_==false)
+		{
+			if(!getDeviceDirectory())
+			{
+				return 0;
+			}
+		}
+		else
+		{
+			if(!isConnected())
+				return 0;
+		}
 
-		if(file.ptr!=NULL && !reconnect_)
+		if(file.ptr!=NULL
+		&& connect_id_ == file.connect_id_ )
 		{
 			return file.ptr;
 		}
 		else
 		{
-			reconnect_=false;
-			if(!connected_)
-				return NULL;
+			file.ptr=NULL;
+			file.connect_id_=connect_id_;
 
-				char const *smode;
-				switch(mode)
-				{
-				case OpenFile::MODE_R:
-						smode="r";
-					break;
-				case OpenFile::MODE_W:
-						smode="w";
-					break;
-				case OpenFile::MODE_RW:
-						smode="rw";
-				}
+			char const *smode;
+			switch(mode)
+			{
+			case OpenFile::MODE_R:
+					smode="r";
+				break;
+			case OpenFile::MODE_W:
+					smode="w";
+				break;
+			case OpenFile::MODE_RW:
+					smode="rw";
+			}
 
-				char const *dir;
-				if(device_dir)
-				{
-					dir=sys_device_directory_.c_str();
-				}
-				else
-				{
-					dir=sys_port_directory_.c_str();
-				}
+			char const *dir;
+			if(device_dir)
+			{
+				dir=sys_device_directory_.c_str();
+			}
+			else
+			{
+				dir=sys_port_directory_.c_str();
+			}
+
+			file.fullpath.format("%s/%s",dir,filename);
+			file.ptr=fopen(file.fullpath.c_str(),smode);
 
 
+			std::cout<<"opening: "<<file.fullpath.c_str()<<" "<<file.ptr<<std::endl;
 
-				file.fullpath.format("%s/%s",dir,filename);
-				std::cout<<"opening"<<file.fullpath.c_str()<<std::endl;
-				file.ptr=fopen(file.fullpath.c_str(),smode);
-
-				return file.ptr;
+			return file.ptr;
 		}
 }
 

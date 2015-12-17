@@ -53,6 +53,8 @@ public:
 		H4REV3PORT_IN,
 	}H4Ev3IoPortType;
 
+
+
 	class OpenFile
 	{
 	public:
@@ -64,7 +66,9 @@ public:
 		}FileMode;
 		OpenFile()
 		:ptr(0)
+		,connect_id_(0)
 		{}
+		int connect_id_;
 		FileNameBuffer fullpath;
 		FILE *ptr;
 	};
@@ -73,9 +77,14 @@ public:
 
 
 protected:
+
+
+	OpenFile f_driver_name;
+
 	const std::string port_name_;
 	bool connected_;
-	bool reconnect_;
+	int connect_id_;
+
 
 	H4Ev3IoPortType port_type_;
 	FileNameBuffer sys_port_directory_;
@@ -83,7 +92,6 @@ protected:
 
 //	FILE* openFile(FileNameBuffer fullpath, FileMode mode);
 	FILE* get_fileptr_(const char* filename, OpenFile::FileMode mode, OpenFile &file, bool device_dir=true);
-;
 
 	bool getDeviceDirectory();
 	bool getPortDirectory();
@@ -93,26 +101,16 @@ protected:
 
 public:
 
-	void reconnect()
-	{
-		reconnect_=true;
-		getDeviceDirectory();
-	}
 
 	/**
 	 * The constructor
 	 * @param port_name port_name
 	 * @param port_type input or output port
 	 */
-	H4REv3Port()
-	:port_name_("")
-	,port_type_(H4REV3PORT_IN)
-	,reconnect_(false)
-	,connected_(false)
-	{};
-
 	H4REv3Port(const std::string &port_name, H4Ev3IoPortType port_type);
 	~H4REv3Port();
+
+
 
 
 	/**
@@ -202,12 +200,6 @@ public:
 
 		return readKeyFromSysFile(file,strmap,key);
 	}
-
-
-
-
-
-
 };
 
 
@@ -226,6 +218,10 @@ class H4REv3Motor : public H4REv3Port
 
 public:
 
+	/**
+	 *
+	 * @param port_name
+	 */
 	H4REv3Motor(const std::string &port_name)
 	:H4REv3Port(port_name,H4REV3PORT_OUT)
 	{}
