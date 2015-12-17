@@ -53,8 +53,6 @@ public:
 		H4REV3PORT_IN,
 	}H4Ev3IoPortType;
 
-
-
 	class OpenFile
 	{
 	public:
@@ -106,6 +104,13 @@ public:
 	 * @param port_name port_name
 	 * @param port_type input or output port
 	 */
+	H4REv3Port()
+	:port_name_("")
+	,port_type_(H4REV3PORT_IN)
+	,reconnect_(false)
+	,connected_(false)
+	{};
+
 	H4REv3Port(const std::string &port_name, H4Ev3IoPortType port_type);
 	~H4REv3Port();
 

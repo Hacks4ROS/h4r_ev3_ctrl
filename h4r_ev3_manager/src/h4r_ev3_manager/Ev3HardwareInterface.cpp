@@ -34,13 +34,12 @@ Ev3HardwareInterface::Ev3HardwareInterface(
 	registerInterface(&jnt_state_interface);
 	registerInterface(&sensor_interface);
 
-
 	for(int p=0; p < in_ports.size(); ++p)
 	{
-		ev3_control::Ev3SensorHandle handle(in_ports[p]);
+		ev3_sensors_.push_back(new H4REv3Sensor(in_ports[p]));
+		ev3_control::Ev3SensorHandle handle(in_ports[p],ev3_sensors_[p]);
 		sensor_interface.registerHandle(handle);
 	}
-
 
 	for (int p = 0; p < out_ports.size(); ++p)
 	{
@@ -88,6 +87,13 @@ Ev3HardwareInterface::~Ev3HardwareInterface()
 		delete joint_settings_[i];
 	}
 	joint_settings_.clear();
+
+
+	for(int i = 0; i < ev3_sensors_.size(); i++)
+	{
+		delete ev3_sensors_[i];
+	}
+	ev3_sensors_.clear();
 }
 
 void Ev3HardwareInterface::write(const ros::Duration &d)

@@ -48,6 +48,9 @@ class Ev3HardwareInterface : public hardware_interface::RobotHW
 	ros::NodeHandle *nh_;
 
 	std::vector<Ev3JointSettings*> joint_settings_;
+	std::vector<ev3_control::H4REv3Sensor*> ev3_sensors_;
+
+
 	hardware_interface::JointStateInterface jnt_state_interface;
 	hardware_interface::VelocityJointInterface jnt_vel_interface;
 	hardware_interface::PositionJointInterface jnt_pos_interface;

@@ -26,6 +26,7 @@
 #include <hardware_interface/internal/hardware_resource_manager.h>
 #include <string>
 #include <h4r_ev3_control/H4REv3Port.h>
+#include <boost/shared_ptr.hpp>
 using namespace std;
 
 namespace ev3_control
@@ -35,14 +36,17 @@ class Ev3SensorHandle
 {
 private:
 	std::string port_name_;
+	H4REv3Sensor *sensor_;
 public:
 
 	Ev3SensorHandle()
 	:port_name_()
+	,sensor_(0)
 	{}
 
-	Ev3SensorHandle(const std::string &port_name)
+	Ev3SensorHandle(const std::string &port_name, H4REv3Sensor *sensor)
 	:port_name_(port_name)
+	,sensor_(sensor)
 	{}
 
 
@@ -58,29 +62,12 @@ public:
 	{
 		//TODO write mode to file
 		cout<<mode<<endl;
-		return true;
+		return false;
 	}
 
 	bool getValue(unsigned index, int &value)
 	{
-		//TODO
-
-		//DUMMY
-		switch(index)
-		{
-		case 0:
-			value =1.11;
-			return true;
-		case 1:
-			value=2.22;
-			return true;
-
-		case 2:
-			value=3.33;
-			return true;
-		}//DUMMY
-
-		return false;
+		return sensor_->value(index,value);
 	}
 
 
