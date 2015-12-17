@@ -20,7 +20,7 @@
  *
  */
 
-#include "../include/h4r_ev3_control/ev3_ultrasonic_range_controller.h"
+#include <h4r_ev3_control/ev3_ultrasonic_range_controller.h>
 
 namespace ev3_control
 {
