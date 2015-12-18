@@ -31,6 +31,7 @@
 #include <dirent.h>
 
 #include <h4r_ev3_control/FixedBuffer.h>
+#include <h4r_ev3_control/StringEnum.h>
 
 namespace ev3_control
 {
@@ -72,19 +73,20 @@ bool readIntFromSysFile(FILE *fileptr, int &value);
  * @return True if everything was successful, false otherwise
  */
 template <typename T>
-bool writeKeyToSysFile(FILE *fileptr,const std::map<T,std::string> &strmap, T key)
+bool writeKeyToSysFile(FILE *fileptr, const StringEnum<T> &strmap, T key)
 {
-	   typename std::map<T,std::string>::const_iterator it=strmap.find(key);
-	   std::string out=it->second;
-	   out+='\n';
 
-	   int wrote=fwrite(out.c_str(),1,out.size(),fileptr);
+		char outbuf[256];
+		int len=strlen(strmap[key]);
+		strncpy(outbuf, strmap[key], len);
+
+	   int wrote=fwrite(outbuf,1,len,fileptr);
 
 	   if(fflush(fileptr))
 		   return false;
 	   rewind(fileptr);
 
-	   return wrote==out.size();
+	   return wrote==len;
 }
 
 /**
@@ -95,7 +97,7 @@ bool writeKeyToSysFile(FILE *fileptr,const std::map<T,std::string> &strmap, T ke
  * @return True if everything was ok, false otherwise
  */
 template <typename T>
-bool readKeyFromSysFile(FILE *fileptr,const std::map<std::string,T> &strmap, T &value)
+bool readKeyFromSysFile(FILE *fileptr,const StringEnum<T> &strmap, T &value)
 {
 	   fflush(fileptr);
 	   rewind(fileptr);
@@ -109,25 +111,31 @@ bool readKeyFromSysFile(FILE *fileptr,const std::map<std::string,T> &strmap, T &
 	   ssize_t read;
 	   size_t len=256;
 	   int l=0;
+	   bool ok=false;
        while ((read = getline(bufptr, &len, fileptr)) != -1) {
     	   if(l==0)
     	   {
     		   buffer[read-1]=0x00;//remove linefeed!
-    		   typename std::map<std::string,T>::const_iterator it=strmap.find(std::string(buffer));
-    		   if(it!=strmap.end())
+    		   value=strmap[buffer];
+    		   if(value<0)
     		   {
-    			   value=it->second;
+    			   return false;
     		   }
     		   else
     		   {
-    			   value=(T)-1;
+    			   ok=true;
     		   }
-    	 	   return true;
+
     	   }
     	   else
     	   {
-    		   return false;
+    		   if(l!=1 || read!=1)
+    		   {
+    			   return false;
+    		   }
     	   }
+
+    	   return ok;
        }
 
 
