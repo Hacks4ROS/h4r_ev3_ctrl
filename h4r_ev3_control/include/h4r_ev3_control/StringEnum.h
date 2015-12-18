@@ -30,6 +30,9 @@
 #include <string.h>
 #include <inttypes.h>
 
+namespace ev3_control
+{
+
 using namespace std;
 template <class ENUM>
 class StringEnum
@@ -114,4 +117,5 @@ private:
 };
 
 
+}/* namespace */
 #endif /* STRINGENUM_H_ */

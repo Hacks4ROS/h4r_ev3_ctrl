@@ -8,9 +8,7 @@
 #ifndef EV3STRINGS_H
 #define EV3STRINGS_H
  #include <h4r_ev3_control/StringEnum.h>
- using namespace std;
-
-namespace h4r_ev3_control{
+namespace ev3_control{
 class Ev3Strings
 {
 private: 

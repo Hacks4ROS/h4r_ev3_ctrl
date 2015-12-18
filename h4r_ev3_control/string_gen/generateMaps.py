@@ -44,9 +44,9 @@ output_header+="#ifndef EV3STRINGS_H\n"
 output_header+="#define EV3STRINGS_H\n"
 
 output_header+=" #include <h4r_ev3_control/StringEnum.h>\n"
-output_header+=" using namespace std;\n\n"
+#output_header+=" using namespace std;\n\n"
 
-output_header+="namespace h4r_ev3_control{\n"
+output_header+="namespace ev3_control{\n"
 output_header+="class Ev3Strings\n{\n"
 
 output_header+="private: \n"
@@ -90,7 +90,7 @@ output_source+="\n *WARNING WARNING WARNING WARNING WARNING\n"
 output_source+=" */\n"
 
 output_source+=" #include <h4r_ev3_control/Ev3Strings.h>\n"
-output_source+="namespace h4r_ev3_control{\n"
+output_source+="namespace ev3_control{\n"
 
 
 for entry in entries:

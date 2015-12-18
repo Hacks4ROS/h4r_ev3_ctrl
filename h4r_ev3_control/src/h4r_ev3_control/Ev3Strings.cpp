@@ -6,7 +6,7 @@
  *WARNING WARNING WARNING WARNING WARNING
  */
  #include <h4r_ev3_control/Ev3Strings.h>
-namespace h4r_ev3_control{
+namespace ev3_control{
 StringEnum<Ev3Strings::Ev3Switch> init_ev3_switch_conv()
 {
 	StringEnum<Ev3Strings::Ev3Switch> mp;
