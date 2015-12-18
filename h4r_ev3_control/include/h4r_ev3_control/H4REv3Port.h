@@ -243,7 +243,7 @@ public:
 	 */
 	bool setSpeedRegulation(Ev3Strings::Ev3Switch onoff)
 	{
-		return writeKey("speed_regulation", Ev3Strings::ev3_switch_conv, onoff, f_DutyCycleSP);
+		return writeKey("speed_regulation", Ev3Strings::ev3_switch_conv, onoff, f_SpeedRegulation);
 	}
 
 	/**
