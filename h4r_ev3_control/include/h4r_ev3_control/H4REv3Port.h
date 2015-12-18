@@ -168,7 +168,7 @@ public:
 	 * @return True if read successful, false otherwise
 	 */
 	template < typename T >
-	bool writeKey(const char *filename, const std::map< T, std::string > &strmap, T key, OpenFile& openFile, bool device_dir=true)
+	bool writeKey(const char *filename, const StringEnum< T > &strmap, T key, OpenFile& openFile, bool device_dir=true)
 	{
 
 		FILE *file=get_fileptr_(filename, OpenFile::MODE_W, openFile, device_dir);
@@ -190,7 +190,7 @@ public:
 	 * @return True if read successful, false otherwise
 	 */
 	template <typename T>
-	bool readKey(const char *filename, const std::map< T, std::string > &strmap, T &key, OpenFile& openFile, bool device_dir=true)
+	bool readKey(const char *filename,  const StringEnum< T > &strmap, T &key, OpenFile& openFile, bool device_dir=true)
 	{
 
 		FILE *file=get_fileptr_(filename, OpenFile::MODE_W, openFile, device_dir);
@@ -243,7 +243,7 @@ public:
 	 */
 	bool setSpeedRegulation(Ev3Strings::Ev3Switch onoff)
 	{
-		return writeKey("speed_regulation", Ev3Strings::ev3_switch_string, onoff, f_DutyCycleSP);
+		return writeKey("speed_regulation", Ev3Strings::ev3_switch_conv, onoff, f_DutyCycleSP);
 	}
 
 	/**
@@ -293,7 +293,7 @@ public:
 	 */
 	bool setMotorCommand(Ev3Strings::Ev3MotorCommands  command)
 	{
-		return writeKey("command",Ev3Strings::ev3_motor_commands_string, command, f_MotorCommand);
+		return writeKey("command",Ev3Strings::ev3_motor_commands_conv, command, f_MotorCommand);
 	}
 
 	/**
@@ -303,7 +303,7 @@ public:
 	 */
 	bool setMotorPolarity(Ev3Strings::Ev3Polarity pol)
 	{
-		return writeKey<Ev3Strings::Ev3Polarity>("polarity",Ev3Strings::ev3_polarity_string, pol, f_MotorPolarity);
+		return writeKey<Ev3Strings::Ev3Polarity>("polarity",Ev3Strings::ev3_polarity_conv, pol, f_MotorPolarity);
 	}
 
 };
