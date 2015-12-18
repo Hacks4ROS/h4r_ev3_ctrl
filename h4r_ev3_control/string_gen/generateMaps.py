@@ -43,8 +43,7 @@ output_header+=" */\n"
 output_header+="#ifndef EV3STRINGS_H\n"
 output_header+="#define EV3STRINGS_H\n"
 
-output_header+=" #include <map>\n"
-output_header+=" #include <string>\n"
+output_header+=" #include <h4r_ev3_control/StringEnum.h>\n"
 output_header+=" using namespace std;\n\n"
 
 output_header+="namespace h4r_ev3_control{\n"
@@ -55,22 +54,24 @@ output_header+="Ev3Strings(){}/*thou shalt never construct this!*/\n"
 
 
 
-
+output_header+="public:\n"
 
 for entry in entries:
-    output_header+="public:\n"
     output_header+="\ttypedef enum\n"
     output_header+= "\t{\n"
     output_header+= "\t\t" + re.sub("-", "_", entry[1]).upper()+"_NOT_FOUND=-1,\n"
     for e in entry[2]:
         output_header+="\t\t"+ e + ",\n"
     output_header+="\t}" + entry[1] +";\n\n"
-    
-    output_header+="\tstatic " + entry[1] +" "+entry[1] + "FromString(const string& str);\n"
-    output_header+="\tstatic string "+entry[1]+"ToString("+entry[1]+" val);\n\n"
 
-    output_header+="\tstatic const map<"+ entry[1] +",string> " + entry[0] +"_string;\n"
-    output_header+="\tstatic const map<string, "+ entry[1] +"> " + entry[0] +"_enum;\n\n"
+
+    output_header+="\tstatic StringEnum<"+entry[1]+"> "+ entry[0]+"_conv;\n\n\n"
+    
+#    output_header+="\tstatic " + entry[1] +" "+entry[1] + "FromString(const string& str);\n"
+#    output_header+="\tstatic string "+entry[1]+"ToString("+entry[1]+" val);\n\n"
+
+#    output_header+="\tstatic const map<"+ entry[1] +",string> " + entry[0] +"_string;\n"
+#    output_header+="\tstatic const map<string, "+ entry[1] +"> " + entry[0] +"_enum;\n\n"
     
     
 output_header+="};\n"
@@ -96,53 +97,53 @@ for entry in entries:
 
     ##Variable Init Function Strings
 
-    output_source+="map<Ev3Strings::"+ entry[1] +",string> init_"+ entry[0] +"_string_map()\n"
+    output_source+="StringEnum<Ev3Strings::"+ entry[1] +"> init_"+ entry[0] +"_conv()\n"
     output_source+="{\n"
-    output_source+="\tmap<Ev3Strings::"+ entry[1] +",string> mp;\n"
+    output_source+="\tStringEnum<Ev3Strings::"+ entry[1] +"> mp;\n"
 
 
     for e in range(len(entry[2])):
-        output_source+="\tmp.insert(pair<Ev3Strings::"+ entry[1] +",string>(Ev3Strings::"+entry[2][e]+",\""+entry[3][e]+"\"));\n"
+        output_source+="\tmp.insert(\""+entry[3][e]+"\");\n"
 
-
+    output_source+="\tmp.finalize();\n"
     output_source+="\treturn mp;\n"
     output_source+="}\n\n"
     
-    ##Variable Init Function Enum
-
-    output_source+="map<string, Ev3Strings::"+ entry[1] +"> init_"+ entry[0] +"_enum_map()\n"
-    output_source+="{\n"
-    output_source+="\tmap<string, Ev3Strings::"+ entry[1] +"> mp;\n"
-
-
-    for e in range(len(entry[2])):
-        output_source+="\tmp.insert(pair<string, Ev3Strings::"+ entry[1] +">(\""+entry[3][e]+"\",Ev3Strings::"+entry[2][e]+"));\n"
-
-
-    output_source+="\treturn mp;\n"
-    output_source+="}\n\n"
-    
-    output_source+="Ev3Strings::"+entry[1] +" Ev3Strings::"+entry[1] + "FromString(const string& str)\n"
-    output_source+="{\n"
-    output_source+="\tmap<string, Ev3Strings::"+ entry[1] +">::const_iterator it=Ev3Strings::"+ entry[0] +"_enum.find(str);\n"
-    output_source+="\tif(it!=Ev3Strings::"+entry[0]+"_enum.end())\n"
-    output_source+="\t{return it->second;}\n"
-
-    output_source+="\treturn "+entry[1].upper()+"_NOT_FOUND;\n"
-    output_source+="}\n\n"
-    
-    output_source+="string Ev3Strings::"+entry[1]+"ToString("+entry[1]+" val)\n"
-    output_source+="{\n"
-    output_source+="\tmap<Ev3Strings::"+ entry[1] +", string>::const_iterator it=Ev3Strings::"+ entry[0] +"_string.find(val);\n"
-    output_source+="\tif(it!=Ev3Strings::"+entry[0]+"_string.end()){return it->second;}\n\n"
-
-    output_source+="\treturn \"\";\n";
-    output_source+="}\n"
-    
+#     ##Variable Init Function Enum
+# 
+#     output_source+="map<string, Ev3Strings::"+ entry[1] +"> init_"+ entry[0] +"_enum_map()\n"
+#     output_source+="{\n"
+#     output_source+="\tmap<string, Ev3Strings::"+ entry[1] +"> mp;\n"
+# 
+# 
+#     for e in range(len(entry[2])):
+#         output_source+="\tmp.insert(pair<string, Ev3Strings::"+ entry[1] +">(\""+entry[3][e]+"\",Ev3Strings::"+entry[2][e]+"));\n"
+# 
+# 
+#     output_source+="\treturn mp;\n"
+#     output_source+="}\n\n"
+#     
+#     output_source+="Ev3Strings::"+entry[1] +" Ev3Strings::"+entry[1] + "FromString(const string& str)\n"
+#     output_source+="{\n"
+#     output_source+="\tmap<string, Ev3Strings::"+ entry[1] +">::const_iterator it=Ev3Strings::"+ entry[0] +"_enum.find(str);\n"
+#     output_source+="\tif(it!=Ev3Strings::"+entry[0]+"_enum.end())\n"
+#     output_source+="\t{return it->second;}\n"
+# 
+#     output_source+="\treturn "+entry[1].upper()+"_NOT_FOUND;\n"
+#     output_source+="}\n\n"
+#     
+#     output_source+="string Ev3Strings::"+entry[1]+"ToString("+entry[1]+" val)\n"
+#     output_source+="{\n"
+#     output_source+="\tmap<Ev3Strings::"+ entry[1] +", string>::const_iterator it=Ev3Strings::"+ entry[0] +"_string.find(val);\n"
+#     output_source+="\tif(it!=Ev3Strings::"+entry[0]+"_string.end()){return it->second;}\n\n"
+# 
+#     output_source+="\treturn \"\";\n";
+#     output_source+="}\n"
+#     
     ##Variable
 
-    output_source+="const map<Ev3Strings::"+ entry[1] +",string>Ev3Strings::" + entry[0] + "_string=  init_"+ entry[0] +"_string_map();\n"
-    output_source+="const map<string, Ev3Strings::"+ entry[1] +">Ev3Strings::" + entry[0] + "_enum=  init_"+ entry[0] +"_enum_map();\n"
+    output_source+="StringEnum<Ev3Strings::"+ entry[1]+">Ev3Strings::" + entry[0] + "_conv = init_"+ entry[0] +"_conv();\n"
+#    output_source+="const map<string, Ev3Strings::"+ entry[1] +">Ev3Strings::" + entry[0] + "_enum=  init_"+ entry[0] +"_enum_map();\n"
 
     output_source+="\n\n\n"
 

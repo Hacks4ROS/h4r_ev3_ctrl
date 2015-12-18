@@ -6,404 +6,154 @@
  *WARNING WARNING WARNING WARNING WARNING
  */
  #include <h4r_ev3_control/Ev3Strings.h>
-namespace ev3_control{
-map<Ev3Strings::Ev3Switch,string> init_ev3_switch_string_map()
+namespace h4r_ev3_control{
+StringEnum<Ev3Strings::Ev3Switch> init_ev3_switch_conv()
 {
-	map<Ev3Strings::Ev3Switch,string> mp;
-	mp.insert(pair<Ev3Strings::Ev3Switch,string>(Ev3Strings::EV3SWITCH_ON,"on"));
-	mp.insert(pair<Ev3Strings::Ev3Switch,string>(Ev3Strings::EV3SWITCH_OFF,"off"));
+	StringEnum<Ev3Strings::Ev3Switch> mp;
+	mp.insert("on");
+	mp.insert("off");
+	mp.finalize();
 	return mp;
 }
 
-map<string, Ev3Strings::Ev3Switch> init_ev3_switch_enum_map()
+StringEnum<Ev3Strings::Ev3Switch>Ev3Strings::ev3_switch_conv = init_ev3_switch_conv();
+
+
+
+StringEnum<Ev3Strings::Ev3UltrasonicMode> init_ev3_ultrasonic_mode_conv()
 {
-	map<string, Ev3Strings::Ev3Switch> mp;
-	mp.insert(pair<string, Ev3Strings::Ev3Switch>("on",Ev3Strings::EV3SWITCH_ON));
-	mp.insert(pair<string, Ev3Strings::Ev3Switch>("off",Ev3Strings::EV3SWITCH_OFF));
+	StringEnum<Ev3Strings::Ev3UltrasonicMode> mp;
+	mp.insert("US-DC-IN");
+	mp.insert("US-DIST-CM");
+	mp.insert("US-LISTEN");
+	mp.insert("US-DC-CM");
+	mp.insert("US-SI-IN");
+	mp.insert("US-SI-CM");
+	mp.insert("US-DIST-IN");
+	mp.finalize();
 	return mp;
 }
 
-Ev3Strings::Ev3Switch Ev3Strings::Ev3SwitchFromString(const string& str)
+StringEnum<Ev3Strings::Ev3UltrasonicMode>Ev3Strings::ev3_ultrasonic_mode_conv = init_ev3_ultrasonic_mode_conv();
+
+
+
+StringEnum<Ev3Strings::Ev3ColorMode> init_ev3_color_mode_conv()
 {
-	map<string, Ev3Strings::Ev3Switch>::const_iterator it=Ev3Strings::ev3_switch_enum.find(str);
-	if(it!=Ev3Strings::ev3_switch_enum.end())
-	{return it->second;}
-	return EV3SWITCH_NOT_FOUND;
-}
-
-string Ev3Strings::Ev3SwitchToString(Ev3Switch val)
-{
-	map<Ev3Strings::Ev3Switch, string>::const_iterator it=Ev3Strings::ev3_switch_string.find(val);
-	if(it!=Ev3Strings::ev3_switch_string.end()){return it->second;}
-
-	return "";
-}
-const map<Ev3Strings::Ev3Switch,string>Ev3Strings::ev3_switch_string=  init_ev3_switch_string_map();
-const map<string, Ev3Strings::Ev3Switch>Ev3Strings::ev3_switch_enum=  init_ev3_switch_enum_map();
-
-
-
-map<Ev3Strings::Ev3UltrasonicMode,string> init_ev3_ultrasonic_mode_string_map()
-{
-	map<Ev3Strings::Ev3UltrasonicMode,string> mp;
-	mp.insert(pair<Ev3Strings::Ev3UltrasonicMode,string>(Ev3Strings::EV3ULTRASONICMODE_US_DC_IN,"US-DC-IN"));
-	mp.insert(pair<Ev3Strings::Ev3UltrasonicMode,string>(Ev3Strings::EV3ULTRASONICMODE_US_DIST_CM,"US-DIST-CM"));
-	mp.insert(pair<Ev3Strings::Ev3UltrasonicMode,string>(Ev3Strings::EV3ULTRASONICMODE_US_LISTEN,"US-LISTEN"));
-	mp.insert(pair<Ev3Strings::Ev3UltrasonicMode,string>(Ev3Strings::EV3ULTRASONICMODE_US_DC_CM,"US-DC-CM"));
-	mp.insert(pair<Ev3Strings::Ev3UltrasonicMode,string>(Ev3Strings::EV3ULTRASONICMODE_US_SI_IN,"US-SI-IN"));
-	mp.insert(pair<Ev3Strings::Ev3UltrasonicMode,string>(Ev3Strings::EV3ULTRASONICMODE_US_SI_CM,"US-SI-CM"));
-	mp.insert(pair<Ev3Strings::Ev3UltrasonicMode,string>(Ev3Strings::EV3ULTRASONICMODE_US_DIST_IN,"US-DIST-IN"));
+	StringEnum<Ev3Strings::Ev3ColorMode> mp;
+	mp.insert("COL-COLOR");
+	mp.insert("COL-AMBIENT");
+	mp.insert("COL-REFLECT");
+	mp.insert("RGB-RAW");
+	mp.insert("COL-CAL");
+	mp.insert("REF-RAW");
+	mp.finalize();
 	return mp;
 }
 
-map<string, Ev3Strings::Ev3UltrasonicMode> init_ev3_ultrasonic_mode_enum_map()
+StringEnum<Ev3Strings::Ev3ColorMode>Ev3Strings::ev3_color_mode_conv = init_ev3_color_mode_conv();
+
+
+
+StringEnum<Ev3Strings::Ev3DriverName> init_ev3_driver_name_conv()
 {
-	map<string, Ev3Strings::Ev3UltrasonicMode> mp;
-	mp.insert(pair<string, Ev3Strings::Ev3UltrasonicMode>("US-DC-IN",Ev3Strings::EV3ULTRASONICMODE_US_DC_IN));
-	mp.insert(pair<string, Ev3Strings::Ev3UltrasonicMode>("US-DIST-CM",Ev3Strings::EV3ULTRASONICMODE_US_DIST_CM));
-	mp.insert(pair<string, Ev3Strings::Ev3UltrasonicMode>("US-LISTEN",Ev3Strings::EV3ULTRASONICMODE_US_LISTEN));
-	mp.insert(pair<string, Ev3Strings::Ev3UltrasonicMode>("US-DC-CM",Ev3Strings::EV3ULTRASONICMODE_US_DC_CM));
-	mp.insert(pair<string, Ev3Strings::Ev3UltrasonicMode>("US-SI-IN",Ev3Strings::EV3ULTRASONICMODE_US_SI_IN));
-	mp.insert(pair<string, Ev3Strings::Ev3UltrasonicMode>("US-SI-CM",Ev3Strings::EV3ULTRASONICMODE_US_SI_CM));
-	mp.insert(pair<string, Ev3Strings::Ev3UltrasonicMode>("US-DIST-IN",Ev3Strings::EV3ULTRASONICMODE_US_DIST_IN));
+	StringEnum<Ev3Strings::Ev3DriverName> mp;
+	mp.insert("lego-ev3-touch");
+	mp.insert("lego-ev3-color");
+	mp.insert("none");
+	mp.insert("lego-ev3-us");
+	mp.insert("lego-ev3-gyro");
+	mp.finalize();
 	return mp;
 }
 
-Ev3Strings::Ev3UltrasonicMode Ev3Strings::Ev3UltrasonicModeFromString(const string& str)
+StringEnum<Ev3Strings::Ev3DriverName>Ev3Strings::ev3_driver_name_conv = init_ev3_driver_name_conv();
+
+
+
+StringEnum<Ev3Strings::Ev3Polarity> init_ev3_polarity_conv()
 {
-	map<string, Ev3Strings::Ev3UltrasonicMode>::const_iterator it=Ev3Strings::ev3_ultrasonic_mode_enum.find(str);
-	if(it!=Ev3Strings::ev3_ultrasonic_mode_enum.end())
-	{return it->second;}
-	return EV3ULTRASONICMODE_NOT_FOUND;
-}
-
-string Ev3Strings::Ev3UltrasonicModeToString(Ev3UltrasonicMode val)
-{
-	map<Ev3Strings::Ev3UltrasonicMode, string>::const_iterator it=Ev3Strings::ev3_ultrasonic_mode_string.find(val);
-	if(it!=Ev3Strings::ev3_ultrasonic_mode_string.end()){return it->second;}
-
-	return "";
-}
-const map<Ev3Strings::Ev3UltrasonicMode,string>Ev3Strings::ev3_ultrasonic_mode_string=  init_ev3_ultrasonic_mode_string_map();
-const map<string, Ev3Strings::Ev3UltrasonicMode>Ev3Strings::ev3_ultrasonic_mode_enum=  init_ev3_ultrasonic_mode_enum_map();
-
-
-
-map<Ev3Strings::Ev3ColorMode,string> init_ev3_color_mode_string_map()
-{
-	map<Ev3Strings::Ev3ColorMode,string> mp;
-	mp.insert(pair<Ev3Strings::Ev3ColorMode,string>(Ev3Strings::EV3COLORMODE_COL_COLOR,"COL-COLOR"));
-	mp.insert(pair<Ev3Strings::Ev3ColorMode,string>(Ev3Strings::EV3COLORMODE_COL_AMBIENT,"COL-AMBIENT"));
-	mp.insert(pair<Ev3Strings::Ev3ColorMode,string>(Ev3Strings::EV3COLORMODE_COL_REFLECT,"COL-REFLECT"));
-	mp.insert(pair<Ev3Strings::Ev3ColorMode,string>(Ev3Strings::EV3COLORMODE_RGB_RAW,"RGB-RAW"));
-	mp.insert(pair<Ev3Strings::Ev3ColorMode,string>(Ev3Strings::EV3COLORMODE_COL_CAL,"COL-CAL"));
-	mp.insert(pair<Ev3Strings::Ev3ColorMode,string>(Ev3Strings::EV3COLORMODE_REF_RAW,"REF-RAW"));
+	StringEnum<Ev3Strings::Ev3Polarity> mp;
+	mp.insert("inversed");
+	mp.insert("normal");
+	mp.finalize();
 	return mp;
 }
 
-map<string, Ev3Strings::Ev3ColorMode> init_ev3_color_mode_enum_map()
+StringEnum<Ev3Strings::Ev3Polarity>Ev3Strings::ev3_polarity_conv = init_ev3_polarity_conv();
+
+
+
+StringEnum<Ev3Strings::Ev3PortStatus> init_ev3_port_status_conv()
 {
-	map<string, Ev3Strings::Ev3ColorMode> mp;
-	mp.insert(pair<string, Ev3Strings::Ev3ColorMode>("COL-COLOR",Ev3Strings::EV3COLORMODE_COL_COLOR));
-	mp.insert(pair<string, Ev3Strings::Ev3ColorMode>("COL-AMBIENT",Ev3Strings::EV3COLORMODE_COL_AMBIENT));
-	mp.insert(pair<string, Ev3Strings::Ev3ColorMode>("COL-REFLECT",Ev3Strings::EV3COLORMODE_COL_REFLECT));
-	mp.insert(pair<string, Ev3Strings::Ev3ColorMode>("RGB-RAW",Ev3Strings::EV3COLORMODE_RGB_RAW));
-	mp.insert(pair<string, Ev3Strings::Ev3ColorMode>("COL-CAL",Ev3Strings::EV3COLORMODE_COL_CAL));
-	mp.insert(pair<string, Ev3Strings::Ev3ColorMode>("REF-RAW",Ev3Strings::EV3COLORMODE_REF_RAW));
+	StringEnum<Ev3Strings::Ev3PortStatus> mp;
+	mp.insert("ev3-uart");
+	mp.insert("no-connect");
+	mp.insert("ev3-analog");
+	mp.finalize();
 	return mp;
 }
 
-Ev3Strings::Ev3ColorMode Ev3Strings::Ev3ColorModeFromString(const string& str)
+StringEnum<Ev3Strings::Ev3PortStatus>Ev3Strings::ev3_port_status_conv = init_ev3_port_status_conv();
+
+
+
+StringEnum<Ev3Strings::Ev3GyroMode> init_ev3_gyro_mode_conv()
 {
-	map<string, Ev3Strings::Ev3ColorMode>::const_iterator it=Ev3Strings::ev3_color_mode_enum.find(str);
-	if(it!=Ev3Strings::ev3_color_mode_enum.end())
-	{return it->second;}
-	return EV3COLORMODE_NOT_FOUND;
-}
-
-string Ev3Strings::Ev3ColorModeToString(Ev3ColorMode val)
-{
-	map<Ev3Strings::Ev3ColorMode, string>::const_iterator it=Ev3Strings::ev3_color_mode_string.find(val);
-	if(it!=Ev3Strings::ev3_color_mode_string.end()){return it->second;}
-
-	return "";
-}
-const map<Ev3Strings::Ev3ColorMode,string>Ev3Strings::ev3_color_mode_string=  init_ev3_color_mode_string_map();
-const map<string, Ev3Strings::Ev3ColorMode>Ev3Strings::ev3_color_mode_enum=  init_ev3_color_mode_enum_map();
-
-
-
-map<Ev3Strings::Ev3DriverName,string> init_ev3_driver_name_string_map()
-{
-	map<Ev3Strings::Ev3DriverName,string> mp;
-	mp.insert(pair<Ev3Strings::Ev3DriverName,string>(Ev3Strings::EV3DRIVERNAME_LEGO_EV3_TOUCH,"lego-ev3-touch"));
-	mp.insert(pair<Ev3Strings::Ev3DriverName,string>(Ev3Strings::EV3DRIVERNAME_LEGO_EV3_COLOR,"lego-ev3-color"));
-	mp.insert(pair<Ev3Strings::Ev3DriverName,string>(Ev3Strings::EV3DRIVERNAME_NONE,"none"));
-	mp.insert(pair<Ev3Strings::Ev3DriverName,string>(Ev3Strings::EV3DRIVERNAME_LEGO_EV3_US,"lego-ev3-us"));
-	mp.insert(pair<Ev3Strings::Ev3DriverName,string>(Ev3Strings::EV3DRIVERNAME_LEGO_EV3_GYRO,"lego-ev3-gyro"));
+	StringEnum<Ev3Strings::Ev3GyroMode> mp;
+	mp.insert("GYRO-FAS");
+	mp.insert("GYRO-ANG");
+	mp.insert("GYRO-G&A");
+	mp.insert("GYRO-CAL");
+	mp.insert("GYRO-RATE");
+	mp.finalize();
 	return mp;
 }
 
-map<string, Ev3Strings::Ev3DriverName> init_ev3_driver_name_enum_map()
+StringEnum<Ev3Strings::Ev3GyroMode>Ev3Strings::ev3_gyro_mode_conv = init_ev3_gyro_mode_conv();
+
+
+
+StringEnum<Ev3Strings::Ev3MotorCommands> init_ev3_motor_commands_conv()
 {
-	map<string, Ev3Strings::Ev3DriverName> mp;
-	mp.insert(pair<string, Ev3Strings::Ev3DriverName>("lego-ev3-touch",Ev3Strings::EV3DRIVERNAME_LEGO_EV3_TOUCH));
-	mp.insert(pair<string, Ev3Strings::Ev3DriverName>("lego-ev3-color",Ev3Strings::EV3DRIVERNAME_LEGO_EV3_COLOR));
-	mp.insert(pair<string, Ev3Strings::Ev3DriverName>("none",Ev3Strings::EV3DRIVERNAME_NONE));
-	mp.insert(pair<string, Ev3Strings::Ev3DriverName>("lego-ev3-us",Ev3Strings::EV3DRIVERNAME_LEGO_EV3_US));
-	mp.insert(pair<string, Ev3Strings::Ev3DriverName>("lego-ev3-gyro",Ev3Strings::EV3DRIVERNAME_LEGO_EV3_GYRO));
+	StringEnum<Ev3Strings::Ev3MotorCommands> mp;
+	mp.insert("reset");
+	mp.insert("run-to-rel-pos");
+	mp.insert("run-forever");
+	mp.insert("run-direct");
+	mp.insert("stop");
+	mp.insert("run-timed");
+	mp.insert("run-to-abs-pos");
+	mp.finalize();
 	return mp;
 }
 
-Ev3Strings::Ev3DriverName Ev3Strings::Ev3DriverNameFromString(const string& str)
+StringEnum<Ev3Strings::Ev3MotorCommands>Ev3Strings::ev3_motor_commands_conv = init_ev3_motor_commands_conv();
+
+
+
+StringEnum<Ev3Strings::Ev3TouchMode> init_ev3_touch_mode_conv()
 {
-	map<string, Ev3Strings::Ev3DriverName>::const_iterator it=Ev3Strings::ev3_driver_name_enum.find(str);
-	if(it!=Ev3Strings::ev3_driver_name_enum.end())
-	{return it->second;}
-	return EV3DRIVERNAME_NOT_FOUND;
-}
-
-string Ev3Strings::Ev3DriverNameToString(Ev3DriverName val)
-{
-	map<Ev3Strings::Ev3DriverName, string>::const_iterator it=Ev3Strings::ev3_driver_name_string.find(val);
-	if(it!=Ev3Strings::ev3_driver_name_string.end()){return it->second;}
-
-	return "";
-}
-const map<Ev3Strings::Ev3DriverName,string>Ev3Strings::ev3_driver_name_string=  init_ev3_driver_name_string_map();
-const map<string, Ev3Strings::Ev3DriverName>Ev3Strings::ev3_driver_name_enum=  init_ev3_driver_name_enum_map();
-
-
-
-map<Ev3Strings::Ev3Polarity,string> init_ev3_polarity_string_map()
-{
-	map<Ev3Strings::Ev3Polarity,string> mp;
-	mp.insert(pair<Ev3Strings::Ev3Polarity,string>(Ev3Strings::EV3POLARITY_INVERSED,"inversed"));
-	mp.insert(pair<Ev3Strings::Ev3Polarity,string>(Ev3Strings::EV3POLARITY_NORMAL,"normal"));
+	StringEnum<Ev3Strings::Ev3TouchMode> mp;
+	mp.insert("TOUCH");
+	mp.finalize();
 	return mp;
 }
 
-map<string, Ev3Strings::Ev3Polarity> init_ev3_polarity_enum_map()
+StringEnum<Ev3Strings::Ev3TouchMode>Ev3Strings::ev3_touch_mode_conv = init_ev3_touch_mode_conv();
+
+
+
+StringEnum<Ev3Strings::Ev3PortDrivers> init_ev3_port_drivers_conv()
 {
-	map<string, Ev3Strings::Ev3Polarity> mp;
-	mp.insert(pair<string, Ev3Strings::Ev3Polarity>("inversed",Ev3Strings::EV3POLARITY_INVERSED));
-	mp.insert(pair<string, Ev3Strings::Ev3Polarity>("normal",Ev3Strings::EV3POLARITY_NORMAL));
+	StringEnum<Ev3Strings::Ev3PortDrivers> mp;
+	mp.insert("legoev3-input-port");
+	mp.insert("legoev3-input-outport");
+	mp.finalize();
 	return mp;
 }
 
-Ev3Strings::Ev3Polarity Ev3Strings::Ev3PolarityFromString(const string& str)
-{
-	map<string, Ev3Strings::Ev3Polarity>::const_iterator it=Ev3Strings::ev3_polarity_enum.find(str);
-	if(it!=Ev3Strings::ev3_polarity_enum.end())
-	{return it->second;}
-	return EV3POLARITY_NOT_FOUND;
-}
-
-string Ev3Strings::Ev3PolarityToString(Ev3Polarity val)
-{
-	map<Ev3Strings::Ev3Polarity, string>::const_iterator it=Ev3Strings::ev3_polarity_string.find(val);
-	if(it!=Ev3Strings::ev3_polarity_string.end()){return it->second;}
-
-	return "";
-}
-const map<Ev3Strings::Ev3Polarity,string>Ev3Strings::ev3_polarity_string=  init_ev3_polarity_string_map();
-const map<string, Ev3Strings::Ev3Polarity>Ev3Strings::ev3_polarity_enum=  init_ev3_polarity_enum_map();
-
-
-
-map<Ev3Strings::Ev3PortStatus,string> init_ev3_port_status_string_map()
-{
-	map<Ev3Strings::Ev3PortStatus,string> mp;
-	mp.insert(pair<Ev3Strings::Ev3PortStatus,string>(Ev3Strings::EV3PORTSTATUS_EV3_UART,"ev3-uart"));
-	mp.insert(pair<Ev3Strings::Ev3PortStatus,string>(Ev3Strings::EV3PORTSTATUS_NO_CONNECT,"no-connect"));
-	mp.insert(pair<Ev3Strings::Ev3PortStatus,string>(Ev3Strings::EV3PORTSTATUS_EV3_ANALOG,"ev3-analog"));
-	return mp;
-}
-
-map<string, Ev3Strings::Ev3PortStatus> init_ev3_port_status_enum_map()
-{
-	map<string, Ev3Strings::Ev3PortStatus> mp;
-	mp.insert(pair<string, Ev3Strings::Ev3PortStatus>("ev3-uart",Ev3Strings::EV3PORTSTATUS_EV3_UART));
-	mp.insert(pair<string, Ev3Strings::Ev3PortStatus>("no-connect",Ev3Strings::EV3PORTSTATUS_NO_CONNECT));
-	mp.insert(pair<string, Ev3Strings::Ev3PortStatus>("ev3-analog",Ev3Strings::EV3PORTSTATUS_EV3_ANALOG));
-	return mp;
-}
-
-Ev3Strings::Ev3PortStatus Ev3Strings::Ev3PortStatusFromString(const string& str)
-{
-	map<string, Ev3Strings::Ev3PortStatus>::const_iterator it=Ev3Strings::ev3_port_status_enum.find(str);
-	if(it!=Ev3Strings::ev3_port_status_enum.end())
-	{return it->second;}
-	return EV3PORTSTATUS_NOT_FOUND;
-}
-
-string Ev3Strings::Ev3PortStatusToString(Ev3PortStatus val)
-{
-	map<Ev3Strings::Ev3PortStatus, string>::const_iterator it=Ev3Strings::ev3_port_status_string.find(val);
-	if(it!=Ev3Strings::ev3_port_status_string.end()){return it->second;}
-
-	return "";
-}
-const map<Ev3Strings::Ev3PortStatus,string>Ev3Strings::ev3_port_status_string=  init_ev3_port_status_string_map();
-const map<string, Ev3Strings::Ev3PortStatus>Ev3Strings::ev3_port_status_enum=  init_ev3_port_status_enum_map();
-
-
-
-map<Ev3Strings::Ev3GyroMode,string> init_ev3_gyro_mode_string_map()
-{
-	map<Ev3Strings::Ev3GyroMode,string> mp;
-	mp.insert(pair<Ev3Strings::Ev3GyroMode,string>(Ev3Strings::EV3GYROMODE_GYRO_FAS,"GYRO-FAS"));
-	mp.insert(pair<Ev3Strings::Ev3GyroMode,string>(Ev3Strings::EV3GYROMODE_GYRO_ANG,"GYRO-ANG"));
-	mp.insert(pair<Ev3Strings::Ev3GyroMode,string>(Ev3Strings::EV3GYROMODE_GYRO_G_A,"GYRO-G&A"));
-	mp.insert(pair<Ev3Strings::Ev3GyroMode,string>(Ev3Strings::EV3GYROMODE_GYRO_CAL,"GYRO-CAL"));
-	mp.insert(pair<Ev3Strings::Ev3GyroMode,string>(Ev3Strings::EV3GYROMODE_GYRO_RATE,"GYRO-RATE"));
-	return mp;
-}
-
-map<string, Ev3Strings::Ev3GyroMode> init_ev3_gyro_mode_enum_map()
-{
-	map<string, Ev3Strings::Ev3GyroMode> mp;
-	mp.insert(pair<string, Ev3Strings::Ev3GyroMode>("GYRO-FAS",Ev3Strings::EV3GYROMODE_GYRO_FAS));
-	mp.insert(pair<string, Ev3Strings::Ev3GyroMode>("GYRO-ANG",Ev3Strings::EV3GYROMODE_GYRO_ANG));
-	mp.insert(pair<string, Ev3Strings::Ev3GyroMode>("GYRO-G&A",Ev3Strings::EV3GYROMODE_GYRO_G_A));
-	mp.insert(pair<string, Ev3Strings::Ev3GyroMode>("GYRO-CAL",Ev3Strings::EV3GYROMODE_GYRO_CAL));
-	mp.insert(pair<string, Ev3Strings::Ev3GyroMode>("GYRO-RATE",Ev3Strings::EV3GYROMODE_GYRO_RATE));
-	return mp;
-}
-
-Ev3Strings::Ev3GyroMode Ev3Strings::Ev3GyroModeFromString(const string& str)
-{
-	map<string, Ev3Strings::Ev3GyroMode>::const_iterator it=Ev3Strings::ev3_gyro_mode_enum.find(str);
-	if(it!=Ev3Strings::ev3_gyro_mode_enum.end())
-	{return it->second;}
-	return EV3GYROMODE_NOT_FOUND;
-}
-
-string Ev3Strings::Ev3GyroModeToString(Ev3GyroMode val)
-{
-	map<Ev3Strings::Ev3GyroMode, string>::const_iterator it=Ev3Strings::ev3_gyro_mode_string.find(val);
-	if(it!=Ev3Strings::ev3_gyro_mode_string.end()){return it->second;}
-
-	return "";
-}
-const map<Ev3Strings::Ev3GyroMode,string>Ev3Strings::ev3_gyro_mode_string=  init_ev3_gyro_mode_string_map();
-const map<string, Ev3Strings::Ev3GyroMode>Ev3Strings::ev3_gyro_mode_enum=  init_ev3_gyro_mode_enum_map();
-
-
-
-map<Ev3Strings::Ev3MotorCommands,string> init_ev3_motor_commands_string_map()
-{
-	map<Ev3Strings::Ev3MotorCommands,string> mp;
-	mp.insert(pair<Ev3Strings::Ev3MotorCommands,string>(Ev3Strings::EV3MOTORCOMMANDS_RESET,"reset"));
-	mp.insert(pair<Ev3Strings::Ev3MotorCommands,string>(Ev3Strings::EV3MOTORCOMMANDS_RUN_TO_REL_POS,"run-to-rel-pos"));
-	mp.insert(pair<Ev3Strings::Ev3MotorCommands,string>(Ev3Strings::EV3MOTORCOMMANDS_RUN_FOREVER,"run-forever"));
-	mp.insert(pair<Ev3Strings::Ev3MotorCommands,string>(Ev3Strings::EV3MOTORCOMMANDS_RUN_DIRECT,"run-direct"));
-	mp.insert(pair<Ev3Strings::Ev3MotorCommands,string>(Ev3Strings::EV3MOTORCOMMANDS_STOP,"stop"));
-	mp.insert(pair<Ev3Strings::Ev3MotorCommands,string>(Ev3Strings::EV3MOTORCOMMANDS_RUN_TIMED,"run-timed"));
-	mp.insert(pair<Ev3Strings::Ev3MotorCommands,string>(Ev3Strings::EV3MOTORCOMMANDS_RUN_TO_ABS_POS,"run-to-abs-pos"));
-	return mp;
-}
-
-map<string, Ev3Strings::Ev3MotorCommands> init_ev3_motor_commands_enum_map()
-{
-	map<string, Ev3Strings::Ev3MotorCommands> mp;
-	mp.insert(pair<string, Ev3Strings::Ev3MotorCommands>("reset",Ev3Strings::EV3MOTORCOMMANDS_RESET));
-	mp.insert(pair<string, Ev3Strings::Ev3MotorCommands>("run-to-rel-pos",Ev3Strings::EV3MOTORCOMMANDS_RUN_TO_REL_POS));
-	mp.insert(pair<string, Ev3Strings::Ev3MotorCommands>("run-forever",Ev3Strings::EV3MOTORCOMMANDS_RUN_FOREVER));
-	mp.insert(pair<string, Ev3Strings::Ev3MotorCommands>("run-direct",Ev3Strings::EV3MOTORCOMMANDS_RUN_DIRECT));
-	mp.insert(pair<string, Ev3Strings::Ev3MotorCommands>("stop",Ev3Strings::EV3MOTORCOMMANDS_STOP));
-	mp.insert(pair<string, Ev3Strings::Ev3MotorCommands>("run-timed",Ev3Strings::EV3MOTORCOMMANDS_RUN_TIMED));
-	mp.insert(pair<string, Ev3Strings::Ev3MotorCommands>("run-to-abs-pos",Ev3Strings::EV3MOTORCOMMANDS_RUN_TO_ABS_POS));
-	return mp;
-}
-
-Ev3Strings::Ev3MotorCommands Ev3Strings::Ev3MotorCommandsFromString(const string& str)
-{
-	map<string, Ev3Strings::Ev3MotorCommands>::const_iterator it=Ev3Strings::ev3_motor_commands_enum.find(str);
-	if(it!=Ev3Strings::ev3_motor_commands_enum.end())
-	{return it->second;}
-	return EV3MOTORCOMMANDS_NOT_FOUND;
-}
-
-string Ev3Strings::Ev3MotorCommandsToString(Ev3MotorCommands val)
-{
-	map<Ev3Strings::Ev3MotorCommands, string>::const_iterator it=Ev3Strings::ev3_motor_commands_string.find(val);
-	if(it!=Ev3Strings::ev3_motor_commands_string.end()){return it->second;}
-
-	return "";
-}
-const map<Ev3Strings::Ev3MotorCommands,string>Ev3Strings::ev3_motor_commands_string=  init_ev3_motor_commands_string_map();
-const map<string, Ev3Strings::Ev3MotorCommands>Ev3Strings::ev3_motor_commands_enum=  init_ev3_motor_commands_enum_map();
-
-
-
-map<Ev3Strings::Ev3TouchMode,string> init_ev3_touch_mode_string_map()
-{
-	map<Ev3Strings::Ev3TouchMode,string> mp;
-	mp.insert(pair<Ev3Strings::Ev3TouchMode,string>(Ev3Strings::EV3TOUCHMODE_TOUCH,"TOUCH"));
-	return mp;
-}
-
-map<string, Ev3Strings::Ev3TouchMode> init_ev3_touch_mode_enum_map()
-{
-	map<string, Ev3Strings::Ev3TouchMode> mp;
-	mp.insert(pair<string, Ev3Strings::Ev3TouchMode>("TOUCH",Ev3Strings::EV3TOUCHMODE_TOUCH));
-	return mp;
-}
-
-Ev3Strings::Ev3TouchMode Ev3Strings::Ev3TouchModeFromString(const string& str)
-{
-	map<string, Ev3Strings::Ev3TouchMode>::const_iterator it=Ev3Strings::ev3_touch_mode_enum.find(str);
-	if(it!=Ev3Strings::ev3_touch_mode_enum.end())
-	{return it->second;}
-	return EV3TOUCHMODE_NOT_FOUND;
-}
-
-string Ev3Strings::Ev3TouchModeToString(Ev3TouchMode val)
-{
-	map<Ev3Strings::Ev3TouchMode, string>::const_iterator it=Ev3Strings::ev3_touch_mode_string.find(val);
-	if(it!=Ev3Strings::ev3_touch_mode_string.end()){return it->second;}
-
-	return "";
-}
-const map<Ev3Strings::Ev3TouchMode,string>Ev3Strings::ev3_touch_mode_string=  init_ev3_touch_mode_string_map();
-const map<string, Ev3Strings::Ev3TouchMode>Ev3Strings::ev3_touch_mode_enum=  init_ev3_touch_mode_enum_map();
-
-
-
-map<Ev3Strings::Ev3PortDrivers,string> init_ev3_port_drivers_string_map()
-{
-	map<Ev3Strings::Ev3PortDrivers,string> mp;
-	mp.insert(pair<Ev3Strings::Ev3PortDrivers,string>(Ev3Strings::EV3PORTDRIVERS_LEGOEV3_INPUT_PORT,"legoev3-input-port"));
-	mp.insert(pair<Ev3Strings::Ev3PortDrivers,string>(Ev3Strings::EV3PORTDRIVERS_LEGOEV3_INPUT_OUTPORT,"legoev3-input-outport"));
-	return mp;
-}
-
-map<string, Ev3Strings::Ev3PortDrivers> init_ev3_port_drivers_enum_map()
-{
-	map<string, Ev3Strings::Ev3PortDrivers> mp;
-	mp.insert(pair<string, Ev3Strings::Ev3PortDrivers>("legoev3-input-port",Ev3Strings::EV3PORTDRIVERS_LEGOEV3_INPUT_PORT));
-	mp.insert(pair<string, Ev3Strings::Ev3PortDrivers>("legoev3-input-outport",Ev3Strings::EV3PORTDRIVERS_LEGOEV3_INPUT_OUTPORT));
-	return mp;
-}
-
-Ev3Strings::Ev3PortDrivers Ev3Strings::Ev3PortDriversFromString(const string& str)
-{
-	map<string, Ev3Strings::Ev3PortDrivers>::const_iterator it=Ev3Strings::ev3_port_drivers_enum.find(str);
-	if(it!=Ev3Strings::ev3_port_drivers_enum.end())
-	{return it->second;}
-	return EV3PORTDRIVERS_NOT_FOUND;
-}
-
-string Ev3Strings::Ev3PortDriversToString(Ev3PortDrivers val)
-{
-	map<Ev3Strings::Ev3PortDrivers, string>::const_iterator it=Ev3Strings::ev3_port_drivers_string.find(val);
-	if(it!=Ev3Strings::ev3_port_drivers_string.end()){return it->second;}
-
-	return "";
-}
-const map<Ev3Strings::Ev3PortDrivers,string>Ev3Strings::ev3_port_drivers_string=  init_ev3_port_drivers_string_map();
-const map<string, Ev3Strings::Ev3PortDrivers>Ev3Strings::ev3_port_drivers_enum=  init_ev3_port_drivers_enum_map();
+StringEnum<Ev3Strings::Ev3PortDrivers>Ev3Strings::ev3_port_drivers_conv = init_ev3_port_drivers_conv();
 
 
 

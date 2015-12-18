@@ -7,11 +7,10 @@
  */
 #ifndef EV3STRINGS_H
 #define EV3STRINGS_H
- #include <map>
- #include <string>
+ #include <h4r_ev3_control/StringEnum.h>
  using namespace std;
 
-namespace ev3_control{
+namespace h4r_ev3_control{
 class Ev3Strings
 {
 private: 
@@ -24,13 +23,9 @@ public:
 		EV3SWITCH_OFF,
 	}Ev3Switch;
 
-	static Ev3Switch Ev3SwitchFromString(const string& str);
-	static string Ev3SwitchToString(Ev3Switch val);
+	static StringEnum<Ev3Switch> ev3_switch_conv;
 
-	static const map<Ev3Switch,string> ev3_switch_string;
-	static const map<string, Ev3Switch> ev3_switch_enum;
 
-public:
 	typedef enum
 	{
 		EV3ULTRASONICMODE_NOT_FOUND=-1,
@@ -43,13 +38,9 @@ public:
 		EV3ULTRASONICMODE_US_DIST_IN,
 	}Ev3UltrasonicMode;
 
-	static Ev3UltrasonicMode Ev3UltrasonicModeFromString(const string& str);
-	static string Ev3UltrasonicModeToString(Ev3UltrasonicMode val);
+	static StringEnum<Ev3UltrasonicMode> ev3_ultrasonic_mode_conv;
 
-	static const map<Ev3UltrasonicMode,string> ev3_ultrasonic_mode_string;
-	static const map<string, Ev3UltrasonicMode> ev3_ultrasonic_mode_enum;
 
-public:
 	typedef enum
 	{
 		EV3COLORMODE_NOT_FOUND=-1,
@@ -61,13 +52,9 @@ public:
 		EV3COLORMODE_REF_RAW,
 	}Ev3ColorMode;
 
-	static Ev3ColorMode Ev3ColorModeFromString(const string& str);
-	static string Ev3ColorModeToString(Ev3ColorMode val);
+	static StringEnum<Ev3ColorMode> ev3_color_mode_conv;
 
-	static const map<Ev3ColorMode,string> ev3_color_mode_string;
-	static const map<string, Ev3ColorMode> ev3_color_mode_enum;
 
-public:
 	typedef enum
 	{
 		EV3DRIVERNAME_NOT_FOUND=-1,
@@ -78,13 +65,9 @@ public:
 		EV3DRIVERNAME_LEGO_EV3_GYRO,
 	}Ev3DriverName;
 
-	static Ev3DriverName Ev3DriverNameFromString(const string& str);
-	static string Ev3DriverNameToString(Ev3DriverName val);
+	static StringEnum<Ev3DriverName> ev3_driver_name_conv;
 
-	static const map<Ev3DriverName,string> ev3_driver_name_string;
-	static const map<string, Ev3DriverName> ev3_driver_name_enum;
 
-public:
 	typedef enum
 	{
 		EV3POLARITY_NOT_FOUND=-1,
@@ -92,13 +75,9 @@ public:
 		EV3POLARITY_NORMAL,
 	}Ev3Polarity;
 
-	static Ev3Polarity Ev3PolarityFromString(const string& str);
-	static string Ev3PolarityToString(Ev3Polarity val);
+	static StringEnum<Ev3Polarity> ev3_polarity_conv;
 
-	static const map<Ev3Polarity,string> ev3_polarity_string;
-	static const map<string, Ev3Polarity> ev3_polarity_enum;
 
-public:
 	typedef enum
 	{
 		EV3PORTSTATUS_NOT_FOUND=-1,
@@ -107,13 +86,9 @@ public:
 		EV3PORTSTATUS_EV3_ANALOG,
 	}Ev3PortStatus;
 
-	static Ev3PortStatus Ev3PortStatusFromString(const string& str);
-	static string Ev3PortStatusToString(Ev3PortStatus val);
+	static StringEnum<Ev3PortStatus> ev3_port_status_conv;
 
-	static const map<Ev3PortStatus,string> ev3_port_status_string;
-	static const map<string, Ev3PortStatus> ev3_port_status_enum;
 
-public:
 	typedef enum
 	{
 		EV3GYROMODE_NOT_FOUND=-1,
@@ -124,13 +99,9 @@ public:
 		EV3GYROMODE_GYRO_RATE,
 	}Ev3GyroMode;
 
-	static Ev3GyroMode Ev3GyroModeFromString(const string& str);
-	static string Ev3GyroModeToString(Ev3GyroMode val);
+	static StringEnum<Ev3GyroMode> ev3_gyro_mode_conv;
 
-	static const map<Ev3GyroMode,string> ev3_gyro_mode_string;
-	static const map<string, Ev3GyroMode> ev3_gyro_mode_enum;
 
-public:
 	typedef enum
 	{
 		EV3MOTORCOMMANDS_NOT_FOUND=-1,
@@ -143,26 +114,18 @@ public:
 		EV3MOTORCOMMANDS_RUN_TO_ABS_POS,
 	}Ev3MotorCommands;
 
-	static Ev3MotorCommands Ev3MotorCommandsFromString(const string& str);
-	static string Ev3MotorCommandsToString(Ev3MotorCommands val);
+	static StringEnum<Ev3MotorCommands> ev3_motor_commands_conv;
 
-	static const map<Ev3MotorCommands,string> ev3_motor_commands_string;
-	static const map<string, Ev3MotorCommands> ev3_motor_commands_enum;
 
-public:
 	typedef enum
 	{
 		EV3TOUCHMODE_NOT_FOUND=-1,
 		EV3TOUCHMODE_TOUCH,
 	}Ev3TouchMode;
 
-	static Ev3TouchMode Ev3TouchModeFromString(const string& str);
-	static string Ev3TouchModeToString(Ev3TouchMode val);
+	static StringEnum<Ev3TouchMode> ev3_touch_mode_conv;
 
-	static const map<Ev3TouchMode,string> ev3_touch_mode_string;
-	static const map<string, Ev3TouchMode> ev3_touch_mode_enum;
 
-public:
 	typedef enum
 	{
 		EV3PORTDRIVERS_NOT_FOUND=-1,
@@ -170,11 +133,8 @@ public:
 		EV3PORTDRIVERS_LEGOEV3_INPUT_OUTPORT,
 	}Ev3PortDrivers;
 
-	static Ev3PortDrivers Ev3PortDriversFromString(const string& str);
-	static string Ev3PortDriversToString(Ev3PortDrivers val);
+	static StringEnum<Ev3PortDrivers> ev3_port_drivers_conv;
 
-	static const map<Ev3PortDrivers,string> ev3_port_drivers_string;
-	static const map<string, Ev3PortDrivers> ev3_port_drivers_enum;
 
 };
 }
