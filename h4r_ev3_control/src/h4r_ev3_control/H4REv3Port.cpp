@@ -29,6 +29,8 @@ H4REv3Port::H4REv3Port(const std::string &port_name, H4Ev3IoPortType port_type)
 :port_name_(port_name)
 ,port_type_(port_type)
 ,connected_(false)
+,last_driver_check_connected_id_(0)
+,last_driver_(Ev3Strings::EV3DRIVERNAME_NONE)
 {
 	if(!getPortDirectory())
 	{

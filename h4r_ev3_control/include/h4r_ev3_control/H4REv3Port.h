@@ -81,6 +81,10 @@ protected:
 
 	OpenFile f_driver_name;
 
+	Ev3Strings::Ev3DriverName last_driver_;
+	int last_driver_check_connected_id_;
+
+
 	const std::string port_name_;
 	bool connected_;
 	int connect_id_;
@@ -165,7 +169,33 @@ public:
 	 */
 	bool getDriverName(Ev3Strings::Ev3DriverName &drvname)
 	{
-		return readKey("driver_name",Ev3Strings::ev3_driver_name_conv,drvname,f_driver_name);
+		if(!isConnected())
+		{
+			getDeviceDirectory();
+			return false;
+		}
+
+		//Reduce file reads and string processing ...
+		//Was the last connection id the same as on last check?
+		if(connect_id_==last_driver_check_connected_id_)
+		{
+			//If yes we can use the stored value
+			drvname=last_driver_;
+			return true;
+		}
+		else //if not we read the current driver name and convert it to enum
+		{
+			bool ret=readKey("driver_name",Ev3Strings::ev3_driver_name_conv,drvname,f_driver_name);
+
+			if(ret) //success?
+			{
+				//Store id and driver name to be used instead of reading the file
+				last_driver_=drvname;
+				last_driver_check_connected_id_=connect_id_;
+			}
+
+			return ret;
+		}
 	}
 
 	/**
