@@ -99,7 +99,7 @@ public:
 		return string_from_key_[key].c_str();
 	}
 
-	int operator[](const char* str) const
+	ENUM operator[](const char* str) const
 	{
 		assert(final_ && "StringEnum not finalized!");
 
@@ -107,10 +107,10 @@ public:
 		{
 			if(strcmp(key_from_string_[i].getString().c_str(),str)==0)
 			{
-				return i;
+				return (ENUM)i;
 			}
 		}
-		return -1;
+		return (ENUM)-1;
 	}
 
 private:
