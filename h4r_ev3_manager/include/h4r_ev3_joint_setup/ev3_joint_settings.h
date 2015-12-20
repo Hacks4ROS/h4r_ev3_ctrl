@@ -91,7 +91,7 @@ public:
 		}
 
 		int cmd=(command*180.0/M_PI);
-		if(cmd>=0)
+		if(cmd>0)
 		{
 			if(!port.setMotorPolarity(Ev3Strings::EV3POLARITY_NORMAL))
 			{
@@ -99,7 +99,7 @@ public:
 				return false;
 			}
 		}
-		else
+		else if(cmd<0)
 		{
 			cmd=-cmd;
 			if(!port.setMotorPolarity(Ev3Strings::EV3POLARITY_INVERSED))
