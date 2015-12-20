@@ -159,6 +159,16 @@ public:
 	}
 
 	/**
+	 * get driver name from current device
+	 * @param[out] drvname Driver name enum type
+	 * @return True if successful, false otherwise (false normally means, nothing is connected)
+	 */
+	bool getDriverName(Ev3Strings::Ev3DriverName &drvname)
+	{
+		return readKey("driver_name",Ev3Strings::ev3_driver_name_conv,drvname,f_driver_name);
+	}
+
+	/**
 	 * Writes a string file from a map into a /sys file according to the given key.
 	 * @param filename The sys file to be written to (only filename without directory)
 	 * @param strmap The string map
