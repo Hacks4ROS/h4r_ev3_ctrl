@@ -70,6 +70,19 @@ public:
 		return sensor_->value(index,value);
 	}
 
+	Ev3Strings::Ev3DriverName getDriverName()
+	{
+		Ev3Strings::Ev3DriverName val;
+		if(sensor_->getDriverName(val))
+		{
+			return val;
+		}
+		else
+		{
+			return Ev3Strings::EV3DRIVERNAME_NONE;
+		}
+	}
+
 
 };
 

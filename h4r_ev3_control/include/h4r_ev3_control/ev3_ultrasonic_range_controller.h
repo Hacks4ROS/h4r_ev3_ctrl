@@ -56,8 +56,6 @@ public:
 	  virtual bool init(Ev3SensorInterface* hw, ros::NodeHandle &root_nh, ros::NodeHandle& ctrl_nh)
 	  {
 
-		    // get all handle names from the hardware interface
-
 
 		    // get publishing period
 		    if (!ctrl_nh.getParam("publish_rate", publish_rate_))
@@ -88,6 +86,13 @@ public:
 
 		    //TODO Mode handling
 
+		    if(handle_.getDriverName()!=Ev3Strings::EV3DRIVERNAME_LEGO_EV3_US)
+		    {
+
+		    	ROS_ERROR_STREAM("Need Ultrasonic Sensor on port: "<<port_);
+		    	return false;
+		    }
+
 		    //Create publisher for Rangesensor
 		    realtime_range_publisher_=RtRangePublisherPtr(new realtime_tools::RealtimePublisher<sensor_msgs::Range>(root_nh, port_, 4));
 
@@ -101,6 +106,10 @@ public:
 
 	  virtual void update(const ros::Time& time, const ros::Duration& /*period*/)
 	  {
+
+
+
+
 		    using namespace hardware_interface;
 
 		    // limit rate of publishing
@@ -112,7 +121,11 @@ public:
 		        {
 		          last_range_publish_time_ = last_range_publish_time_ + ros::Duration(1.0/publish_rate_);
 
-
+				  if(handle_.getDriverName()!=Ev3Strings::EV3DRIVERNAME_LEGO_EV3_US)
+				  {
+					  ROS_ERROR("Lego Subsonic Sensor disconnected!");
+					  return;
+				  }
 
 		          int value;
 		          if(!handle_.getValue(0,value))
