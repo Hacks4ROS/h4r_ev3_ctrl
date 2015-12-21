@@ -48,7 +48,14 @@ H4REv3Port::~H4REv3Port()
 
 bool H4REv3Port::isConnected()
 {
-	connected_ = pathExists(sys_device_directory_.c_str());
+	if(connected_)
+	{
+		connected_ = pathExists(sys_device_directory_.c_str());
+	}
+	else
+	{
+		getDeviceDirectory();
+	}
 
 	return connected_;
 }
