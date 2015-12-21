@@ -87,10 +87,22 @@ public:
 
 		if(!port.isConnected())
 		{
+			last_command = 0; //Reset last command for user pluging it in again.
 			return false;
 		}
 
+		if(last_command == command)
+		{
+			return true;
+		}
+		else
+		{
+			last_command=command;
+		}
+
+
 		int cmd=(command*180.0/M_PI);
+
 		if(cmd>0)
 		{
 			if(!port.setMotorPolarity(Ev3Strings::EV3POLARITY_NORMAL))
