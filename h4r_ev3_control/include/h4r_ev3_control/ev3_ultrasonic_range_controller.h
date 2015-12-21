@@ -89,7 +89,7 @@ public:
 		    if(handle_.getDriverName()!=Ev3Strings::EV3DRIVERNAME_LEGO_EV3_US)
 		    {
 
-		    	ROS_ERROR_STREAM("Need Ultrasonic Sensor on port: "<<port_);
+		    	ROS_ERROR_STREAM("Need Ultrasonic Sensor on port: "<<port_<<"("<<handle_.getDriverName()<<"|"<<Ev3Strings::EV3DRIVERNAME_LEGO_EV3_US<<")");
 		    	return false;
 		    }
 
