@@ -124,81 +124,75 @@ bool readIntFromSysFile(FILE *fileptr, int &value)
 	   return true;
 }
 
-bool matchFileContentInEqualSubdirectories(const char* parent,
-		                                   const char* file,
-										   const char* content,
-										   FileNameBuffer &match_dir)
+bool matchFileContentInEqualSubdirectories(const char* parent, const char* file,
+		const char* content, FileNameBuffer &match_dir)
 {
 
-			 bool found=false;
-			 DIR *dp;
-			  struct dirent *subdir;
+	bool found = false;
+	DIR *dp;
+	struct dirent *subdir;
 
-		       dp = opendir (parent);
+	dp = opendir(parent);
 
-			  if (dp != NULL)
-			  {
-			    while (subdir = readdir (dp))
-			    {
-			    	std::string directory;
-			    	directory+=subdir->d_name;
+	if (dp != NULL)
+	{
+		while (subdir = readdir(dp))
+		{
+			std::string directory;
+			directory += subdir->d_name;
 
-			    	if(directory!="." && directory !="..")
-			    	{
+			if (directory != "." && directory != "..")
+			{
 
-			    		match_dir.format("%s/%s/%s",parent,subdir->d_name,file);
+				match_dir.format("%s/%s/%s", parent, subdir->d_name, file);
 
-			    		FILE *fileptr=fopen(match_dir.c_str(),"r");
+				FILE *fileptr = fopen(match_dir.c_str(), "r");
 
-			    		if(fileptr==NULL)
-			    			continue;
+				if (fileptr == NULL)
+					continue;
 
+				int64_t value_out;
 
-					   int64_t value_out;
+				char buffer[256];
+				char *buf = &buffer[0];
+				char **bufptr = &buf;
 
-					   char buffer[256];
-					   char *buf=&buffer[0];
-					   char **bufptr=&buf;
+				bool negative;
+				ssize_t read;
+				size_t len = 256;
+				int l = 0;
 
-					   bool negative;
-					   ssize_t read;
-					   size_t len=256;
-					   int l=0;
+				while ((read = getline(bufptr, &len, fileptr)) != -1)
+				{
+					if (l == 0)
+					{
+						buffer[read - 1] = 0x00; //remove linefeed!
+						if (strcmp(content, buffer) == 0)
+						{
+							match_dir.format("%s/%s", parent, subdir->d_name);
+							found = true;
+							break;
+						}
+					}
+					else
+					{
+						break;
+					}
+				}
 
-					   while ((read = getline(bufptr, &len, fileptr)) != -1) {
-						   if(l==0)
-						   {
-							   buffer[read-1]=0x00;//remove linefeed!
-							   std::cout<<"matchFileContent "<<buffer<<"->"<<content;
-							   if(strcmp(content,buffer)==0)
-							   {
-								   match_dir.format("%s/%s",parent,subdir->d_name);
-								   found=true;
-								   break;
-							   }
-							   cout<<"= "<<found<<"DIR"<<match_dir.c_str()<<std::endl;
-						   }
-						   else
-						   {
-							   break;
-						   }
-					   }
+				fclose(fileptr);
+			}
+			if (found)
+				break;
+		}
+		closedir(dp);
 
-					   fclose(fileptr);
-
-					   if(found)
-						   break;
-			    	}
-			    }
-
-			    closedir (dp);
-
-			    return found;
-			  }
-			  else
-			  {
-				  return false;
-			  }
+		return found;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 
