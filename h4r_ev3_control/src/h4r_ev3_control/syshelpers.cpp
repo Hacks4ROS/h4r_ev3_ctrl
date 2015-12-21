@@ -91,8 +91,6 @@ bool readIntFromSysFile(FILE *fileptr, int &value)
     	 			   }
     	 			   else
     	 			   {
-        	 			   std::cout<<"- when b !=0"<<std::endl;
-
     	 				   return false;
     	 			   }
     	 			   break;
@@ -110,7 +108,6 @@ bool readIntFromSysFile(FILE *fileptr, int &value)
     	 			   value+=buffer[b]-48;
     	 			   break;
     	 		   default:
-    	 			   std::cout<<"DEFAULT"<<std::endl;
     	 			   return false;
 
     	 		   }
@@ -121,7 +118,6 @@ bool readIntFromSysFile(FILE *fileptr, int &value)
     	   }
     	   else
     	   {
- 			   std::cout<<"Other line than 0!"<<std::endl;
     		   return false;
     	   }
        }
@@ -173,20 +169,21 @@ bool matchFileContentInEqualSubdirectories(const char* parent,
 						   if(l==0)
 						   {
 							   buffer[read-1]=0x00;//remove linefeed!
-							   std::cout<<content<<std::endl;
+							   std::cout<<"matchFileContent "<<buffer<<"->"<<content;
 							   if(!strcmp(content,buffer))
 							   {
 								   match_dir.format("%s/%s",parent,subdir->d_name);
 								   found=true;
 								   break;
 							   }
+							   cout<<"= "<<found<<"DIR"<<match_dir.c_str()<<std::endl;
 						   }
 						   else
 						   {
 							   break;
 						   }
 					   }
-			    		fclose(fileptr);
+					   fclose(fileptr);
 			    	}
 			    }
 

@@ -61,7 +61,7 @@ public:
 	bool setMode(const std::string &mode)
 	{
 		//TODO write mode to file
-		cout<<mode<<endl;
+		cout<<"SETMODE_:"<<mode<<endl;
 		return false;
 	}
 
