@@ -171,7 +171,6 @@ public:
 	{
 		if(!isConnected())
 		{
-			getDeviceDirectory();
 			return false;
 		}
 
