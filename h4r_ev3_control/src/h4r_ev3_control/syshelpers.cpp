@@ -183,7 +183,11 @@ bool matchFileContentInEqualSubdirectories(const char* parent,
 							   break;
 						   }
 					   }
+
 					   fclose(fileptr);
+
+					   if(found)
+						   break;
 			    	}
 			    }
 
