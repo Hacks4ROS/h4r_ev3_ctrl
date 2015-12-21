@@ -98,13 +98,13 @@ FILE* H4REv3Port::get_fileptr_(const char* filename, OpenFile::FileMode mode, Op
 		{
 			if(!getDeviceDirectory())
 			{
-				return 0;
+				return NULL;
 			}
 		}
 		else
 		{
 			if(!isConnected())
-				return 0;
+				return NULL;
 		}
 
 		if(file.ptr!=NULL
@@ -143,8 +143,10 @@ FILE* H4REv3Port::get_fileptr_(const char* filename, OpenFile::FileMode mode, Op
 			file.fullpath.format("%s/%s",dir,filename);
 			file.ptr=fopen(file.fullpath.c_str(),smode);
 
+			if(file.ptr==0)
+				file.fullpath="";
 
-			std::cout<<"opening: "<<file.fullpath.c_str()<<" "<<file.ptr<<std::endl;
+			std::cout<<"getFilePTR opening: "<<file.fullpath.c_str()<<" "<<file.ptr<<std::endl;
 
 			return file.ptr;
 		}
