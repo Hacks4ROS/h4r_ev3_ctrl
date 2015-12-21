@@ -174,6 +174,7 @@ public:
 			return false;
 		}
 
+
 		//Reduce file reads and string processing ...
 		//Was the last connection id the same as on last check?
 		if(connect_id_==last_driver_check_connected_id_)
@@ -185,6 +186,7 @@ public:
 		else //if not we read the current driver name and convert it to enum
 		{
 			bool ret=readKey("driver_name",Ev3Strings::ev3_driver_name_conv,drvname,f_driver_name);
+			std::cout<<"Driver Name: "<<drvname<<std::endl;
 
 			if(ret) //success?
 			{
@@ -195,6 +197,8 @@ public:
 
 			return ret;
 		}
+
+
 	}
 
 	/**
