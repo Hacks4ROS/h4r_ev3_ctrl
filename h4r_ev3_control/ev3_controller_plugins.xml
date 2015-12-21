@@ -1,5 +1,5 @@
 <library path="lib/libev3_ultrasonic_range_controller">
-  <class name="h4r_ev3_control/Ev3UltraSonicRangeController" type="h4r_ev3_sensor_control::Ev3UltraSonicRangeController" base_class_type="controller_interface::ControllerBase">
+  <class name="h4r_ev3_control/Ev3UltraSonicRangeController" type="ev3_control::Ev3UltraSonicRangeController" base_class_type="controller_interface::ControllerBase">
   <description>
 	This controller publishes sonar sensor readings to the appropriate topic according to the selected mode
   </description>
