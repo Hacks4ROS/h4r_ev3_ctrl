@@ -170,7 +170,7 @@ bool matchFileContentInEqualSubdirectories(const char* parent,
 						   {
 							   buffer[read-1]=0x00;//remove linefeed!
 							   std::cout<<"matchFileContent "<<buffer<<"->"<<content;
-							   if(!strcmp(content,buffer))
+							   if(strcmp(content,buffer)==0)
 							   {
 								   match_dir.format("%s/%s",parent,subdir->d_name);
 								   found=true;
@@ -188,6 +188,7 @@ bool matchFileContentInEqualSubdirectories(const char* parent,
 			    }
 
 			    closedir (dp);
+
 			    return found;
 			  }
 			  else
