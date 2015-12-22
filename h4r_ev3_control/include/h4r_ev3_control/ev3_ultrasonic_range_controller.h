@@ -33,123 +33,118 @@
 namespace ev3_control
 {
 
-class Ev3UltraSonicRangeController: public controller_interface::Controller<Ev3SensorInterface>
+class Ev3UltraSonicRangeController: public controller_interface::Controller<
+		Ev3SensorInterface>
 {
 private:
-	  std::string port_;
-	  std::string mode_;
-	  Ev3SensorHandle handle_;
+	std::string port_;
+	std::string mode_;
+	Ev3SensorHandle handle_;
 
-	  //Range Publisher
-	  typedef boost::shared_ptr<realtime_tools::RealtimePublisher< sensor_msgs::Range > > RtRangePublisherPtr;
-	  RtRangePublisherPtr realtime_range_publisher_;
+	//Range Publisher
+	typedef boost::shared_ptr<
+			realtime_tools::RealtimePublisher<sensor_msgs::Range> > RtRangePublisherPtr;
+	RtRangePublisherPtr realtime_range_publisher_;
 
-
-	  ros::Time last_range_publish_time_;
-	  double publish_rate_;
-
+	ros::Time last_range_publish_time_;
+	double publish_rate_;
 
 public:
 	Ev3UltraSonicRangeController();
 	virtual ~Ev3UltraSonicRangeController();
 
-	  virtual bool init(Ev3SensorInterface* hw, ros::NodeHandle &root_nh, ros::NodeHandle& ctrl_nh)
-	  {
+	virtual bool init(Ev3SensorInterface* hw, ros::NodeHandle &root_nh,
+			ros::NodeHandle& ctrl_nh)
+	{
 
+		// get publishing period
+		if (!ctrl_nh.getParam("publish_rate", publish_rate_))
+		{
+			ROS_ERROR("Parameter publish_rate was not set");
+			return false;
+		}
 
-		    // get publishing period
-		    if (!ctrl_nh.getParam("publish_rate", publish_rate_))
-		    {
-		      ROS_ERROR("Parameter publish_rate was not set");
-		      return false;
-		    }
+		if (!ctrl_nh.getParam("port", port_))
+		{
+			ROS_ERROR("Parameter port was not set");
+			return false;
+		}
 
-		    if (!ctrl_nh.getParam("port", port_))
-		    {
-		      ROS_ERROR("Parameter port was not set");
-		      return false;
-		    }
+		if (!ctrl_nh.getParam("mode", mode_))
+		{
+			ROS_ERROR("Parameter mode was not set");
+			return false;
+		}
 
-		    if (!ctrl_nh.getParam("mode", mode_))
-		    {
-		      ROS_ERROR("Parameter mode was not set");
-		      return false;
-		    }
+		//TODO REMOVE
+		cout << "Port: " << port_ << endl;
+		cout << "Mode: " << mode_ << endl;
+		cout << "Publish rate: " << publish_rate_ << endl;
 
-		    //TODO REMOVE
-		    cout<<"Port: "<<port_<<endl;
-		    cout<<"Mode: "<<mode_<<endl;
-		    cout<<"Publish rate: "<<publish_rate_<<endl;
+		handle_ = hw->getHandle(port_);
 
-		    handle_=hw->getHandle(port_);
+		//TODO Mode handling
 
+		if (handle_.getDriverName() != Ev3Strings::EV3DRIVERNAME_LEGO_EV3_US)
+		{
 
-		    //TODO Mode handling
+			ROS_ERROR_STREAM(
+					"Need Ultrasonic Sensor on port: "<<port_<<"("<<handle_.getDriverName()<<"|"<<Ev3Strings::EV3DRIVERNAME_LEGO_EV3_US<<")");
+			return false;
+		}
 
-		    if(handle_.getDriverName()!=Ev3Strings::EV3DRIVERNAME_LEGO_EV3_US)
-		    {
+		//Create publisher for Rangesensor
+		realtime_range_publisher_ = RtRangePublisherPtr(
+				new realtime_tools::RealtimePublisher<sensor_msgs::Range>(
+						root_nh, port_, 4));
 
-		    	ROS_ERROR_STREAM("Need Ultrasonic Sensor on port: "<<port_<<"("<<handle_.getDriverName()<<"|"<<Ev3Strings::EV3DRIVERNAME_LEGO_EV3_US<<")");
-		    	return false;
-		    }
+		return true;
+	}
 
-		    //Create publisher for Rangesensor
-		    realtime_range_publisher_=RtRangePublisherPtr(new realtime_tools::RealtimePublisher<sensor_msgs::Range>(root_nh, port_, 4));
+	virtual void starting(const ros::Time& time)
+	{
+		last_range_publish_time_ = time;
+	}
 
-		    return true;
-	  }
+	virtual void update(const ros::Time& time, const ros::Duration& /*period*/)
+	{
+		using namespace hardware_interface;
 
-	  virtual void starting(const ros::Time& time)
-	  {
-	      last_range_publish_time_ = time;
-	  }
+		int value;
+		if (handle_.getDriverName()
+				!= Ev3Strings::EV3DRIVERNAME_LEGO_EV3_US)
+		{
+			ROS_ERROR("Lego Subsonic Sensor disconnected!");
+			return;
+		}
 
-	  virtual void update(const ros::Time& time, const ros::Duration& /*period*/)
-	  {
-
-
-
-
-		    using namespace hardware_interface;
-
-		    // limit rate of publishing
-		      if (publish_rate_ > 0.0
-		       && last_range_publish_time_ + ros::Duration(1.0/publish_rate_) < time)
-		      {
-		        //Check if we can lock publisher
-		        if (realtime_range_publisher_->trylock())
-		        {
-		          last_range_publish_time_ = last_range_publish_time_ + ros::Duration(1.0/publish_rate_);
-
-				  if(handle_.getDriverName()!=Ev3Strings::EV3DRIVERNAME_LEGO_EV3_US)
-				  {
-					  ROS_ERROR("Lego Subsonic Sensor disconnected!");
-					  return;
-				  }
-
-		          int value;
-		          if(!handle_.getValue(0,value))
-		          {
-		        	  ROS_ERROR("Could not get sensor value!");
-		        	  realtime_range_publisher_->unlock();
-		        	  return;
-		          }
+		if (!handle_.getValue(0, value))
+		{
+			ROS_ERROR("Could not get sensor value!");
+			return;
+		}
 
 
 
+		if (publish_rate_ > 0.0
+		    && last_range_publish_time_ + ros::Duration(1.0 / publish_rate_)< time)
+		{
+			if (realtime_range_publisher_->trylock())
+			{
+				last_range_publish_time_ = last_range_publish_time_
+						+ ros::Duration(1.0 / publish_rate_);
+				realtime_range_publisher_->msg_.header.stamp = time;
+				realtime_range_publisher_->msg_.range = ((double) value)
+						/ 1000.0;
+				realtime_range_publisher_->unlockAndPublish();
+			}
+		}
+	}
 
-		          realtime_range_publisher_->msg_.header.stamp = time;
-		          realtime_range_publisher_->msg_.range=((double) value)/1000.0;
-		          realtime_range_publisher_->unlockAndPublish();
-		        }
-		      }
-	  }
+	virtual void stopping(const ros::Time& /*time*/)
+	{
 
-	  virtual void stopping(const ros::Time& /*time*/)
-	  {
-
-	  }
-
+	}
 
 };
 
