@@ -236,7 +236,7 @@ public:
 	bool readKey(const char *filename,  const StringEnum< T > &strmap, T &key, OpenFile& openFile, bool device_dir=true)
 	{
 
-		FILE *file=get_fileptr_(filename, OpenFile::MODE_W, openFile, device_dir);
+		FILE *file=get_fileptr_(filename, OpenFile::MODE_R, openFile, device_dir);
 
 		if(file==NULL)
 			return false;
