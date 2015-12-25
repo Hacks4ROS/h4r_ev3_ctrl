@@ -30,6 +30,8 @@
 #include <string.h>
 #include <inttypes.h>
 
+#include <iostream>
+
 namespace ev3_control
 {
 
@@ -103,12 +105,18 @@ public:
 	{
 		assert(final_ && "StringEnum not finalized!");
 
+		cout<<"str:"<<str<<endl;
 		for (int i = 0; i < key_from_string_.size(); ++i)
 		{
+
+
+			cout<<"Str No: "<<i<<":"<<key_from_string_[i].getString().c_str();
 			if(strcmp(key_from_string_[i].getString().c_str(),str)==0)
 			{
+				cout<<"<---"<<endl;
 				return (ENUM)i;
 			}
+			cout<<endl;
 		}
 		return (ENUM)-1;
 	}
