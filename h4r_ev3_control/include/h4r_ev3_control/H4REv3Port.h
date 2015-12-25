@@ -394,7 +394,7 @@ public:
 	bool setModeT(const StringEnum< T > &modemap, T key)
 	{
 
-		FILE *file=get_fileptr_("mode", OpenFile::MODE_RW, f_mode);
+		FILE *file=get_fileptr_("mode", OpenFile::MODE_W, f_mode);
 
 		if(file==NULL)
 			return false;
