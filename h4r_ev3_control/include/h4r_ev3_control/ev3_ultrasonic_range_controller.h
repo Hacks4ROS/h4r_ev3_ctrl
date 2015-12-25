@@ -158,6 +158,7 @@ public:
 			realtime_range_publisher_->msg_.max_range=max_range_;
 			realtime_range_publisher_->msg_.radiation_type=0; //ULTRASONIC
 			realtime_range_publisher_->msg_.header.frame_id=frame_id_;
+			realtime_range_publisher_->msg_.field_of_view=0.872665; //50deg (in rads)
 			break;
 
 		case Ev3Strings::EV3ULTRASONICMODE_US_LISTEN:
