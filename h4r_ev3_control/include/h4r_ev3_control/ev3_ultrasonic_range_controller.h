@@ -104,7 +104,7 @@ public:
 
 		//TODO Mode handling
 
-		if (us_interface_.isConnected())
+		if(!us_interface_.isConnected())
 		{
 
 			ROS_ERROR_STREAM(
