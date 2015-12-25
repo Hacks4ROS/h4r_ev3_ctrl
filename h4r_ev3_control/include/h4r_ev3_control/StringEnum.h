@@ -59,6 +59,13 @@ class StringEnum
 			return str_;
 		}
 
+		int getKey() const
+		{
+			return key_;
+		}
+
+
+
 
 	protected:
 		string str_;
@@ -114,7 +121,7 @@ public:
 			if(strcmp(key_from_string_[i].getString().c_str(),str)==0)
 			{
 				cout<<"<---"<<endl;
-				return (ENUM)i;
+				return (ENUM)key_from_string_[i].getKey();
 			}
 			cout<<endl;
 		}
