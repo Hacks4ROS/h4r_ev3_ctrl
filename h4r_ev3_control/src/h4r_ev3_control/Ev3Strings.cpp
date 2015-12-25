@@ -76,11 +76,10 @@ StringEnum<Ev3Strings::Ev3DriverName> init_ev3_driver_name_conv()
 {
 	StringEnum<Ev3Strings::Ev3DriverName> mp;
 	mp.insert("lego-ev3-touch");
-	mp.insert("none");
-	mp.insert("lego-ev3-gyro");
-	mp.insert("lego-ev3-ir");
 	mp.insert("lego-ev3-color");
 	mp.insert("lego-ev3-us");
+	mp.insert("lego-ev3-gyro");
+	mp.insert("lego-ev3-ir");
 	mp.finalize();
 	return mp;
 }

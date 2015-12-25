@@ -84,7 +84,7 @@ public:
 		}
 		else
 		{
-			return Ev3Strings::EV3DRIVERNAME_NONE;
+			return Ev3Strings::EV3DRIVERNAME_NOT_FOUND;
 		}
 	}
 

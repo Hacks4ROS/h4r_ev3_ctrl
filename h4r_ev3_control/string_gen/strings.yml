@@ -12,7 +12,6 @@ strings:
   
   #Driver names
   ev3_driver_name:
-    none:
     lego-ev3-touch:
     lego-ev3-color:
     lego-ev3-us:
