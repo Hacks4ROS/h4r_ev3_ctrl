@@ -118,12 +118,14 @@ public:
 		case Ev3Strings::EV3ULTRASONICMODE_US_DIST_CM:
 		case Ev3Strings::EV3ULTRASONICMODE_US_DC_CM:
 			//Create publisher for Range
+			std::cout<<"Range Mode Setup!"<<std::endl;
 			realtime_range_publisher_ = RtRangePublisherPtr(
 					new realtime_tools::RealtimePublisher<sensor_msgs::Range>(
-							root_nh, port_+"_us_ranges", 4));
+							root_nh, port_+"_us_range", 4));
 			break;
 
 		case Ev3Strings::EV3ULTRASONICMODE_US_LISTEN:
+			std::cout<<"Listen Mode Setup!"<<std::endl;
 			//Create publisher for Listen
 			realtime_bool_publisher_ = RtBoolPublisherPtr(
 					new realtime_tools::RealtimePublisher<std_msgs::Bool>(
@@ -162,7 +164,7 @@ public:
 
 		if(sensor_mode_needs_init_)
 		{
-			sensor_mode_needs_init_=! us_interface_.setMode(mode_);
+			sensor_mode_needs_init_=!(us_interface_.setMode(mode_));
 			if(sensor_mode_needs_init_)
 			{
 				ROS_ERROR("Could not set sensor mode!");
@@ -178,23 +180,28 @@ public:
 		if (publish_rate_ > 0.0
 		    && last_range_publish_time_ + ros::Duration(1.0 / publish_rate_)< time)
 		{
-			if (realtime_range_publisher_->trylock())
-			{
-
+				bool published=false;
 				switch(mode_)
 				{
 				case Ev3Strings::EV3ULTRASONICMODE_US_DIST_CM:
 				case Ev3Strings::EV3ULTRASONICMODE_US_DC_CM:
-
-					realtime_range_publisher_->msg_.header.stamp = time;
-					realtime_range_publisher_->msg_.range = ((double) value)
-							/ 1000.0;
-					realtime_range_publisher_->unlockAndPublish();
+					if (realtime_range_publisher_->trylock())
+					{
+						realtime_range_publisher_->msg_.header.stamp = time;
+						realtime_range_publisher_->msg_.range = ((double) value)
+								/ 1000.0;
+						realtime_range_publisher_->unlockAndPublish();
+						published=true;
+					}
 					break;
 
 				case Ev3Strings::EV3ULTRASONICMODE_US_LISTEN:
-					realtime_bool_publisher_->msg_.data=(bool)value;
-					realtime_bool_publisher_->unlockAndPublish();
+					if (realtime_bool_publisher_->trylock())
+					{
+						realtime_bool_publisher_->msg_.data=(bool)value;
+						realtime_bool_publisher_->unlockAndPublish();
+						published=true;
+					}
 					break;
 
 				default:
@@ -202,10 +209,12 @@ public:
 				}
 
 
-				last_range_publish_time_ = last_range_publish_time_
-						+ ros::Duration(1.0 / publish_rate_);
+				if(published)
+				{
+					last_range_publish_time_ = last_range_publish_time_
+							+ ros::Duration(1.0 / publish_rate_);
+				}
 
-			}
 		}
 	}
 
