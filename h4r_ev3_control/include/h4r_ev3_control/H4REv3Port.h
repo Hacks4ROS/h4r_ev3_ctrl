@@ -360,6 +360,7 @@ public:
 	{}
 
 private:
+	OpenFile f_mode;
 	OpenFile f_NumValues;
 	OpenFile f_Value[8];
 
@@ -388,7 +389,96 @@ public:
 		}
 
 	}
+
+	template < typename T >
+	bool setModeT(const StringEnum< T > &modemap, T key)
+	{
+
+		FILE *file=get_fileptr_("mode", OpenFile::MODE_RW, f_mode);
+
+		if(file==NULL)
+			return false;
+
+		return writeKeyToSysFile(file,modemap,key);
+	}
 };
+
+
+template <typename MODE_ENUM, StringEnum<MODE_ENUM>& MODE_CONV, Ev3Strings::Ev3DriverName DRV>
+class H4REv3SensorSpecific
+{
+public:
+
+	H4REv3Sensor *sensor_;
+
+	H4REv3SensorSpecific(H4REv3Sensor &sensor)
+	:sensor_(&sensor)
+	 {}
+
+
+	bool isConnected()
+	{
+		if(sensor_->isConnected())
+		{
+			Ev3Strings::Ev3DriverName drvname;
+			if(sensor_->getDriverName(drvname))
+			{
+				return drvname==DRV;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	bool setMode(MODE_ENUM mode)
+	{
+		return sensor_->setModeT(MODE_CONV, mode);
+	}
+};
+
+
+
+
+class H4REv3UltraSonicSensorSpecIface :public H4REv3SensorSpecific<Ev3Strings::Ev3UltrasonicMode, Ev3Strings::ev3_ultrasonic_mode_conv, Ev3Strings::EV3DRIVERNAME_LEGO_EV3_US>
+{
+public:
+	H4REv3UltraSonicSensorSpecIface(H4REv3Sensor &sensor)
+	:H4REv3SensorSpecific(sensor)
+	 {}
+};
+
+class H4REv3GyroSensorSpecIface :public H4REv3SensorSpecific<Ev3Strings::Ev3GyroMode, Ev3Strings::ev3_gyro_mode_conv, Ev3Strings::EV3DRIVERNAME_LEGO_EV3_GYRO>
+{
+public:
+	H4REv3GyroSensorSpecIface(H4REv3Sensor &sensor)
+	:H4REv3SensorSpecific(sensor)
+	 {}
+};
+
+class H4REv3TouchSensorSpecIface :public H4REv3SensorSpecific<Ev3Strings::Ev3TouchMode, Ev3Strings::ev3_touch_mode_conv, Ev3Strings::EV3DRIVERNAME_LEGO_EV3_TOUCH>
+{
+public:
+	H4REv3TouchSensorSpecIface(H4REv3Sensor &sensor)
+	:H4REv3SensorSpecific(sensor)
+	 {}
+};
+
+class H4REv3ColorSensorSpecIface :public H4REv3SensorSpecific<Ev3Strings::Ev3ColorMode, Ev3Strings::ev3_color_mode_conv, Ev3Strings::EV3DRIVERNAME_LEGO_EV3_COLOR>
+{
+public:
+	H4REv3ColorSensorSpecIface(H4REv3Sensor &sensor)
+	:H4REv3SensorSpecific(sensor)
+	 {}
+};
+
+
+
 
 
 }/*ev3_control*/
