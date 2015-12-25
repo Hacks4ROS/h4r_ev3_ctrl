@@ -55,6 +55,23 @@ StringEnum<Ev3Strings::Ev3ColorMode>Ev3Strings::ev3_color_mode_conv = init_ev3_c
 
 
 
+StringEnum<Ev3Strings::Ev3InfraredMode> init_ev3_infrared_mode_conv()
+{
+	StringEnum<Ev3Strings::Ev3InfraredMode> mp;
+	mp.insert("IR-REMOTE");
+	mp.insert("IR-PROX");
+	mp.insert("IR-REM-A");
+	mp.insert("IR-SEEK");
+	mp.insert("IR-S-ALT");
+	mp.insert("IR-CAL");
+	mp.finalize();
+	return mp;
+}
+
+StringEnum<Ev3Strings::Ev3InfraredMode>Ev3Strings::ev3_infrared_mode_conv = init_ev3_infrared_mode_conv();
+
+
+
 StringEnum<Ev3Strings::Ev3DriverName> init_ev3_driver_name_conv()
 {
 	StringEnum<Ev3Strings::Ev3DriverName> mp;

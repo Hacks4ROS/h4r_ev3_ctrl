@@ -47,7 +47,16 @@ strings:
   
   ev3_touch_mode:
     TOUCH:
+  
+  ev3_infrared_mode:
+    IR-PROX:
+    IR-SEEK:
+    IR-REMOTE:
+    IR-REM-A:
+    IR-S-ALT:
+    IR-CAL:
     
+  
   ev3_motor_commands:
     run-forever: 
     run-to-abs-pos: 
