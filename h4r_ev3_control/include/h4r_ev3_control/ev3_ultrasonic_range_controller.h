@@ -28,6 +28,7 @@
 #include <boost/shared_ptr.hpp>
 #include <sensor_msgs/Range.h>
 #include <std_msgs/Bool.h>
+#include <limits>
 
 #include <h4r_ev3_control/Ev3SensorInterface.h>
 
@@ -43,6 +44,10 @@ private:
 	Ev3SensorHandle handle_;
 	H4REv3UltraSonicSensorSpecIface us_interface_;
 	bool sensor_mode_needs_init_;
+
+	double max_range_;
+	double min_range_;
+	std::string frame_id_;
 
 	//Range Publisher
 	typedef boost::shared_ptr<
@@ -68,8 +73,7 @@ public:
 		// get publishing period
 		if (!ctrl_nh.getParam("publish_rate", publish_rate_))
 		{
-			ROS_ERROR("Parameter publish_rate was not set");
-			return false;
+			ROS_ERROR("Parameter publish_rate was not set, using 10Hz");
 		}
 
 		if (!ctrl_nh.getParam("port", port_))
@@ -81,17 +85,18 @@ public:
 		std::string mode_str;
 		if (!ctrl_nh.getParam("mode", mode_str))
 		{
-			ROS_ERROR("Parameter mode was not set");
-			return false;
+			ROS_ERROR("Parameter mode was not set, using US-DIST-CM");
 		}
-
-
-		mode_=Ev3Strings::ev3_ultrasonic_mode_conv[mode_str.c_str()];
-		if(mode_<0)
+		else
 		{
-			ROS_ERROR_STREAM("Mode "<<mode_str<<" not found!");
-			return false;
+			mode_=Ev3Strings::ev3_ultrasonic_mode_conv[mode_str.c_str()];
+			if(mode_<0)
+			{
+				ROS_ERROR_STREAM("Mode "<<mode_str<<" not found!");
+				return false;
+			}
 		}
+
 
 		cout << "Port: " << port_ << endl;
 		cout << "Mode: " << mode_str << endl;
@@ -122,6 +127,43 @@ public:
 			realtime_range_publisher_ = RtRangePublisherPtr(
 					new realtime_tools::RealtimePublisher<sensor_msgs::Range>(
 							root_nh, port_+"_us_range", 4));
+
+
+
+
+			if (!ctrl_nh.getParam("max_range", max_range_))
+			{
+				ROS_INFO_STREAM("Parameter max_range not given, using 2.0");
+				return false;
+			}
+
+			if (!ctrl_nh.getParam("min_range", min_range_))
+			{
+				ROS_INFO_STREAM("Parameter min_range not given or wrong type, using 0");
+				return false;
+			}
+
+
+			if (!ctrl_nh.getParam("frame_id", frame_id_))
+			{
+				frame_id_=port_;
+				ROS_INFO_STREAM("Parameter frame_id not given or wrong type, using "<<port_);
+				return false;
+			}
+
+			if(max_range_>2.50)
+			{
+				ROS_ERROR("Parameter max_range to big! 2.550 is error condition of the sensor using 2.5");
+				max_range_=2.5;
+			}
+
+
+
+
+			realtime_range_publisher_->msg_.max_range=min_range_;
+			realtime_range_publisher_->msg_.max_range=max_range_;
+			realtime_range_publisher_->msg_.radiation_type=0; //ULTRASONIC
+			realtime_range_publisher_->msg_.header.frame_id=frame_id_;
 			break;
 
 		case Ev3Strings::EV3ULTRASONICMODE_US_LISTEN:
@@ -188,8 +230,28 @@ public:
 					if (realtime_range_publisher_->trylock())
 					{
 						realtime_range_publisher_->msg_.header.stamp = time;
-						realtime_range_publisher_->msg_.range = ((double) value)
-								/ 1000.0;
+
+						if(value!=2550)
+						{
+							double dval = ((double) value) / 1000.0; //to meters
+
+							if(dval < min_range_)
+							{
+								dval=-std::numeric_limits<double>::infinity();
+							}
+							else if(dval > max_range_)
+							{
+								dval=std::numeric_limits<double>::infinity();
+							}
+
+							realtime_range_publisher_->msg_.range=dval;
+						}
+						else
+						{
+							//value==2550 means no response (either covered sensor or too far away)
+							realtime_range_publisher_->msg_.range = std::numeric_limits<double>::infinity();
+						}
+
 						realtime_range_publisher_->unlockAndPublish();
 						published=true;
 					}
@@ -219,9 +281,7 @@ public:
 	}
 
 	virtual void stopping(const ros::Time& /*time*/)
-	{
-
-	}
+	{}
 
 };
 
