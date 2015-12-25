@@ -410,14 +410,30 @@ class H4REv3SensorSpecific
 public:
 
 	H4REv3Sensor *sensor_;
+	H4REv3SensorSpecific()
+	:sensor_(0)
+	{}
 
-	H4REv3SensorSpecific(H4REv3Sensor &sensor)
-	:sensor_(&sensor)
+	H4REv3SensorSpecific(H4REv3Sensor *sensor)
+	:sensor_(sensor)
 	 {}
+
+	void setSensor(H4REv3Sensor *sensor)
+	{
+		sensor_=sensor;
+	}
+
+	H4REv3Sensor* getSensor()
+	{
+		return sensor_;
+	}
 
 
 	bool isConnected()
 	{
+		if(!sensor_)
+			return false;
+
 		if(sensor_->isConnected())
 		{
 			Ev3Strings::Ev3DriverName drvname;
@@ -438,56 +454,17 @@ public:
 
 	bool setMode(MODE_ENUM mode)
 	{
+		if(!sensor_)
+			return false;
 		return sensor_->setModeT(MODE_CONV, mode);
 	}
 };
 
-
-
-
-class H4REv3UltraSonicSensorSpecIface :public H4REv3SensorSpecific<Ev3Strings::Ev3UltrasonicMode, Ev3Strings::ev3_ultrasonic_mode_conv, Ev3Strings::EV3DRIVERNAME_LEGO_EV3_US>
-{
-public:
-	H4REv3UltraSonicSensorSpecIface(H4REv3Sensor &sensor)
-	:H4REv3SensorSpecific(sensor)
-	 {}
-};
-
-class H4REv3GyroSensorSpecIface :public H4REv3SensorSpecific<Ev3Strings::Ev3GyroMode, Ev3Strings::ev3_gyro_mode_conv, Ev3Strings::EV3DRIVERNAME_LEGO_EV3_GYRO>
-{
-public:
-	H4REv3GyroSensorSpecIface(H4REv3Sensor &sensor)
-	:H4REv3SensorSpecific(sensor)
-	 {}
-};
-
-class H4REv3TouchSensorSpecIface :public H4REv3SensorSpecific<Ev3Strings::Ev3TouchMode, Ev3Strings::ev3_touch_mode_conv, Ev3Strings::EV3DRIVERNAME_LEGO_EV3_TOUCH>
-{
-public:
-	H4REv3TouchSensorSpecIface(H4REv3Sensor &sensor)
-	:H4REv3SensorSpecific(sensor)
-	 {}
-};
-
-class H4REv3ColorSensorSpecIface :public H4REv3SensorSpecific<Ev3Strings::Ev3ColorMode, Ev3Strings::ev3_color_mode_conv, Ev3Strings::EV3DRIVERNAME_LEGO_EV3_COLOR>
-{
-public:
-	H4REv3ColorSensorSpecIface(H4REv3Sensor &sensor)
-	:H4REv3SensorSpecific(sensor)
-	 {}
-};
-
-
-
-class H4REv3IRSensorSpecIface :public H4REv3SensorSpecific<Ev3Strings::Ev3InfraredMode, Ev3Strings::ev3_infrared_mode_conv, Ev3Strings::EV3DRIVERNAME_LEGO_EV3_IR>
-{
-public:
-	H4REv3IRSensorSpecIface(H4REv3Sensor &sensor)
-	:H4REv3SensorSpecific(sensor)
-	 {}
-};
-
-
+typedef H4REv3SensorSpecific<Ev3Strings::Ev3UltrasonicMode, Ev3Strings::ev3_ultrasonic_mode_conv, Ev3Strings::EV3DRIVERNAME_LEGO_EV3_US> H4REv3UltraSonicSensorSpecIface;
+typedef H4REv3SensorSpecific<Ev3Strings::Ev3GyroMode, Ev3Strings::ev3_gyro_mode_conv, Ev3Strings::EV3DRIVERNAME_LEGO_EV3_GYRO> H4REv3GyroSensorSpecIface;
+typedef H4REv3SensorSpecific<Ev3Strings::Ev3TouchMode, Ev3Strings::ev3_touch_mode_conv, Ev3Strings::EV3DRIVERNAME_LEGO_EV3_TOUCH> H4REv3TouchSensorSpecIface;
+typedef H4REv3SensorSpecific<Ev3Strings::Ev3ColorMode, Ev3Strings::ev3_color_mode_conv, Ev3Strings::EV3DRIVERNAME_LEGO_EV3_COLOR> H4REv3ColorSensorSpecIface;
+typedef H4REv3SensorSpecific<Ev3Strings::Ev3InfraredMode, Ev3Strings::ev3_infrared_mode_conv, Ev3Strings::EV3DRIVERNAME_LEGO_EV3_IR> H4REv3IRSensorSpecIface;
 
 
 }/*ev3_control*/
