@@ -27,8 +27,9 @@
 #include <realtime_tools/realtime_publisher.h>
 #include <boost/shared_ptr.hpp>
 #include <sensor_msgs/Range.h>
+#include <std_msgs/Bool.h>
 
-#include "../h4r_ev3_control/Ev3SensorInterface.h"
+#include <h4r_ev3_control/Ev3SensorInterface.h>
 
 namespace ev3_control
 {
@@ -38,13 +39,20 @@ class Ev3UltraSonicRangeController: public controller_interface::Controller<
 {
 private:
 	std::string port_;
-	std::string mode_;
+	Ev3Strings::Ev3UltrasonicMode mode_;
 	Ev3SensorHandle handle_;
+	H4REv3UltraSonicSensorSpecIface us_interface_;
+	bool sensor_mode_needs_init_;
 
 	//Range Publisher
 	typedef boost::shared_ptr<
 			realtime_tools::RealtimePublisher<sensor_msgs::Range> > RtRangePublisherPtr;
 	RtRangePublisherPtr realtime_range_publisher_;
+
+	typedef boost::shared_ptr<
+			realtime_tools::RealtimePublisher<std_msgs::Bool> > RtBoolPublisherPtr;
+	RtBoolPublisherPtr realtime_bool_publisher_;
+
 
 	ros::Time last_range_publish_time_;
 	double publish_rate_;
@@ -70,22 +78,33 @@ public:
 			return false;
 		}
 
-		if (!ctrl_nh.getParam("mode", mode_))
+		std::string mode_str;
+		if (!ctrl_nh.getParam("mode", mode_str))
 		{
 			ROS_ERROR("Parameter mode was not set");
 			return false;
 		}
 
-		//TODO REMOVE
+
+		mode_=Ev3Strings::ev3_ultrasonic_mode_conv[mode_str.c_str()];
+		if(mode_<0)
+		{
+			ROS_ERROR_STREAM("Mode "<<mode_str<<" not found!");
+			return false;
+		}
+
 		cout << "Port: " << port_ << endl;
-		cout << "Mode: " << mode_ << endl;
+		cout << "Mode: " << mode_str << endl;
 		cout << "Publish rate: " << publish_rate_ << endl;
 
+
+
 		handle_ = hw->getHandle(port_);
+		us_interface_.setSensor(handle_.getSensor());
 
 		//TODO Mode handling
 
-		if (handle_.getDriverName() != Ev3Strings::EV3DRIVERNAME_LEGO_EV3_US)
+		if (us_interface_.isConnected())
 		{
 
 			ROS_ERROR_STREAM(
@@ -93,10 +112,31 @@ public:
 			return false;
 		}
 
-		//Create publisher for Rangesensor
-		realtime_range_publisher_ = RtRangePublisherPtr(
-				new realtime_tools::RealtimePublisher<sensor_msgs::Range>(
-						root_nh, port_, 4));
+
+		switch(mode_)
+		{
+		case Ev3Strings::EV3ULTRASONICMODE_US_DIST_CM:
+		case Ev3Strings::EV3ULTRASONICMODE_US_DC_CM:
+			//Create publisher for Range
+			realtime_range_publisher_ = RtRangePublisherPtr(
+					new realtime_tools::RealtimePublisher<sensor_msgs::Range>(
+							root_nh, port_+"_us_ranges", 4));
+			break;
+
+		case Ev3Strings::EV3ULTRASONICMODE_US_LISTEN:
+			//Create publisher for Listen
+			realtime_bool_publisher_ = RtBoolPublisherPtr(
+					new realtime_tools::RealtimePublisher<std_msgs::Bool>(
+							root_nh, port_+"_us_listen", 4));
+			break;
+
+		default:
+			ROS_ERROR_STREAM("Mode "<<mode_str<<" not supported by this controller!");
+			return false;
+			break;
+		}
+
+
 
 		return true;
 	}
@@ -111,11 +151,23 @@ public:
 		using namespace hardware_interface;
 
 		int value;
+
+
 		if (handle_.getDriverName()
 				!= Ev3Strings::EV3DRIVERNAME_LEGO_EV3_US)
 		{
-			ROS_ERROR("Lego Subsonic Sensor disconnected!");
+			ROS_ERROR_STREAM("Lego Subsonic Sensor disconnected for port: "<<port_);
+			sensor_mode_needs_init_=true;
 			return;
+		}
+
+		if(sensor_mode_needs_init_)
+		{
+			sensor_mode_needs_init_=! us_interface_.setMode(mode_);
+			if(sensor_mode_needs_init_)
+			{
+				ROS_ERROR("Could not set sensor mode!");
+			}
 		}
 
 		if (!handle_.getValue(0, value))
@@ -124,19 +176,36 @@ public:
 			return;
 		}
 
-
-
 		if (publish_rate_ > 0.0
 		    && last_range_publish_time_ + ros::Duration(1.0 / publish_rate_)< time)
 		{
 			if (realtime_range_publisher_->trylock())
 			{
+
+				switch(mode_)
+				{
+				case Ev3Strings::EV3ULTRASONICMODE_US_DIST_CM:
+				case Ev3Strings::EV3ULTRASONICMODE_US_DC_CM:
+
+					realtime_range_publisher_->msg_.header.stamp = time;
+					realtime_range_publisher_->msg_.range = ((double) value)
+							/ 1000.0;
+					realtime_range_publisher_->unlockAndPublish();
+					break;
+
+				case Ev3Strings::EV3ULTRASONICMODE_US_LISTEN:
+					realtime_bool_publisher_->msg_.data=(bool)value;
+					realtime_bool_publisher_->unlockAndPublish();
+					break;
+
+				default:
+					break;
+				}
+
+
 				last_range_publish_time_ = last_range_publish_time_
 						+ ros::Duration(1.0 / publish_rate_);
-				realtime_range_publisher_->msg_.header.stamp = time;
-				realtime_range_publisher_->msg_.range = ((double) value)
-						/ 1000.0;
-				realtime_range_publisher_->unlockAndPublish();
+
 			}
 		}
 	}

@@ -26,6 +26,8 @@ namespace ev3_control
 {
 
 Ev3UltraSonicRangeController::Ev3UltraSonicRangeController()
+:sensor_mode_needs_init_(true)
+,mode_(Ev3Strings::EV3ULTRASONICMODE_NOT_FOUND)
 {
 	// TODO Auto-generated constructor stub
 

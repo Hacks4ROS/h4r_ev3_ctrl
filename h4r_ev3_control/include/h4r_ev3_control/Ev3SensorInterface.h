@@ -70,6 +70,11 @@ public:
 		return sensor_->value(index,value);
 	}
 
+	H4REv3Sensor *getSensor()
+	{
+		return sensor_;
+	}
+
 	Ev3Strings::Ev3DriverName getDriverName()
 	{
 		Ev3Strings::Ev3DriverName val;
