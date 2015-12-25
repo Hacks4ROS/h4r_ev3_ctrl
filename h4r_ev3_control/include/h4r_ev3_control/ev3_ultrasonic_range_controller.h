@@ -157,7 +157,7 @@ public:
 
 		if(!us_interface_.isConnected())
 		{
-			ROS_ERROR_STREAM("Lego Subsonic Sensor disconnected for port: "<<port_);
+			//ROS_ERROR_STREAM("Lego Subsonic Sensor disconnected for port: "<<port_);
 			sensor_mode_needs_init_=true;
 			return;
 		}
@@ -173,7 +173,7 @@ public:
 
 		if (!handle_.getValue(0, value))
 		{
-			ROS_ERROR("Could not get sensor value!");
+			//ROS_ERROR("Could not get sensor value!");
 			return;
 		}
 
