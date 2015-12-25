@@ -478,6 +478,7 @@ public:
 };
 
 
+
 class H4REv3IRSensorSpecIface :public H4REv3SensorSpecific<Ev3Strings::Ev3InfraredMode, Ev3Strings::ev3_infrared_mode_conv, Ev3Strings::EV3DRIVERNAME_LEGO_EV3_IR>
 {
 public:
