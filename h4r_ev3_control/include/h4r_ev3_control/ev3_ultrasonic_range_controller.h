@@ -153,8 +153,7 @@ public:
 		int value;
 
 
-		if (handle_.getDriverName()
-				!= Ev3Strings::EV3DRIVERNAME_LEGO_EV3_US)
+		if(!us_interface_.isConnected())
 		{
 			ROS_ERROR_STREAM("Lego Subsonic Sensor disconnected for port: "<<port_);
 			sensor_mode_needs_init_=true;
