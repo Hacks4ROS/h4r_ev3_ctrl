@@ -73,7 +73,7 @@ public:
 		// get publishing period
 		if (!ctrl_nh.getParam("publish_rate", publish_rate_))
 		{
-			ROS_ERROR("Parameter publish_rate was not set, using 10Hz");
+			ROS_ERROR("Parameter publish_rate was not set, using 10 Hz");
 		}
 
 		if (!ctrl_nh.getParam("port", port_))
@@ -134,13 +134,11 @@ public:
 			if (!ctrl_nh.getParam("max_range", max_range_))
 			{
 				ROS_INFO_STREAM("Parameter max_range not given, using 2.0");
-				return false;
 			}
 
 			if (!ctrl_nh.getParam("min_range", min_range_))
 			{
 				ROS_INFO_STREAM("Parameter min_range not given or wrong type, using 0");
-				return false;
 			}
 
 
@@ -148,7 +146,6 @@ public:
 			{
 				frame_id_=port_;
 				ROS_INFO_STREAM("Parameter frame_id not given or wrong type, using "<<port_);
-				return false;
 			}
 
 			if(max_range_>2.50)
@@ -156,9 +153,6 @@ public:
 				ROS_ERROR("Parameter max_range to big! 2.550 is error condition of the sensor using 2.5");
 				max_range_=2.5;
 			}
-
-
-
 
 			realtime_range_publisher_->msg_.max_range=min_range_;
 			realtime_range_publisher_->msg_.max_range=max_range_;
