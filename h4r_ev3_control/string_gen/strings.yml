@@ -17,6 +17,7 @@ strings:
     lego-ev3-color:
     lego-ev3-us:
     lego-ev3-gyro:
+    lego-ev3-ir:
     
   #Gyro modess
   ev3_gyro_mode:
