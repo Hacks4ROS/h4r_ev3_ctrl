@@ -126,13 +126,13 @@ public:
 			return false;
 		}
 
-
+		std::string topic_name;
 		switch(mode_)
 		{
 		case Ev3Strings::EV3ULTRASONICMODE_US_DIST_CM:
 		case Ev3Strings::EV3ULTRASONICMODE_US_DC_CM:
 
-			std::string topic_name=port_+"_us_range";
+			topic_name=port_+"_us_range";
 			if (!ctrl_nh.getParam("topic_name", topic_name))
 			{
 				ROS_INFO_STREAM("Parameter topic name not given using"<<topic_name);
@@ -180,7 +180,7 @@ public:
 			break;
 
 		case Ev3Strings::EV3ULTRASONICMODE_US_LISTEN:
-			std::string topic_name=port_+"_us_listen";
+			topic_name=port_+"_us_listen";
 			if (!ctrl_nh.getParam("topic_name", topic_name))
 			{
 				ROS_INFO_STREAM("Parameter topic name not given using"<<topic_name);
