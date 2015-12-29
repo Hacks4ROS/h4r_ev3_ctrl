@@ -2,4 +2,4 @@ Ev3UltraSonic:
   type: h4r_ev3_control/Ev3UltraSonicRangeController
   publish_rate: 10
   port: in2
-  mode: US-DIST-CM
+  mode: distance
