@@ -59,14 +59,15 @@ private:
 	RtBoolPublisherPtr realtime_bool_publisher_;
 
 
-	ros::Time last_range_publish_time_;
+	ros::Time last_publish_time_;
 	double publish_rate_;
 
 public:
 	Ev3UltraSonicRangeController();
 	virtual ~Ev3UltraSonicRangeController();
 
-	virtual bool init(Ev3SensorInterface* hw, ros::NodeHandle &root_nh,
+	virtual bool init(Ev3SensorInterface* hw,
+			ros::NodeHandle &root_nh,
 			ros::NodeHandle& ctrl_nh)
 	{
 
@@ -85,15 +86,22 @@ public:
 		std::string mode_str;
 		if (!ctrl_nh.getParam("mode", mode_str))
 		{
-			ROS_ERROR("Parameter mode was not set, using US-DIST-CM");
+			ROS_ERROR("Parameter mode was not set, using 'distance'");
+			mode_=Ev3Strings::EV3ULTRASONICMODE_US_DIST_CM;
 		}
 		else
 		{
-			mode_=Ev3Strings::ev3_ultrasonic_mode_conv[mode_str.c_str()];
-			if(mode_<0)
+			if(mode_str=="distance")
 			{
-				ROS_ERROR_STREAM("Mode "<<mode_str<<" not found!");
-				return false;
+				mode_=Ev3Strings::EV3ULTRASONICMODE_US_DIST_CM;
+			}
+			else if(mode_str=="seek")
+			{
+				mode_=Ev3Strings::EV3ULTRASONICMODE_US_LISTEN;
+			}
+			else
+			{
+				ROS_ERROR_STREAM("Value for parameter mode unknown, only 'distance' and 'seek' are supported!");
 			}
 		}
 
@@ -182,7 +190,7 @@ public:
 
 	virtual void starting(const ros::Time& time)
 	{
-		last_range_publish_time_ = time;
+		last_publish_time_ = time;
 	}
 
 	virtual void update(const ros::Time& time, const ros::Duration& /*period*/)
@@ -215,7 +223,7 @@ public:
 		}
 
 		if (publish_rate_ > 0.0
-		    && last_range_publish_time_ + ros::Duration(1.0 / publish_rate_)< time)
+		    && last_publish_time_ + ros::Duration(1.0 / publish_rate_)< time)
 		{
 				bool published=false;
 				switch(mode_)
@@ -268,7 +276,7 @@ public:
 
 				if(published)
 				{
-					last_range_publish_time_ = last_range_publish_time_
+					last_publish_time_ = last_publish_time_
 							+ ros::Duration(1.0 / publish_rate_);
 				}
 
