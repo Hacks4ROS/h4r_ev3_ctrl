@@ -106,6 +106,7 @@ public:
 		}
 
 
+
 		cout << "Port: " << port_ << endl;
 		cout << "Mode: " << mode_str << endl;
 		cout << "Publish rate: " << publish_rate_ << endl;
@@ -130,11 +131,18 @@ public:
 		{
 		case Ev3Strings::EV3ULTRASONICMODE_US_DIST_CM:
 		case Ev3Strings::EV3ULTRASONICMODE_US_DC_CM:
+
+			std::string topic_name=port_+"_us_range";
+			if (!ctrl_nh.getParam("topic_name", topic_name))
+			{
+				ROS_INFO_STREAM("Parameter topic name not given using"<<topic_name);
+			}
+
 			//Create publisher for Range
 			std::cout<<"Range Mode Setup!"<<std::endl;
 			realtime_range_publisher_ = RtRangePublisherPtr(
 					new realtime_tools::RealtimePublisher<sensor_msgs::Range>(
-							root_nh, port_+"_us_range", 4));
+							root_nh, topic_name, 4));
 
 
 
@@ -148,6 +156,8 @@ public:
 			{
 				ROS_INFO_STREAM("Parameter min_range not given or wrong type, using 0");
 			}
+
+
 
 
 			if (!ctrl_nh.getParam("frame_id", frame_id_))
@@ -170,11 +180,17 @@ public:
 			break;
 
 		case Ev3Strings::EV3ULTRASONICMODE_US_LISTEN:
+			std::string topic_name=port_+"_us_listen";
+			if (!ctrl_nh.getParam("topic_name", topic_name))
+			{
+				ROS_INFO_STREAM("Parameter topic name not given using"<<topic_name);
+			}
+
 			std::cout<<"Listen Mode Setup!"<<std::endl;
 			//Create publisher for Listen
 			realtime_bool_publisher_ = RtBoolPublisherPtr(
 					new realtime_tools::RealtimePublisher<std_msgs::Bool>(
-							root_nh, port_+"_us_listen", 4));
+							root_nh, topic_name, 4));
 			break;
 
 		default:
