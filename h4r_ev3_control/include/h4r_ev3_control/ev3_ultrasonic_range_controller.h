@@ -172,7 +172,7 @@ public:
 				max_range_=2.5;
 			}
 
-			realtime_range_publisher_->msg_.max_range=min_range_;
+			realtime_range_publisher_->msg_.min_range=min_range_;
 			realtime_range_publisher_->msg_.max_range=max_range_;
 			realtime_range_publisher_->msg_.radiation_type=0; //ULTRASONIC
 			realtime_range_publisher_->msg_.header.frame_id=frame_id_;
