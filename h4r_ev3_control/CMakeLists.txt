@@ -37,12 +37,16 @@ add_library(ev3_ultrasonic_range_controller
   src/${PROJECT_NAME}/ev3_ultrasonic_range_controller.cpp include/${PROJECT_NAME}/ev3_ultrasonic_range_controller.h)
 target_link_libraries(ev3_ultrasonic_range_controller ${catkin_LIBRARIES})
 
+add_library(ev3_gyro_controller
+  src/${PROJECT_NAME}/ev3_gyro_controller.cpp include/${PROJECT_NAME}/ev3_gyro_controller.h)
+target_link_libraries(ev3_gyro_controller ${catkin_LIBRARIES})
+
 
 # Install
 install(DIRECTORY include/${PROJECT_NAME}/
   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION})
   
-install(TARGETS ev3_ultrasonic_range_controller ev3_control
+install(TARGETS ev3_ultrasonic_range_controller ev3_gyro_controller ev3_control
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}

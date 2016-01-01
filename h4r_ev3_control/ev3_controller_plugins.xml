@@ -4,6 +4,13 @@
 	This controller publishes sonar sensor readings to the appropriate topic according to the selected mode
   </description>
   </class>
+  
+  <class name="h4r_ev3_control/Ev3GyroController" type="ev3_control::Ev3GyroController" base_class_type="controller_interface::ControllerBase">
+  <description>
+	This controller publishes Gyro sensor readings
+  </description>
+  </class>
+    
 </library>
 
 
