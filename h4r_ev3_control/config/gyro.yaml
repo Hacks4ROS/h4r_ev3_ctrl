@@ -1,0 +1,7 @@
+Ev3Gyro:
+  type: h4r_ev3_control/Ev3GyroController
+  frame_id: gyro_link
+  topic_name: /gyro
+  publish_rate: 10
+  port: in4
+  mode: angle
