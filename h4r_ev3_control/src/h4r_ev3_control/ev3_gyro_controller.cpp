@@ -59,11 +59,11 @@ bool Ev3GyroController::init(Ev3SensorInterface* hw,
 		{
 			if(mode_str=="rate")
 			{
-				mode_=Ev3Strings::EV3GYROMODE_GYRO_ANG;
+				mode_=Ev3Strings::EV3GYROMODE_GYRO_RATE;
 			}
 			else if(mode_str=="angle")
 			{
-				mode_=Ev3Strings::EV3GYROMODE_GYRO_RATE;
+				mode_=Ev3Strings::EV3GYROMODE_GYRO_ANG;
 			}
 			else if(mode_str=="rate&angle")
 			{
