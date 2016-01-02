@@ -25,7 +25,7 @@
 namespace ev3_control
 {
 
-Ev3UltraSonicController::Ev3UltraSonicController()
+Ev3UltrasonicController::Ev3UltrasonicController()
 :sensor_mode_needs_init_(true)
 ,mode_(Ev3Strings::EV3ULTRASONICMODE_US_DIST_CM)
 ,max_range_(2.0)
@@ -36,13 +36,13 @@ Ev3UltraSonicController::Ev3UltraSonicController()
 
 }
 
-Ev3UltraSonicController::~Ev3UltraSonicController()
+Ev3UltrasonicController::~Ev3UltrasonicController()
 {
 	// TODO Auto-generated destructor stub
 }
 
 
-bool Ev3UltraSonicController::init(Ev3SensorInterface* hw,
+bool Ev3UltrasonicController::init(Ev3SensorInterface* hw,
 			ros::NodeHandle &root_nh,
 			ros::NodeHandle& ctrl_nh)
 	{
@@ -180,12 +180,12 @@ bool Ev3UltraSonicController::init(Ev3SensorInterface* hw,
 		return true;
 	}
 
-void Ev3UltraSonicController::starting(const ros::Time& time)
+void Ev3UltrasonicController::starting(const ros::Time& time)
 {
 	last_publish_time_ = time;
 }
 
-void Ev3UltraSonicController::update(const ros::Time& time, const ros::Duration& /*period*/)
+void Ev3UltrasonicController::update(const ros::Time& time, const ros::Duration& /*period*/)
 	{
 		using namespace hardware_interface;
 
@@ -275,6 +275,6 @@ void Ev3UltraSonicController::update(const ros::Time& time, const ros::Duration&
 		}
 	}
 
-PLUGINLIB_EXPORT_CLASS(ev3_control::Ev3UltraSonicController, controller_interface::ControllerBase)
+PLUGINLIB_EXPORT_CLASS(ev3_control::Ev3UltrasonicController, controller_interface::ControllerBase)
 
 } /* namespace ev3_control */

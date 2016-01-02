@@ -35,7 +35,7 @@
 namespace ev3_control
 {
 
-class Ev3UltraSonicController: public controller_interface::Controller<
+class Ev3UltrasonicController: public controller_interface::Controller<
 		Ev3SensorInterface>
 {
 private:
@@ -63,8 +63,8 @@ private:
 	double publish_rate_;
 
 public:
-	Ev3UltraSonicController();
-	virtual ~Ev3UltraSonicController();
+	Ev3UltrasonicController();
+	virtual ~Ev3UltrasonicController();
 
 	virtual bool init(Ev3SensorInterface* hw,
 			ros::NodeHandle &root_nh,

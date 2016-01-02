@@ -1,5 +1,5 @@
 Ev3UltraSonic:
-  type: h4r_ev3_control/Ev3UltraSonicController
+  type: h4r_ev3_control/Ev3UltrasonicController
   max_range: 1.5
   min_range: 0.01
   frame_id: ultrasonic_link
