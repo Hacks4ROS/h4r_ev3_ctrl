@@ -109,14 +109,15 @@ bool Ev3GyroController::init(Ev3SensorInterface* hw,
 			ROS_INFO_STREAM("Parameter topic name not given using "<<topic_name);
 		}
 
-		//Init orientation to be a legal value for rate mode
-		realtime_imu_publisher_->msg_.orientation=tf::createQuaternionMsgFromYaw( 0.0 );
 
 
 		realtime_imu_publisher_ = RtImuPublisherPtr(
 				new realtime_tools::RealtimePublisher<sensor_msgs::Imu>(
 						root_nh, topic_name, 4));
+
 		realtime_imu_publisher_->msg_.header.frame_id=frame_id_;
+		//Init orientation to be a legal value for rate mode
+		realtime_imu_publisher_->msg_.orientation=tf::createQuaternionMsgFromYaw( 0.0 );
 
 		return true;
 	}
