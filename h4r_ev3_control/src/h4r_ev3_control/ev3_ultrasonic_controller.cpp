@@ -20,12 +20,12 @@
  *
  */
 
-#include <h4r_ev3_control/ev3_ultrasonic_range_controller.h>
+#include <h4r_ev3_control/ev3_ultrasonic_controller.h>
 
 namespace ev3_control
 {
 
-Ev3UltraSonicRangeController::Ev3UltraSonicRangeController()
+Ev3UltraSonicController::Ev3UltraSonicController()
 :sensor_mode_needs_init_(true)
 ,mode_(Ev3Strings::EV3ULTRASONICMODE_US_DIST_CM)
 ,max_range_(2.0)
@@ -36,13 +36,13 @@ Ev3UltraSonicRangeController::Ev3UltraSonicRangeController()
 
 }
 
-Ev3UltraSonicRangeController::~Ev3UltraSonicRangeController()
+Ev3UltraSonicController::~Ev3UltraSonicController()
 {
 	// TODO Auto-generated destructor stub
 }
 
 
-bool Ev3UltraSonicRangeController::init(Ev3SensorInterface* hw,
+bool Ev3UltraSonicController::init(Ev3SensorInterface* hw,
 			ros::NodeHandle &root_nh,
 			ros::NodeHandle& ctrl_nh)
 	{
@@ -180,12 +180,12 @@ bool Ev3UltraSonicRangeController::init(Ev3SensorInterface* hw,
 		return true;
 	}
 
-void Ev3UltraSonicRangeController::starting(const ros::Time& time)
+void Ev3UltraSonicController::starting(const ros::Time& time)
 {
 	last_publish_time_ = time;
 }
 
-void Ev3UltraSonicRangeController::update(const ros::Time& time, const ros::Duration& /*period*/)
+void Ev3UltraSonicController::update(const ros::Time& time, const ros::Duration& /*period*/)
 	{
 		using namespace hardware_interface;
 
@@ -275,6 +275,6 @@ void Ev3UltraSonicRangeController::update(const ros::Time& time, const ros::Dura
 		}
 	}
 
-PLUGINLIB_EXPORT_CLASS(ev3_control::Ev3UltraSonicRangeController, controller_interface::ControllerBase)
+PLUGINLIB_EXPORT_CLASS(ev3_control::Ev3UltraSonicController, controller_interface::ControllerBase)
 
 } /* namespace ev3_control */
