@@ -109,6 +109,10 @@ bool Ev3GyroController::init(Ev3SensorInterface* hw,
 			ROS_INFO_STREAM("Parameter topic name not given using "<<topic_name);
 		}
 
+		//Init orientation to be a legal value for rate mode
+		realtime_imu_publisher_->msg_.orientation=tf::createQuaternionMsgFromYaw( 0.0 );
+
+
 		realtime_imu_publisher_ = RtImuPublisherPtr(
 				new realtime_tools::RealtimePublisher<sensor_msgs::Imu>(
 						root_nh, topic_name, 4));
@@ -126,7 +130,7 @@ void Ev3GyroController::update(const ros::Time& time, const ros::Duration& /*per
 	{
 		using namespace hardware_interface;
 
-		int value;
+		int value0,value1;
 
 
 		if(!gyro_interface_.isConnected())
@@ -144,9 +148,11 @@ void Ev3GyroController::update(const ros::Time& time, const ros::Duration& /*per
 			}
 		}
 
-		if (!handle_.getValue(0, value))
+		if (!handle_.getValue(0, value0))return;
+
+		if (mode_==Ev3Strings::EV3GYROMODE_GYRO_G_A)
 		{
-			return;
+			if (!handle_.getValue(1, value1))return;
 		}
 
 		if (publish_rate_ > 0.0
@@ -157,19 +163,23 @@ void Ev3GyroController::update(const ros::Time& time, const ros::Duration& /*per
 				if (realtime_imu_publisher_->trylock())
 				{
 					realtime_imu_publisher_->msg_.header.stamp = time;
+
 					switch(mode_)
 					{
-					case Ev3Strings::EV3GYROMODE_GYRO_G_A:
 
+					case Ev3Strings::EV3GYROMODE_GYRO_ANG:
+						realtime_imu_publisher_->msg_.orientation=tf::createQuaternionMsgFromYaw( ((double)value0 ) * M_PI/180.0);
 						break;
 
 					case Ev3Strings::EV3GYROMODE_GYRO_RATE:
-
+						realtime_imu_publisher_->msg_.angular_velocity.z=( (double) value0 ) * M_PI/180.0;
 						break;
 
-					case Ev3Strings::EV3GYROMODE_GYRO_ANG:
-
+					case Ev3Strings::EV3GYROMODE_GYRO_G_A:
+						realtime_imu_publisher_->msg_.orientation=tf::createQuaternionMsgFromYaw( ((double) value0 ) * M_PI/180.0);
+						realtime_imu_publisher_->msg_.angular_velocity.z=( (double) value1 ) * M_PI/180.0;
 						break;
+
 					}
 
 					realtime_imu_publisher_->unlockAndPublish();

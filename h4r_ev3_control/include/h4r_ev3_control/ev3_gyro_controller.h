@@ -27,6 +27,7 @@
 #include <realtime_tools/realtime_publisher.h>
 #include <boost/shared_ptr.hpp>
 #include <sensor_msgs/Imu.h>
+#include <tf/tf.h>
 #include <limits>
 
 #include <h4r_ev3_control/Ev3SensorInterface.h>
