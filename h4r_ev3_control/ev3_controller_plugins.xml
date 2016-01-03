@@ -10,7 +10,13 @@
 	This controller publishes Gyro sensor readings
   </description>
   </class>
-    
+
+   <class name="h4r_ev3_control/Ev3TouchController" type="ev3_control::Ev3TouchController" base_class_type="controller_interface::ControllerBase">
+  <description>
+	This controller publishes Touch sensor readings
+  </description>
+  </class>
+      
 </library>
 
 

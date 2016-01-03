@@ -1,0 +1,6 @@
+Ev3Touch:
+  type: h4r_ev3_control/Ev3TouchController
+  frame_id: touch_link
+  topic_name: /touch
+  publish_rate: 10
+  port: in1
