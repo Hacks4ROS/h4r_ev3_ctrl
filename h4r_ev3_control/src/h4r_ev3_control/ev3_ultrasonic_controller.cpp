@@ -1,5 +1,5 @@
 /*
- * This file (ev3_ultrasonic_range_controller.cpp) is part of h4r_ev3_control.
+ * This file (ev3_ultrasonic_controller.cpp) is part of h4r_ev3_control.
  * Date: 17.12.2015
  *
  * Author: Christian Holl

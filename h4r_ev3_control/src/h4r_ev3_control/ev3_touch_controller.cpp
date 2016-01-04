@@ -1,5 +1,5 @@
 /*
- * This file (ev3_gyro_controller.cpp) is part of h4r_ev3_control.
+ * This file (ev3_touch_controller.cpp) is part of h4r_ev3_control.
  * Date: 01.01.2016
  *
  * Author: Christian Holl

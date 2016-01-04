@@ -1,5 +1,5 @@
 /*
- * This file (ev3_gyro_controller.h) is part of h4r_ev3_control.
+ * This file (ev3_touch_controller.h) is part of h4r_ev3_control.
  * Date: 01.01.2016
  *
  * Author: Christian Holl
@@ -19,8 +19,8 @@
  * along with h4r_ev3_control.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef GYRO_CONTROLLER_H_
-#define GYRO_CONTROLLER_H_
+#ifndef TOUCH_CONTROLLER_H_
+#define TOUCH_CONTROLLER_H_
 
 #include <controller_interface/controller.h>
 #include <pluginlib/class_list_macros.h>
@@ -71,4 +71,4 @@ public:
 
 } /* namespace ev3_control */
 
-#endif /* GYRO_CONTROLLER_H_ */
+#endif /* TOUCH_CONTROLLER_H_ */

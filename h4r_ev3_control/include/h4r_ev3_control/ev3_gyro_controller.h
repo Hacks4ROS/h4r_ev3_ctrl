@@ -19,8 +19,8 @@
  * along with h4r_ev3_control.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef GYRO_CONTROLLER_H_
-#define GYRO_CONTROLLER_H_
+#ifndef EV3_GYRO_CONTROLLER_H_
+#define EV3_GYRO_CONTROLLER_H_
 
 #include <controller_interface/controller.h>
 #include <pluginlib/class_list_macros.h>
@@ -73,4 +73,4 @@ public:
 
 } /* namespace ev3_control */
 
-#endif /* GYRO_CONTROLLER_H_ */
+#endif /* EV3_GYRO_CONTROLLER_H_ */
