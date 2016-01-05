@@ -16,7 +16,13 @@
 	This controller publishes Touch sensor readings
   </description>
   </class>
-      
-</library>
+  
+   <class name="h4r_ev3_control/Ev3ColorController" type="ev3_control::Ev3ColorController" base_class_type="controller_interface::ControllerBase">
+  <description>
+	This controller publishes Color sensor readings
+  </description>
+  </class>      
+
+  </library>
 
 
