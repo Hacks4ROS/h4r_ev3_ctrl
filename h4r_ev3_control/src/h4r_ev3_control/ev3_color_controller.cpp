@@ -28,8 +28,6 @@ namespace ev3_control
 Ev3ColorController::Ev3ColorController()
 :sensor_mode_needs_init_(true)
 ,mode_(Ev3Strings::EV3COLORMODE_RGB_RAW)
-,max_range_(2.0)
-,min_range_(0)
 ,publish_rate_(10)
 {
 	// TODO Auto-generated constructor stub
@@ -188,12 +186,12 @@ void Ev3ColorController::update(const ros::Time& time, const ros::Duration& /*pe
 	{
 		using namespace hardware_interface;
 
-		int value;
+		int value0,value1,value2;
+
 
 
 		if(!color_interface_.isConnected())
 		{
-			//ROS_ERROR_STREAM("Lego Subsonic Sensor disconnected for port: "<<port_);
 			sensor_mode_needs_init_=true;
 			return;
 		}
@@ -207,10 +205,24 @@ void Ev3ColorController::update(const ros::Time& time, const ros::Duration& /*pe
 			}
 		}
 
-		if (!handle_.getValue(0, value))
+		if (!handle_.getValue(0, value0))
 		{
 			return;
 		}
+
+		if(mode_==Ev3Strings::EV3COLORMODE_RGB_RAW)
+		{
+			if (!handle_.getValue(1, value1))
+			{
+				return;
+			}
+			if (!handle_.getValue(2, value2))
+			{
+				return;
+			}
+		}
+
+
 
 		if (publish_rate_ > 0.0
 		    && last_publish_time_ + ros::Duration(1.0 / publish_rate_)< time)
@@ -223,65 +235,38 @@ void Ev3ColorController::update(const ros::Time& time, const ros::Duration& /*pe
 					if (realtime_illuminance_publisher_->trylock())
 					{
 						realtime_illuminance_publisher_->msg_.header.stamp = time;
-
-
+						realtime_illuminance_publisher_->msg_.illuminance=value0;
+						realtime_illuminance_publisher_->unlockAndPublish();
+						published=true;
 					}
-
 					break;
 
 
 				case Ev3Strings::EV3COLORMODE_COL_COLOR:
-				case Ev3Strings::EV3COLORMODE_RGB_RAW:
-					if (realtime_range_publisher_->trylock())
-					{
-						realtime_range_publisher_->msg_.header.stamp = time;
-
-						if(value!=2550)
-						{
-							double dval = ((double) value) / 1000.0; //to meters
-
-							if(dval < min_range_)
-							{
-								dval=-std::numeric_limits<double>::infinity();
-							}
-							else if(dval > max_range_)
-							{
-								dval=std::numeric_limits<double>::infinity();
-							}
-
-							realtime_range_publisher_->msg_.range=dval;
-						}
-						else
-						{
-							//value==2550 means no response (either covered sensor or too far away)
-							realtime_range_publisher_->msg_.range = std::numeric_limits<double>::infinity();
-						}
-
-						realtime_range_publisher_->unlockAndPublish();
-						published=true;
-					}
-					break;
-
-				case Ev3Strings::EV3ULTRASONICMODE_US_LISTEN:
-					if (realtime_bool_publisher_->trylock())
-					{
-						realtime_bool_publisher_->msg_.data=(bool)value;
-						realtime_bool_publisher_->unlockAndPublish();
-						published=true;
-					}
-					break;
-
-				default:
-					break;
+				{
+					realtime_color_number_publisher_->msg_.data=value0;
+					realtime_color_number_publisher_->unlockAndPublish();
+					published=true;
 				}
+				break;
 
+				case Ev3Strings::EV3COLORMODE_RGB_RAW:
+					if (realtime_color_publisher_->trylock())
+					{
+						realtime_color_publisher_->msg_.r=value0;
+						realtime_color_publisher_->msg_.g=value1;
+						realtime_color_publisher_->msg_.b=value2;
+						realtime_color_publisher_->unlockAndPublish();
+						published=true;
+					}
+
+				}
 
 				if(published)
 				{
 					last_publish_time_ = last_publish_time_
 							+ ros::Duration(1.0 / publish_rate_);
 				}
-
 		}
 	}
 
