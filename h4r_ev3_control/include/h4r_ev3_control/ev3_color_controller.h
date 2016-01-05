@@ -46,8 +46,6 @@ private:
 	H4REv3ColorSensorSpecIface color_interface_;
 	bool sensor_mode_needs_init_;
 
-	double max_range_;
-	double min_range_;
 	std::string frame_id_;
 
 	//Range Publisher
@@ -60,7 +58,7 @@ private:
 	RtColorPublisherPtr realtime_color_publisher_;
 
 	typedef boost::shared_ptr<
-			realtime_tools::RealtimePublisher<std_msgs::Int8> > RtColorNumberPublisherPtr;
+			realtime_tools::RealtimePublisher<std_msgs::UInt8> > RtColorNumberPublisherPtr;
 	RtColorNumberPublisherPtr realtime_color_number_publisher_;
 
 	ros::Time last_publish_time_;
