@@ -19,8 +19,8 @@
  * along with ev3_control.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef EV3ULTRASONICCONTROLLER_H_
-#define EV3ULTRASONICCONTROLLER_H_
+#ifndef EV3_ULTRASONIC_CONTROLLER_H_
+#define EV3_ULTRASONIC_CONTROLLER_H_
 
 #include <controller_interface/controller.h>
 #include <pluginlib/class_list_macros.h>
@@ -78,4 +78,4 @@ public:
 
 } /* namespace ev3_control */
 
-#endif /* EV3ULTRASONICCONTROLLER_H_ */
+#endif /* EV3_ULTRASONIC_CONTROLLER_H_ */
