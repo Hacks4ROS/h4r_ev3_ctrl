@@ -1,7 +1,11 @@
 Ev3Gyro:
-  type: h4r_ev3_control/Ev3GyroController
-  frame_id: gyro_link
-  topic_name: /gyro
-  publish_rate: 10
-  port: in4
-  mode: angle
+  type: h4r_ev3_control/Ev3GyroController #Controller Type
+  frame_id: gyro_link #Frame ID for IMU message
+  topic_name: /gyro #Topic Name
+  publish_rate: 10 #Publish Rate
+  port: in4 #EV3 Input Port 
+  mode: angle 
+  # mode: 
+  # angle - returns the angle in a imu message
+  # rate - returns the turning rate
+  # rate&angle - returns the angle and the rate (WARNING: according to EV3Dev documentation the driver crashes when reaching an angle of around 32000!)"
