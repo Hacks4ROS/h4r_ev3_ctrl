@@ -132,11 +132,11 @@ bool Ev3ColorController::init(Ev3SensorInterface* hw,
 				frame_id_=port_;
 				ROS_INFO_STREAM("Parameter frame_id not given or wrong type, using "<<port_);
 			}
-			realtime_illuminance_publisher_->msg_.header.frame_id=frame_id_;
 
 			realtime_illuminance_publisher_ = RtIlluminancePublisherPtr(
 					new realtime_tools::RealtimePublisher<sensor_msgs::Illuminance>(
 							root_nh, topic_name, 4));
+			realtime_illuminance_publisher_->msg_.header.frame_id=frame_id_;
 
 			break;
 
@@ -160,8 +160,8 @@ bool Ev3ColorController::init(Ev3SensorInterface* hw,
 				ROS_INFO_STREAM("Parameter 'topic_name' not given or wrong type, using "<<topic_name);
 			}
 			std::cout<<"Ambient Mode Setup!"<<std::endl;
-			realtime_color_number_publisher_ = RtColorNumberPublisherPtr(
-					new realtime_tools::RealtimePublisher<std_msgs::UInt8>(
+			realtime_color_publisher_ = RtColorPublisherPtr(
+					new realtime_tools::RealtimePublisher<std_msgs::ColorRGBA>(
 							root_nh, topic_name, 4));
 			break;
 
