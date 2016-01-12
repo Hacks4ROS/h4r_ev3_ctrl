@@ -9,6 +9,7 @@ find_package(catkin REQUIRED COMPONENTS
   realtime_tools
   roscpp
   sensor_msgs
+  h4r_ev3_msgs
 )
 
 add_definitions(-std=c++11)
