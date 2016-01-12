@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package>
+  <name>h4r_ev3_msgs</name>
+  <version>0.0.0</version>
+  <description>The h4r_ev3_msgs package</description>
+
+
+  <maintainer email="cyborgx1@gmail.com">Christian Holl</maintainer>
+  <author email="cyborgx1@gmail.com">Christian Holl</author>
+  <license>GPLv3</license>
+
+  <url type="website">http://hacks4ros.github.io/h4r_ev3_ctrl</url>  
+  <url type="repository">http://github.com/Hacks4ROS/h4r_ev3_ctrl</url>
+  <url type="bugtracker">https://github.com/Hacks4ROS/h4r_ev3_ctrl/issues</url>
+  
+  <build_depend>message_generation</build_depend>
+  <run_depend>message_runtime</run_depend>
+  <buildtool_depend>catkin</buildtool_depend>
+
+
+  <export>
+  </export>
+</package>
