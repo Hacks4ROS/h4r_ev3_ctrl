@@ -39,6 +39,7 @@ add_library(ev3_controllers
   src/${PROJECT_NAME}/ev3_gyro_controller.cpp       include/${PROJECT_NAME}/ev3_gyro_controller.h  
   src/${PROJECT_NAME}/ev3_touch_controller.cpp      include/${PROJECT_NAME}/ev3_touch_controller.h
   src/${PROJECT_NAME}/ev3_color_controller.cpp      include/${PROJECT_NAME}/ev3_color_controller.h  
+  src/${PROJECT_NAME}/ev3_infrared_controller.cpp      include/${PROJECT_NAME}/ev3_infrared_controller.h  
 )
 target_link_libraries(ev3_controllers ${catkin_LIBRARIES})
 
