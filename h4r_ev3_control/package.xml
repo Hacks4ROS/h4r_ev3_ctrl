@@ -6,7 +6,7 @@
 
   <maintainer email="cyborgx1@gmail.com">Christian Holl</maintainer>
 
-  <license>BSD</license>
+  <license>GPLv3</license>
 
   <url type="website">http://hacks4ros.github.io/h4r_ev3_ctrl</url>  
   <url type="repository">http://github.com/Hacks4ROS/h4r_ev3_ctrl</url>
