@@ -22,7 +22,7 @@ include_directories(
 
 # Declare catkin package
 catkin_package(
-  CATKIN_DEPENDS controller_interface hardware_interface sensor_msgs realtime_tools
+  CATKIN_DEPENDS controller_interface hardware_interface sensor_msgs realtime_tools h4r_ev3_msgs
   INCLUDE_DIRS include
   LIBRARIES ev3_control
   )
