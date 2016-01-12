@@ -93,11 +93,11 @@ bool Ev3InfraredController::init(Ev3SensorInterface* hw,
 
 
 		handle_ = hw->getHandle(port_);
-		us_interface_.setSensor(handle_.getSensor());
+		ir_interface_.setSensor(handle_.getSensor());
 
 		//TODO Mode handling
 
-		if(!us_interface_.isConnected())
+		if(!ir_interface_.isConnected())
 		{
 
 			ROS_ERROR_STREAM(
@@ -163,8 +163,9 @@ bool Ev3InfraredController::init(Ev3SensorInterface* hw,
 
 			std::cout<<"Seek Mode Setup!"<<std::endl;
 			//Create publisher for Listen
-			realtime_seek_publisher_ = RtSeekPublisherPtr(
-					new realtime_tools::RealtimePublisher<std_msgs::Bool>(
+			for (int i = 0; i < 4; ++i)
+			realtime_seek_publishers_[i] = RtSeekPublisherPtr(
+					new realtime_tools::RealtimePublisher<h4r_ev3_msgs::Seek>(
 							root_nh, topic_name, 4));
 			break;
 
@@ -201,7 +202,10 @@ bool Ev3InfraredController::init(Ev3SensorInterface* hw,
 
 void Ev3InfraredController::starting(const ros::Time& time)
 {
-	last_publish_time_ = time;
+	for (int i = 0; i < 4; ++i)
+	{
+		last_publish_time_[i] = time;
+	}
 }
 
 void Ev3InfraredController::update(const ros::Time& time, const ros::Duration& /*period*/)
@@ -211,7 +215,7 @@ void Ev3InfraredController::update(const ros::Time& time, const ros::Duration& /
 		int value[8];
 
 
-		if(!us_interface_.isConnected())
+		if(!ir_interface_.isConnected())
 		{
 			//ROS_ERROR_STREAM("Lego Subsonic Sensor disconnected for port: "<<port_);
 			sensor_mode_needs_init_=true;
@@ -220,7 +224,7 @@ void Ev3InfraredController::update(const ros::Time& time, const ros::Duration& /
 
 		if(sensor_mode_needs_init_)
 		{
-			sensor_mode_needs_init_=!(us_interface_.setMode(mode_));
+			sensor_mode_needs_init_=!(ir_interface_.setMode(mode_));
 			if(sensor_mode_needs_init_)
 			{
 				ROS_ERROR("Could not set sensor mode!");
@@ -248,63 +252,79 @@ void Ev3InfraredController::update(const ros::Time& time, const ros::Duration& /
 		}
 
 
-		if (publish_rate_ > 0.0
-		    && last_publish_time_ + ros::Duration(1.0 / publish_rate_)< time)
-		{
+
 				bool published[4]={false,false,false,false};
 				switch(mode_)
 				{
 				case Ev3Strings::EV3INFRAREDMODE_IR_PROX:
-					if (realtime_range_publisher_->trylock())
+					if (publish_rate_ > 0.0
+					    && last_publish_time_[0] + ros::Duration(1.0 / publish_rate_)< time)
 					{
-						realtime_range_publisher_->msg_.header.stamp = time;
 
-						if(value!=2550)
+						if (realtime_range_publisher_->trylock())
 						{
-							double dval = ((double) value) / 1000.0; //to meters
+							realtime_range_publisher_->msg_.header.stamp = time;
 
-							if(dval < min_range_)
+							if(value[0]!=2550)
 							{
-								dval=-std::numeric_limits<double>::infinity();
+								double dval = ((double) value[0]) / 1000.0; //to meters
+
+								if(dval < min_range_)
+								{
+									dval=-std::numeric_limits<double>::infinity();
+								}
+								else if(dval > max_range_)
+								{
+									dval=std::numeric_limits<double>::infinity();
+								}
+
+								realtime_range_publisher_->msg_.range=dval;
 							}
-							else if(dval > max_range_)
+							else
 							{
-								dval=std::numeric_limits<double>::infinity();
+								//value==2550 means no response (either covered sensor or too far away)
+								realtime_range_publisher_->msg_.range = std::numeric_limits<double>::infinity();
 							}
 
-							realtime_range_publisher_->msg_.range=dval;
+							realtime_range_publisher_->unlockAndPublish();
+							published[0]=true;
 						}
-						else
-						{
-							//value==2550 means no response (either covered sensor or too far away)
-							realtime_range_publisher_->msg_.range = std::numeric_limits<double>::infinity();
-						}
-
-						realtime_range_publisher_->unlockAndPublish();
-						published=true;
 					}
 					break;
 
 				case Ev3Strings::EV3INFRAREDMODE_IR_SEEK:
 					for (int i = 0; i < 4; ++i)
-					if (realtime_seek_publishers_[i]->trylock())
 					{
-						realtime_seek_publishers_[i]->msg_.heading=value[i*2];
-						realtime_seek_publishers_[i]->msg_.distance=value[i*2+1];
+						if (publish_rate_ > 0.0
+						    && last_publish_time_[i] + ros::Duration(1.0 / publish_rate_)< time)
+						{
+							if (realtime_seek_publishers_[i]->trylock())
+							{
+								realtime_seek_publishers_[i]->msg_.heading=value[i*2];
+								realtime_seek_publishers_[i]->msg_.distance=value[i*2+1];
 
-						realtime_seek_publishers_[i]->unlockAndPublish();
-						published[i]=true;
+								realtime_seek_publishers_[i]->unlockAndPublish();
+								published[i]=true;
+							}
+						}
+
 					}
 					break;
 
 				case Ev3Strings::EV3INFRAREDMODE_IR_REMOTE:
 					for (int i = 0; i < 4; ++i)
-					if (realtime_joy_publishers_[i]->trylock())
 					{
-						//TODO for (int v = 0; v < 5; ++v)
-						//realtime_joy_publishers_[i]->msg_.buttons[v]=value[v];
-						realtime_joy_publishers_[i]->unlockAndPublish();
-						published=true;
+						if (publish_rate_ > 0.0
+						    && last_publish_time_[i] + ros::Duration(1.0 / publish_rate_)< time)
+						{
+							if (realtime_joy_publishers_[i]->trylock())
+							{
+								//TODO for (int v = 0; v < 5; ++v)
+								//realtime_joy_publishers_[i]->msg_.buttons[v]=value[v];
+								realtime_joy_publishers_[i]->unlockAndPublish();
+								published[i]=true;
+							}
+						}
 					}
 				break;
 
@@ -312,14 +332,16 @@ void Ev3InfraredController::update(const ros::Time& time, const ros::Duration& /
 					break;
 				}
 
-
-				if(published)
+				for (int i = 0; i < 4; ++i)
 				{
-					last_publish_time_ = last_publish_time_
-							+ ros::Duration(1.0 / publish_rate_);
+					if(published[i])
+					{
+						last_publish_time_[i] = last_publish_time_[i]
+								+ ros::Duration(1.0 / publish_rate_);
+					}
 				}
 
-		}
+
 	}
 
 PLUGINLIB_EXPORT_CLASS(ev3_control::Ev3InfraredController, controller_interface::ControllerBase)

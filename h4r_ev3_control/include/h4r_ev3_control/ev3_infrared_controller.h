@@ -41,9 +41,9 @@ class Ev3InfraredController: public controller_interface::Controller<
 {
 private:
 	std::string port_;
-	Ev3Strings::Ev3UltrasonicMode mode_;
+	Ev3Strings::Ev3InfraredMode mode_;
 	Ev3SensorHandle handle_;
-	H4REv3UltraSonicSensorSpecIface us_interface_;
+	H4REv3IRSensorSpecIface ir_interface_;
 	bool sensor_mode_needs_init_;
 
 	double max_range_;
@@ -64,7 +64,7 @@ private:
 	RtJoyPublisherPtr realtime_joy_publishers_[4];
 
 
-	ros::Time last_publish_time_;
+	ros::Time last_publish_time_[4];
 	double publish_rate_;
 
 public:
