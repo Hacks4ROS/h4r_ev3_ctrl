@@ -1,0 +1,7 @@
+Ev3Infrared:
+  type: h4r_ev3_control/Ev3InfraredController
+  frame_id: ir_link
+  topic_name: /ir
+  publish_rate: 10
+  port: in4
+  mode: remote 

@@ -22,7 +22,11 @@
 	This controller publishes Color sensor readings
   </description>
   </class>      
-
+   <class name="h4r_ev3_control/Ev3InfraredController" type="ev3_control::Ev3InfraredController" base_class_type="controller_interface::ControllerBase">
+  <description>
+	This controller publishes infrared sensor readings
+  </description>
+  </class>     
   </library>
 
 
