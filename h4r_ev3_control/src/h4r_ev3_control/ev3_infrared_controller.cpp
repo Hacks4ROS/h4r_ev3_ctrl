@@ -233,8 +233,13 @@ void Ev3InfraredController::update(const ros::Time& time, const ros::Duration& /
 
 
 
-		unsigned value_number=1;
-		if(mode_==Ev3Strings::EV3INFRAREDMODE_IR_SEEK)
+		unsigned value_number;
+
+		if(mode_==Ev3Strings::EV3INFRAREDMODE_IR_PROX)
+		{
+			value_number=1;
+		}
+		else if(mode_==Ev3Strings::EV3INFRAREDMODE_IR_SEEK)
 		{
 			value_number=8;
 		}
@@ -253,44 +258,44 @@ void Ev3InfraredController::update(const ros::Time& time, const ros::Duration& /
 
 
 
-				bool published[4]={false,false,false,false};
-				switch(mode_)
+		bool published[4]={false,false,false,false};
+		switch(mode_)
+		{
+		case Ev3Strings::EV3INFRAREDMODE_IR_PROX:
+			if (publish_rate_ > 0.0
+				&& last_publish_time_[0] + ros::Duration(1.0 / publish_rate_)< time)
+			{
+
+				if (realtime_range_publisher_->trylock())
 				{
-				case Ev3Strings::EV3INFRAREDMODE_IR_PROX:
-					if (publish_rate_ > 0.0
-					    && last_publish_time_[0] + ros::Duration(1.0 / publish_rate_)< time)
+					realtime_range_publisher_->msg_.header.stamp = time;
+
+					if(value[0]!=2550)
 					{
+						double dval = ((double) value[0]) / 1000.0; //to meters
 
-						if (realtime_range_publisher_->trylock())
+						if(dval < min_range_)
 						{
-							realtime_range_publisher_->msg_.header.stamp = time;
-
-							if(value[0]!=2550)
-							{
-								double dval = ((double) value[0]) / 1000.0; //to meters
-
-								if(dval < min_range_)
-								{
-									dval=-std::numeric_limits<double>::infinity();
-								}
-								else if(dval > max_range_)
-								{
-									dval=std::numeric_limits<double>::infinity();
-								}
-
-								realtime_range_publisher_->msg_.range=dval;
-							}
-							else
-							{
-								//value==2550 means no response (either covered sensor or too far away)
-								realtime_range_publisher_->msg_.range = std::numeric_limits<double>::infinity();
-							}
-
-							realtime_range_publisher_->unlockAndPublish();
-							published[0]=true;
+							dval=-std::numeric_limits<double>::infinity();
 						}
+						else if(dval > max_range_)
+						{
+							dval=std::numeric_limits<double>::infinity();
+						}
+
+						realtime_range_publisher_->msg_.range=dval;
 					}
-					break;
+					else
+					{
+						//value==2550 means no response (either covered sensor or too far away)
+						realtime_range_publisher_->msg_.range = std::numeric_limits<double>::infinity();
+					}
+
+					realtime_range_publisher_->unlockAndPublish();
+					published[0]=true;
+				}
+			}
+			break;
 
 				case Ev3Strings::EV3INFRAREDMODE_IR_SEEK:
 					for (int i = 0; i < 4; ++i)
@@ -319,8 +324,38 @@ void Ev3InfraredController::update(const ros::Time& time, const ros::Duration& /
 						{
 							if (realtime_joy_publishers_[i]->trylock())
 							{
-								//TODO for (int v = 0; v < 5; ++v)
-								//realtime_joy_publishers_[i]->msg_.buttons[v]=value[v];
+								for (int b = 0; b < 5; ++b) {
+									realtime_joy_publishers_[i]->msg_.buttons[b]=false;
+								}
+
+								realtime_joy_publishers_[i]->msg_.buttons[0]= //Red UP
+																		value[i]==1
+																		|| value[i]==5
+																		|| value[i]==6
+																		|| value[i]==10;
+
+								realtime_joy_publishers_[i]->msg_.buttons[1]=//Red Down
+																		value[i]==2
+																		|| value[i]==7
+																		|| value[i]==8
+																		|| value[i]==10;
+
+								realtime_joy_publishers_[i]->msg_.buttons[2]=//Blue up
+																		value[i]==3
+																		|| value[i]==5
+																		|| value[i]==7
+																		|| value[i]==11;
+
+								realtime_joy_publishers_[i]->msg_.buttons[3]=//Blue down
+																		value[i]==4
+																		|| value[i]==6
+																		|| value[i]==8
+																		|| value[i]==11;
+
+								realtime_joy_publishers_[i]->msg_.buttons[4]=//Beacon
+																		value[i]==9;
+
+
 								realtime_joy_publishers_[i]->unlockAndPublish();
 								published[i]=true;
 							}
