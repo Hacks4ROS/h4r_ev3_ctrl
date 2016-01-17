@@ -155,31 +155,38 @@ bool Ev3InfraredController::init(Ev3SensorInterface* hw,
 			break;
 
 		case Ev3Strings::EV3INFRAREDMODE_IR_SEEK:
-			topic_name=port_+"_us_seek";
-			if (!ctrl_nh.getParam("topic_name", topic_name))
-			{
-				ROS_INFO_STREAM("Parameter topic name not given using"<<topic_name);
-			}
+			topic_name=port_+"_ir_seek";
+			std::string param_name="topic_name";
 
 			std::cout<<"Seek Mode Setup!"<<std::endl;
 			//Create publisher for Listen
 			for (int i = 0; i < 4; ++i)
-			realtime_seek_publishers_[i] = RtSeekPublisherPtr(
-					new realtime_tools::RealtimePublisher<h4r_ev3_msgs::Seek>(
-							root_nh, topic_name, 4));
+			{
+				std::string number=((char)i+'0');
+				if (!ctrl_nh.getParam(param_name+number, topic_name))
+				{
+					ROS_INFO_STREAM("Parameter topic name not given using "<<topic_name<<" for channel "<<i);
+				}
+				realtime_seek_publishers_[i] = RtSeekPublisherPtr(
+						new realtime_tools::RealtimePublisher<h4r_ev3_msgs::Seek>(
+								root_nh, topic_name+, 4));
+			}
 			break;
 
 		case Ev3Strings::EV3INFRAREDMODE_IR_REMOTE:
-			topic_name=port_+"_us_remote";
-			if (!ctrl_nh.getParam("topic_name", topic_name))
-			{
-				ROS_INFO_STREAM("Parameter topic name not given using"<<topic_name);
-			}
+			topic_name=port_+"_ir_remote";
+			std::string param_name="topic_name";
+
 
 			std::cout<<"Remote Mode Setup!"<<std::endl;
 			//Create publisher for Listen
 			for (int i = 0; i < 4; ++i)
 			{
+				std::string number=((char)i+'0');
+				if (!ctrl_nh.getParam(param_name+number, topic_name))
+				{
+					ROS_INFO_STREAM("Parameter topic name not given using "<<topic_name<<" for channel "<<i);
+				}
 				realtime_joy_publishers_[i] = RtJoyPublisherPtr(
 						new realtime_tools::RealtimePublisher<sensor_msgs::Joy>(
 								root_nh, topic_name, 4));
