@@ -45,6 +45,7 @@ Ev3InfraredController::~Ev3InfraredController()
 bool Ev3InfraredController::init(Ev3SensorInterface* hw,
 			ros::NodeHandle &root_nh,
 			ros::NodeHandle& ctrl_nh)
+:first_time_(true)
 	{
 
 		// get publishing period
@@ -384,7 +385,8 @@ void Ev3InfraredController::update(const ros::Time& time, const ros::Duration& /
 									realtime_joy_publishers_[i]->msg_.buttons[1]==red_down_pressed&&
 									realtime_joy_publishers_[i]->msg_.buttons[2]==blue_up_pressed&&
 									realtime_joy_publishers_[i]->msg_.buttons[3]==blue_down_pressed&&
-									realtime_joy_publishers_[i]->msg_.buttons[4]==beacon_mode_active
+									realtime_joy_publishers_[i]->msg_.buttons[4]==beacon_mode_active&&
+									!first_time_
 								)
 								{
 									realtime_joy_publishers_[i]->unlock();
@@ -392,6 +394,7 @@ void Ev3InfraredController::update(const ros::Time& time, const ros::Duration& /
 								}
 								else
 								{
+									first_time_=false;
 									realtime_joy_publishers_[i]->msg_.buttons[0]=red_up_pressed;
 									realtime_joy_publishers_[i]->msg_.buttons[1]=red_down_pressed;
 									realtime_joy_publishers_[i]->msg_.buttons[2]=blue_up_pressed;
