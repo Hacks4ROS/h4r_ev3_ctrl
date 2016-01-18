@@ -31,6 +31,7 @@ Ev3InfraredController::Ev3InfraredController()
 ,max_range_(2.0)
 ,min_range_(0)
 ,publish_rate_(10)
+,first_time_(true)
 {
 	// TODO Auto-generated constructor stub
 
@@ -45,7 +46,7 @@ Ev3InfraredController::~Ev3InfraredController()
 bool Ev3InfraredController::init(Ev3SensorInterface* hw,
 			ros::NodeHandle &root_nh,
 			ros::NodeHandle& ctrl_nh)
-:first_time_(true)
+
 	{
 
 		// get publishing period
@@ -189,10 +190,10 @@ bool Ev3InfraredController::init(Ev3SensorInterface* hw,
 				std::string number="0";
 				number[0]+=i;
 
-				param_name="topic_name"+number;
+				param_name="topic_name_"+number;
 				if (!ctrl_nh.getParam(param_name, topic_name))
 				{
-					topic_name=port_+"_ir_remote_";
+					topic_name=port_+"_ir_remote_"+number;
 					ROS_INFO_STREAM("Parameter "<<param_name<<" not given using "<<topic_name<<" for channel "<<i);
 				}
 
