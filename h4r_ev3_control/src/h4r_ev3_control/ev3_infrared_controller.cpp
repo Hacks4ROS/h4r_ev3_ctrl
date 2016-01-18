@@ -348,10 +348,6 @@ void Ev3InfraredController::update(const ros::Time& time, const ros::Duration& /
 						{
 							if (realtime_joy_publishers_[i]->trylock())
 							{
-								for (int b = 0; b < 5; ++b)
-								{
-									realtime_joy_publishers_[i]->msg_.buttons[b]=false;
-								}
 
 								realtime_joy_publishers_[i]->msg_.header.stamp=ros::Time::now();
 
@@ -393,17 +389,20 @@ void Ev3InfraredController::update(const ros::Time& time, const ros::Duration& /
 								{
 									realtime_joy_publishers_[i]->unlock();
 									published[i]=true;
-									break;
+								}
+								else
+								{
+									realtime_joy_publishers_[i]->msg_.buttons[0]=red_up_pressed;
+									realtime_joy_publishers_[i]->msg_.buttons[1]=red_down_pressed;
+									realtime_joy_publishers_[i]->msg_.buttons[2]=blue_up_pressed;
+									realtime_joy_publishers_[i]->msg_.buttons[3]=blue_down_pressed;
+									realtime_joy_publishers_[i]->msg_.buttons[4]=beacon_mode_active;
+
+									realtime_joy_publishers_[i]->unlockAndPublish();
+									published[i]=true;
 								}
 
-								realtime_joy_publishers_[i]->msg_.buttons[0]=red_up_pressed;
-								realtime_joy_publishers_[i]->msg_.buttons[1]=red_down_pressed;
-								realtime_joy_publishers_[i]->msg_.buttons[2]=blue_up_pressed;
-								realtime_joy_publishers_[i]->msg_.buttons[3]=blue_down_pressed;
-								realtime_joy_publishers_[i]->msg_.buttons[4]=beacon_mode_active;
 
-								realtime_joy_publishers_[i]->unlockAndPublish();
-								published[i]=true;
 							}
 						}
 					}
