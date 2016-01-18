@@ -256,7 +256,7 @@ void Ev3InfraredController::update(const ros::Time& time, const ros::Duration& /
 		}
 		else if(mode_==Ev3Strings::EV3INFRAREDMODE_IR_REMOTE)
 		{
-			value_number=5;
+			value_number=4;
 		}
 
 		for (int i = 0; i < value_number; ++i)
