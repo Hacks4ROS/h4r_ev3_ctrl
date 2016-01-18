@@ -31,7 +31,6 @@ Ev3InfraredController::Ev3InfraredController()
 ,max_range_(2.0)
 ,min_range_(0)
 ,publish_rate_(10)
-,first_time_(true)
 {
 	// TODO Auto-generated constructor stub
 
@@ -48,6 +47,10 @@ bool Ev3InfraredController::init(Ev3SensorInterface* hw,
 			ros::NodeHandle& ctrl_nh)
 
 	{
+
+		for (int i = 0; i < 4; ++i) {
+			first_time_[i]=true;
+		}
 
 		// get publishing period
 		if (!ctrl_nh.getParam("publish_rate", publish_rate_))
@@ -184,7 +187,7 @@ bool Ev3InfraredController::init(Ev3SensorInterface* hw,
 
 
 			std::cout<<"Remote Mode Setup!"<<std::endl;
-			//Create publisher for Listen
+			//Create publisher for remotes
 			for (int i = 0; i < 4; ++i)
 			{
 				std::string number="0";
@@ -387,7 +390,7 @@ void Ev3InfraredController::update(const ros::Time& time, const ros::Duration& /
 									realtime_joy_publishers_[i]->msg_.buttons[2]==blue_up_pressed&&
 									realtime_joy_publishers_[i]->msg_.buttons[3]==blue_down_pressed&&
 									realtime_joy_publishers_[i]->msg_.buttons[4]==beacon_mode_active&&
-									!first_time_
+									!first_time_[i]
 								)
 								{
 									realtime_joy_publishers_[i]->unlock();
@@ -395,7 +398,7 @@ void Ev3InfraredController::update(const ros::Time& time, const ros::Duration& /
 								}
 								else
 								{
-									first_time_=false;
+
 									realtime_joy_publishers_[i]->msg_.buttons[0]=red_up_pressed;
 									realtime_joy_publishers_[i]->msg_.buttons[1]=red_down_pressed;
 									realtime_joy_publishers_[i]->msg_.buttons[2]=blue_up_pressed;
@@ -404,12 +407,13 @@ void Ev3InfraredController::update(const ros::Time& time, const ros::Duration& /
 
 									realtime_joy_publishers_[i]->unlockAndPublish();
 									published[i]=true;
+									first_time_[i]=false;
 								}
-
 
 							}
 						}
 					}
+
 				break;
 
 				default:

@@ -67,7 +67,7 @@ private:
 
 	ros::Time last_publish_time_[4];
 	double publish_rate_;
-	bool first_time_;
+	bool first_time_[4];
 
 public:
 	Ev3InfraredController();
