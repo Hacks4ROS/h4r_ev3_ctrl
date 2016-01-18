@@ -95,6 +95,7 @@ bool Ev3InfraredController::init(Ev3SensorInterface* hw,
 		handle_ = hw->getHandle(port_);
 		ir_interface_.setSensor(handle_.getSensor());
 
+
 		//TODO Mode handling
 
 		if(!ir_interface_.isConnected())
@@ -168,7 +169,7 @@ bool Ev3InfraredController::init(Ev3SensorInterface* hw,
 				if (!ctrl_nh.getParam(param_name+number, topic_name))
 				{
 					topic_name=port_+"_ir_seek"+number;
-					ROS_INFO_STREAM("Parameter topic name not given using "<<topic_name<<" for channel "<<i);
+					ROS_INFO_STREAM("Parameter "<<param_name+number<<" not given using "<<topic_name<<" for channel "<<i);
 				}
 				realtime_seek_publishers_[i] = RtSeekPublisherPtr(
 						new realtime_tools::RealtimePublisher<h4r_ev3_msgs::Seek>(
@@ -186,15 +187,27 @@ bool Ev3InfraredController::init(Ev3SensorInterface* hw,
 			{
 				std::string number="0";
 				number[0]+=i;
-				if (!ctrl_nh.getParam(param_name+number, topic_name))
+
+				param_name="topic_name"+number;
+				if (!ctrl_nh.getParam(param_name, topic_name))
 				{
-					topic_name=port_+"_ir_remote"+number;
-					ROS_INFO_STREAM("Parameter topic name not given using "<<topic_name<<" for channel "<<i);
+					topic_name=port_+"_ir_remote_";
+					ROS_INFO_STREAM("Parameter "<<param_name<<" not given using "<<topic_name<<" for channel "<<i);
 				}
+
+				param_name="frame_id_"+number;
+				if (!ctrl_nh.getParam(param_name, frame_id_))
+				{
+					frame_id_=port_+"_ir_remote_"+number;
+					ROS_INFO_STREAM("Parameter "<<param_name<<" not given using "<<frame_id_<<" for channel "<<i);
+				}
+
+
 				realtime_joy_publishers_[i] = RtJoyPublisherPtr(
 						new realtime_tools::RealtimePublisher<sensor_msgs::Joy>(
 								root_nh, topic_name, 4));
 				realtime_joy_publishers_[i]->msg_.buttons.resize(5);
+				realtime_joy_publishers_[i]->msg_.header.frame_id=frame_id_;
 			}
 			break;
 
@@ -207,6 +220,24 @@ bool Ev3InfraredController::init(Ev3SensorInterface* hw,
 		}
 
 
+		if(mode_==Ev3Strings::EV3INFRAREDMODE_IR_PROX)
+		{
+			value_number_=1;
+		}
+		else if(mode_==Ev3Strings::EV3INFRAREDMODE_IR_SEEK)
+		{
+			value_number_=8;
+		}
+		else if(mode_==Ev3Strings::EV3INFRAREDMODE_IR_REMOTE)
+		{
+			value_number_=4;
+		}
+		else
+		{
+			//Normally we should not get here but if a mode was added it saves debugging time ;-)
+			ROS_ERROR("Mode not supported - value number unknown!");
+			return false;
+		}
 
 		return true;
 	}
@@ -242,32 +273,14 @@ void Ev3InfraredController::update(const ros::Time& time, const ros::Duration& /
 			}
 		}
 
-
-
-		unsigned value_number;
-
-		if(mode_==Ev3Strings::EV3INFRAREDMODE_IR_PROX)
-		{
-			value_number=1;
-		}
-		else if(mode_==Ev3Strings::EV3INFRAREDMODE_IR_SEEK)
-		{
-			value_number=8;
-		}
-		else if(mode_==Ev3Strings::EV3INFRAREDMODE_IR_REMOTE)
-		{
-			value_number=4;
-		}
-
-		for (int i = 0; i < value_number; ++i)
+		//Optain all values...
+		for (int i = 0; i < value_number_; ++i)
 		{
 			if (!handle_.getValue(i, value[i]))
 			{
 				return;
 			}
 		}
-
-
 
 		bool published[4]={false,false,false,false};
 		switch(mode_)
@@ -338,6 +351,8 @@ void Ev3InfraredController::update(const ros::Time& time, const ros::Duration& /
 								for (int b = 0; b < 5; ++b) {
 									realtime_joy_publishers_[i]->msg_.buttons[b]=false;
 								}
+
+								realtime_joy_publishers_[i]->msg_.header.stamp=ros::Time::now();
 
 								realtime_joy_publishers_[i]->msg_.buttons[0]= //Red UP
 																		value[i]==1

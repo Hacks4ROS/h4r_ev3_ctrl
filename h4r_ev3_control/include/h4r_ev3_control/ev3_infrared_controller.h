@@ -49,6 +49,7 @@ private:
 	double max_range_;
 	double min_range_;
 	std::string frame_id_;
+	unsigned value_number_;
 
 	//Range Publisher
 	typedef boost::shared_ptr<
