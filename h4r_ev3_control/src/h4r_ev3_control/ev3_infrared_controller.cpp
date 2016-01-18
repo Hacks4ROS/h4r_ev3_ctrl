@@ -207,7 +207,7 @@ bool Ev3InfraredController::init(Ev3SensorInterface* hw,
 
 				realtime_joy_publishers_[i] = RtJoyPublisherPtr(
 						new realtime_tools::RealtimePublisher<sensor_msgs::Joy>(
-								root_nh, topic_name, 4));
+								root_nh, topic_name, 4,true));
 				realtime_joy_publishers_[i]->msg_.buttons.resize(5);
 				realtime_joy_publishers_[i]->msg_.header.frame_id=frame_id_;
 			}
