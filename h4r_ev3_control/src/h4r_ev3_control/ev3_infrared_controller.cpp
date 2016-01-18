@@ -334,8 +334,31 @@ void Ev3InfraredController::update(const ros::Time& time, const ros::Duration& /
 						{
 							if (realtime_seek_publishers_[i]->trylock())
 							{
-								realtime_seek_publishers_[i]->msg_.heading=value[i*2];
-								realtime_seek_publishers_[i]->msg_.distance=value[i*2+1];
+								double distance=value[i*2+1];
+								double heading=value[i*2];
+
+								if(distance>=100.0)
+								{
+									realtime_seek_publishers_[i]->msg_.distance=std::numeric_limits<double>::infinity();
+								}
+								else if(distance>=0.0)
+								{
+									realtime_seek_publishers_[i]->msg_.distance=distance;
+								}
+								else //distance<0
+								{
+									realtime_seek_publishers_[i]->msg_.distance=std::numeric_limits<double>::quiet_NaN();
+								}
+
+								if(distance<100.0)
+								{
+									realtime_seek_publishers_[i]->msg_.heading=heading;
+								}
+								else
+								{
+									realtime_seek_publishers_[i]->msg_.heading=std::numeric_limits<double>::quiet_NaN();
+								}
+
 
 								realtime_seek_publishers_[i]->unlockAndPublish();
 								published[i]=true;
