@@ -348,39 +348,59 @@ void Ev3InfraredController::update(const ros::Time& time, const ros::Duration& /
 						{
 							if (realtime_joy_publishers_[i]->trylock())
 							{
-								for (int b = 0; b < 5; ++b) {
+								for (int b = 0; b < 5; ++b)
+								{
 									realtime_joy_publishers_[i]->msg_.buttons[b]=false;
 								}
 
 								realtime_joy_publishers_[i]->msg_.header.stamp=ros::Time::now();
 
-								realtime_joy_publishers_[i]->msg_.buttons[0]= //Red UP
-																		value[i]==1
-																		|| value[i]==5
-																		|| value[i]==6
-																		|| value[i]==10;
+								bool red_up_pressed=
+										value[i]==1
+										|| value[i]==5
+										|| value[i]==6
+										|| value[i]==10;
 
-								realtime_joy_publishers_[i]->msg_.buttons[1]=//Red Down
-																		value[i]==2
-																		|| value[i]==7
-																		|| value[i]==8
-																		|| value[i]==10;
+								bool red_down_pressed=
+										   value[i]==2
+										|| value[i]==7
+										|| value[i]==8
+										|| value[i]==10;
 
-								realtime_joy_publishers_[i]->msg_.buttons[2]=//Blue up
-																		value[i]==3
-																		|| value[i]==5
-																		|| value[i]==7
-																		|| value[i]==11;
+								bool blue_up_pressed=
+										value[i]==3
+										|| value[i]==5
+										|| value[i]==7
+										|| value[i]==11;
+								bool blue_down_pressed=
+										value[i]==4
+										|| value[i]==6
+										|| value[i]==8
+										|| value[i]==11;
 
-								realtime_joy_publishers_[i]->msg_.buttons[3]=//Blue down
-																		value[i]==4
-																		|| value[i]==6
-																		|| value[i]==8
-																		|| value[i]==11;
+								bool beacon_mode_active=
+										value[i]==9;
 
-								realtime_joy_publishers_[i]->msg_.buttons[4]=//Beacon
-																		value[i]==9;
 
+								//Only publish on change otherwise assume published and end...
+								if(
+									realtime_joy_publishers_[i]->msg_.buttons[0]==red_up_pressed&&
+									realtime_joy_publishers_[i]->msg_.buttons[1]==red_down_pressed&&
+									realtime_joy_publishers_[i]->msg_.buttons[2]==blue_up_pressed&&
+									realtime_joy_publishers_[i]->msg_.buttons[3]==blue_down_pressed&&
+									realtime_joy_publishers_[i]->msg_.buttons[4]==beacon_mode_active
+								)
+								{
+									realtime_joy_publishers_[i]->unlock();
+									published[i]=true;
+									break;
+								}
+
+								realtime_joy_publishers_[i]->msg_.buttons[0]=red_up_pressed;
+								realtime_joy_publishers_[i]->msg_.buttons[1]=red_down_pressed;
+								realtime_joy_publishers_[i]->msg_.buttons[2]=blue_up_pressed;
+								realtime_joy_publishers_[i]->msg_.buttons[3]=blue_down_pressed;
+								realtime_joy_publishers_[i]->msg_.buttons[4]=beacon_mode_active;
 
 								realtime_joy_publishers_[i]->unlockAndPublish();
 								published[i]=true;
