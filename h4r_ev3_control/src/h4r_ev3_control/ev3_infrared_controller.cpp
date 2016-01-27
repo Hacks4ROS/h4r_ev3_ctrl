@@ -86,8 +86,16 @@ bool Ev3InfraredController::init(Ev3SensorInterface* hw,
 		 * 2. **seek** publishes four topics containing the heading and the distance
 		 * value to ir-remotes in beacon mode for each remote channel
 		 *
-		 * 3. **remote** publishes the four remote channels of the ir-sensor
-		 * to four different topics from type **sensor_msgs::Joy**
+		 * 3. **remote**\n
+		 *    publishes the four remote channels of the ir-sensor to four different topics from type **sensor_msgs::Joy**\n
+		 *    The buttons in the joy topic correlate to the following array element:
+		 *    Element | Button
+		 *    --------|-------
+		 *	        0 | red up
+		 *		    1 | red down
+		 *		    2 | blue up
+		 *		    3 | blue down
+		 *		    4 | beacon
 		 *
 		 *
 		 */
