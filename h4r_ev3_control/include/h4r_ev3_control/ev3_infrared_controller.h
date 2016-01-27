@@ -36,6 +36,16 @@
 namespace ev3_control
 {
 
+/**
+ * \page Ev3InfraredController Ev3InfraredController
+ * \ingroup Ev3Controllers
+ * \section Controller Function
+ * This controller is used to read the standard EV3 Infrared Sensor
+ */
+
+/**
+ * \ingroup Ev3Controllers
+ */
 class Ev3InfraredController: public controller_interface::Controller<
 		Ev3SensorInterface>
 {

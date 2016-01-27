@@ -53,8 +53,7 @@ bool Ev3ColorController::init(Ev3SensorInterface* hw,
 	     * \section Parameters
 	     * \subsection publish_rate
 	     *
-	     * The publish_rate parameter sets the rate which the controller should use to publish its
-	     * messages.
+	     * The rate which the controller should use to publish its messages.
 	     */
 		if (!ctrl_nh.getParam("publish_rate", publish_rate_))
 		{
@@ -67,7 +66,7 @@ bool Ev3ColorController::init(Ev3SensorInterface* hw,
 		* \subsection port
 		*
 		*
-		* The port parameter specifies the EV3 port name.
+		* Specifies the EV3 port name.
 		*/
 		if (!ctrl_nh.getParam("port", port_))
 		{
@@ -79,38 +78,38 @@ bool Ev3ColorController::init(Ev3SensorInterface* hw,
 
 
 		/**
-		* \page Ev3ColorController Ev3ColorController
-		* \subsection mode
-		*
-		* The mode parameter gives the mode for the color sensor. If not set, it will use **rgb_raw**.
-		*
-		* The following modes are possible for the sensor:
-		* 1. **rgb_raw**\n
-		*    'rgb_raw' mode uses the RGB_RAW mode of this sensor.
-		*    It will output the color information in RGB in a **std_msgs::ColorRGBA.msg** topic.
-		* 2. **color**\n
-		*    'color' mode publishes the a number for the following recognized colors into a **std_msgs::UInt8** topic\n
-		*    Value | Color
-		*    ------|------
-		*        0 | none
-		* 	      1 | black
-		*        2 | blue
-		*        3 | green
-		*        4 | yellow
-		*        5 | red
-		*        6 | white
-		*        7 | brown
-		*
-		* 3. **ambient**\n
-		*	   'ambient' mode measures the ambient light and publishes into a **sensor_msgs::Illuminance** topic
-		*
-		* 4. **reflect**\n
-		*     'reflect' mode measures the reflected light from an obstacle and publishes into a **sensor_msgs::Illuminance** topic
-		*
-		*  \warning Currently **ambient** and **reflect** publish the direct sensor value (percent) in percent - this will change so that it fits the output value in the message
-		*  or the message type will be changed when it is found to be not right.
-		*	\todo check how to calculate LUX value for message or change message type
-		*/
+		 * \page Ev3ColorController Ev3ColorController
+		 * \subsection mode
+		 *
+		 * The mode parameter sets the mode for the color sensor. If not set, it will use **rgb_raw**.
+		 *
+		 * The following modes are possible for the sensor:
+		 * 1. **rgb_raw**\n
+		 *    'rgb_raw' mode uses the RGB_RAW mode of this sensor.
+		 *    It will output the color information in RGB in a **std_msgs::ColorRGBA.msg** topic.
+		 * 2. **color**\n
+		 *    'color' mode publishes the a number for the following recognized colors into a **std_msgs::UInt8** topic\n
+		 *    Value | Color
+		 *    ------|------
+		 *        0 | none
+		 * 	      1 | black
+		 *        2 | blue
+		 *        3 | green
+		 *        4 | yellow
+		 *        5 | red
+		 *        6 | white
+		 *        7 | brown
+		 *
+		 * 3. **ambient**\n
+		 *	   'ambient' mode measures the ambient light and publishes into a **sensor_msgs::Illuminance** topic
+		 *
+		 * 4. **reflect**\n
+		 *     'reflect' mode measures the reflected light from an obstacle and publishes into a **sensor_msgs::Illuminance** topic
+		 *
+		 *  \warning Currently **ambient** and **reflect** publish the direct sensor value (percent) in percent - this will change so that it fits the output value in the message
+		 *  or the message type will be changed when it is found to be not right.
+		 *	\todo check how to calculate LUX value for message or change message type
+		 */
 		if (!ctrl_nh.getParam("mode", mode_str))
 		{
 			ROS_ERROR("Parameter mode was not set, using 'rgb_raw'");
@@ -175,15 +174,18 @@ bool Ev3ColorController::init(Ev3SensorInterface* hw,
 			}
 
 
-			if (!ctrl_nh.getParam("topic_name", topic_name))
-			{
-				ROS_INFO_STREAM("Parameter 'topic_name' not given or wrong type, using "<<topic_name);
-			}
+
 
 			if (!ctrl_nh.getParam("frame_id", frame_id_))
 			{
 				frame_id_=port_;
-				ROS_INFO_STREAM("Parameter frame_id not given or wrong type, using "<<port_);
+				ROS_INFO_STREAM("Parameter frame_id not given, using "<<port_);
+			}
+
+
+			if (!ctrl_nh.getParam("topic_name", topic_name))
+			{
+				ROS_INFO_STREAM("Parameter 'topic_name' not given, using "<<topic_name);
 			}
 
 			realtime_illuminance_publisher_ = RtIlluminancePublisherPtr(
@@ -198,7 +200,7 @@ bool Ev3ColorController::init(Ev3SensorInterface* hw,
 			topic_name=port_+"_color_number";
 			if (!ctrl_nh.getParam("topic_name", topic_name))
 			{
-				ROS_INFO_STREAM("Parameter 'topic_name' not given or wrong type, using "<<topic_name);
+				ROS_INFO_STREAM("Parameter 'topic_name' not given, using "<<topic_name);
 			}
 			std::cout<<"Ambient Mode Setup!"<<std::endl;
 			realtime_color_number_publisher_ = RtColorNumberPublisherPtr(
@@ -210,7 +212,7 @@ bool Ev3ColorController::init(Ev3SensorInterface* hw,
 			topic_name=port_+"_color_rgb_raw";
 			if (!ctrl_nh.getParam("topic_name", topic_name))
 			{
-				ROS_INFO_STREAM("Parameter 'topic_name' not given or wrong type, using "<<topic_name);
+				ROS_INFO_STREAM("Parameter 'topic_name' not given, using "<<topic_name);
 			}
 			std::cout<<"Ambient Mode Setup!"<<std::endl;
 			realtime_color_publisher_ = RtColorPublisherPtr(
@@ -226,6 +228,17 @@ bool Ev3ColorController::init(Ev3SensorInterface* hw,
 		}
 
 
+		/**
+		 * \page Ev3ColorController Ev3ColorController
+		 * \subsection frame_id
+		 * The frame_id used in the message
+		 */
+
+		/**
+		 * \page Ev3ColorController Ev3ColorController
+		 * \subsection topic_name
+		 * The topic name used for the output topic.
+		 */
 
 		return true;
 	}

@@ -52,18 +52,45 @@ bool Ev3InfraredController::init(Ev3SensorInterface* hw,
 			first_time_[i]=true;
 		}
 
-		// get publishing period
+	    /**
+	     *
+	     * \page Ev3InfraredController Ev3InfraredController
+	     * \section Parameters
+	     * \subsection publish_rate
+	     *
+	     * The rate which the controller should use to publish its messages.
+	     */
 		if (!ctrl_nh.getParam("publish_rate", publish_rate_))
 		{
 			ROS_ERROR("Parameter publish_rate was not set, using 10 Hz");
 		}
 
+
+		/**
+		 * \page Ev3InfraredController Ev3InfraredController
+		 * \subsection port
+		 *
+		 *
+		 * Specifies the EV3 port name.
+		 */
 		if (!ctrl_nh.getParam("port", port_))
 		{
 			ROS_ERROR("Parameter port was not set");
 			return false;
 		}
-
+		/**
+		 * \page Ev3InfraredController Ev3InfraredController
+		 * \subsection mode
+		 * 1. **proximity** publishes the distance of the sensor to a reflective surface.
+		 *
+		 * 2. **seek** publishes four topics containing the heading and the distance
+		 * value to ir-remotes in beacon mode for each remote channel
+		 *
+		 * 3. **remote** publishes the four remote channels of the ir-sensor
+		 * to four different topics from type **sensor_msgs::Joy**
+		 *
+		 *
+		 */
 		std::string mode_str;
 		if (!ctrl_nh.getParam("mode", mode_str))
 		{
@@ -109,6 +136,28 @@ bool Ev3InfraredController::init(Ev3SensorInterface* hw,
 			ROS_ERROR_STREAM(
 					"Need Infrared Sensor on port: "<<port_);
 			return false;
+		}
+
+
+		/**
+		 * \page Ev3InfraredController Ev3InfraredController
+		 * \subsection topic_name
+		 * is the topic name used for the output topic or if there are multiple
+		 * existing topics for the mode like for seek and remote.
+		 * The topic_name for each topic gets an appending number starting
+		 * from 0 (e.g. topic_name0).
+		 */
+
+		/**
+		 * \page Ev3InfraredController Ev3InfraredController
+		 * \subsection frame_id
+		 * is used in modes publishing a message with an header to set the frame_id
+		 * for the sensor.
+		 */
+		if (!ctrl_nh.getParam("frame_id", frame_id_))
+		{
+			frame_id_=port_;
+			ROS_INFO_STREAM("Parameter frame_id not given or wrong type, using "<<port_);
 		}
 
 		std::string topic_name;

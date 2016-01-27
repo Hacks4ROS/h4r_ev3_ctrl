@@ -40,8 +40,13 @@ namespace ev3_control
 
 /**
  * \page Ev3ColorController Ev3ColorController
+ * \ingroup Ev3Controllers
  * \section Controller Function
  * This controller is used to read the standard EV3 Color Sensor
+ */
+
+/**
+ * \ingroup Ev3Controllers
  */
 class Ev3ColorController: public controller_interface::Controller<
 		Ev3SensorInterface>
@@ -52,7 +57,6 @@ private:
 	Ev3SensorHandle handle_;
 	H4REv3ColorSensorSpecIface color_interface_;
 	bool sensor_mode_needs_init_;
-
 	std::string frame_id_;
 
 	//Range Publisher

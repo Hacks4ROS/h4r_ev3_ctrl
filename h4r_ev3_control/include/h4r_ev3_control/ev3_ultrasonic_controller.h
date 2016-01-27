@@ -35,6 +35,19 @@
 namespace ev3_control
 {
 
+/**
+ * \page Ev3UltrasonicController Ev3UltrasonicController
+ * \ingroup Ev3Controllers
+ * \section Controller Function
+ * This controller is used to read the standard EV3 Ultrasonic Sensor
+ *
+ * \example ultrasonic.launch
+ * \example ultrasonic.yaml
+ */
+
+/**
+ * \ingroup Ev3Controllers
+ */
 class Ev3UltrasonicController: public controller_interface::Controller<
 		Ev3SensorInterface>
 {

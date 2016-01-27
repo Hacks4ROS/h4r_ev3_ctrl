@@ -34,6 +34,16 @@
 namespace ev3_control
 {
 
+/**
+ * \page Ev3TouchController Ev3TouchController
+ * \ingroup Ev3Controllers
+ * \section Controller Function
+ * This controller is used to read the standard EV3 Touch Sensor
+ */
+
+/**
+ * \ingroup Ev3Controllers
+ */
 class Ev3TouchController: public controller_interface::Controller<
 		Ev3SensorInterface>
 {

@@ -34,7 +34,16 @@
 
 namespace ev3_control
 {
+/**
+ * \page Ev3GyroController Ev3GyroController
+ * \ingroup Ev3Controllers
+ * \section Controller Function
+ * This controller is used to read the standard EV3 Gyro Sensor
+ */
 
+/**
+ * \ingroup Ev3Controllers
+ */
 class Ev3GyroController: public controller_interface::Controller<
 		Ev3SensorInterface>
 {

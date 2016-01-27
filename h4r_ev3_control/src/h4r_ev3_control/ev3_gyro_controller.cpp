@@ -39,11 +39,26 @@ bool Ev3GyroController::init(Ev3SensorInterface* hw,
 			ros::NodeHandle& ctrl_nh)
 	{
 
+		/**
+		 *
+		 * \page Ev3GyroController Ev3GyroController
+		 * \section Parameters
+		 * \subsection publish_rate
+		 *
+		 * The rate the controller should use to publish its messages.
+		 */
 		if (!ctrl_nh.getParam("publish_rate", publish_rate_))
 		{
 			ROS_ERROR("Parameter publish_rate was not set, using 10 Hz");
 		}
 
+		/**
+		* \page Ev3GyroController Ev3GyroController
+		* \subsection port
+		*
+		*
+		* Specifies the EV3 port name.
+		*/
 		if (!ctrl_nh.getParam("port", port_))
 		{
 			ROS_ERROR("Parameter port was not set");
@@ -51,6 +66,25 @@ bool Ev3GyroController::init(Ev3SensorInterface* hw,
 		}
 
 		std::string mode_str;
+		/**
+		 * \page Ev3GyroController Ev3GyroController
+		 * \subsection mode
+		 *
+		 * The mode parameter sets the mode for the gyro sensor. If not set, it will use **angle**.
+		 * 1. **rate**
+		 *      publishes the turn rate into a **sensor_msgs::Imu topic** (z-axis).
+		 * 2. **angle**
+		 *      publishes the turn rate into a **sensor_msgs::Imu topic** (z-axis).
+		 * 3. **rate&angle**
+		 * 		publishes both turn and angle into a **sensor_msgs::Imu topic** (z-axis).
+		 *
+		 * \warning
+		 *  **rate&angle** has, according to the EV3Dev manual, an instability.
+		 *                 If the angle reaches 32767 or -32768 it will be stuck there.
+		 *                 This is a sensor issue.
+		 *                 Using this mode is not recommended.
+		 */
+
 		if (!ctrl_nh.getParam("mode", mode_str))
 		{
 			ROS_ERROR("Parameter mode was not set, using 'angle'");
@@ -96,6 +130,11 @@ bool Ev3GyroController::init(Ev3SensorInterface* hw,
 		}
 
 
+		/**
+		 * \page Ev3GyroController Ev3GyroController
+		 * \subsection frame_id
+		 * The frame_id used in the message
+		 */
 		if (!ctrl_nh.getParam("frame_id", frame_id_))
 		{
 			frame_id_=port_;
@@ -104,6 +143,11 @@ bool Ev3GyroController::init(Ev3SensorInterface* hw,
 
 		std::string topic_name;
 		topic_name=port_+"_gyro";
+		/**
+		 * \page Ev3GyroController Ev3GyroController
+		 * \subsection topic_name
+		 * The topic name used for the topic.
+		 */
 		if (!ctrl_nh.getParam("topic_name", topic_name))
 		{
 			ROS_INFO_STREAM("Parameter topic name not given using "<<topic_name);
