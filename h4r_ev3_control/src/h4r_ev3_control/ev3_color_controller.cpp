@@ -40,17 +40,35 @@ Ev3ColorController::~Ev3ColorController()
 }
 
 
+
 bool Ev3ColorController::init(Ev3SensorInterface* hw,
 			ros::NodeHandle &root_nh,
 			ros::NodeHandle& ctrl_nh)
 	{
 
 		// get publishing period
+	    /**
+	     *
+	     * \page Ev3ColorController Ev3ColorController
+	     * \section Parameters
+	     * \subsection publish_rate
+	     *
+	     * The publish_rate parameter sets the rate which the controller should use to publish its
+	     * messages.
+	     */
 		if (!ctrl_nh.getParam("publish_rate", publish_rate_))
 		{
 			ROS_ERROR("Parameter publish_rate was not set, using 10 Hz");
 		}
 
+
+		/**
+		* \page Ev3ColorController Ev3ColorController
+		* \subsection port
+		*
+		*
+		* The port parameter specifies the EV3 port name.
+		*/
 		if (!ctrl_nh.getParam("port", port_))
 		{
 			ROS_ERROR("Parameter port was not set");
@@ -58,6 +76,41 @@ bool Ev3ColorController::init(Ev3SensorInterface* hw,
 		}
 
 		std::string mode_str;
+
+
+		/**
+		* \page Ev3ColorController Ev3ColorController
+		* \subsection mode
+		*
+		* The mode parameter gives the mode for the color sensor. If not set, it will use **rgb_raw**.
+		*
+		* The following modes are possible for the sensor:
+		* 1. **rgb_raw**\n
+		*    'rgb_raw' mode uses the RGB_RAW mode of this sensor.
+		*    It will output the color information in RGB in a **std_msgs::ColorRGBA.msg** topic.
+		* 2. **color**\n
+		*    'color' mode publishes the a number for the following recognized colors into a **std_msgs::UInt8** topic\n
+		*    Value | Color
+		*    ------|------
+		*        0 | none
+		* 	      1 | black
+		*        2 | blue
+		*        3 | green
+		*        4 | yellow
+		*        5 | red
+		*        6 | white
+		*        7 | brown
+		*
+		* 3. **ambient**\n
+		*	   'ambient' mode measures the ambient light and publishes into a **sensor_msgs::Illuminance** topic
+		*
+		* 4. **reflect**\n
+		*     'reflect' mode measures the reflected light from an obstacle and publishes into a **sensor_msgs::Illuminance** topic
+		*
+		*  \warning Currently **ambient** and **reflect** publish the direct sensor value (percent) in percent - this will change so that it fits the output value in the message
+		*  or the message type will be changed when it is found to be not right.
+		*	\todo check how to calculate LUX value for message or change message type
+		*/
 		if (!ctrl_nh.getParam("mode", mode_str))
 		{
 			ROS_ERROR("Parameter mode was not set, using 'rgb_raw'");

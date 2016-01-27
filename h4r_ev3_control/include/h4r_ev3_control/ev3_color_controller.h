@@ -19,6 +19,8 @@
  * along with ev3_control.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
+
 #ifndef EV3_COLOR_CONTROLLER_H_
 #define EV3_COLOR_CONTROLLER_H_
 
@@ -36,6 +38,11 @@
 namespace ev3_control
 {
 
+/**
+ * \page Ev3ColorController Ev3ColorController
+ * \section Controller Function
+ * This controller is used to read the standard EV3 Color Sensor
+ */
 class Ev3ColorController: public controller_interface::Controller<
 		Ev3SensorInterface>
 {
