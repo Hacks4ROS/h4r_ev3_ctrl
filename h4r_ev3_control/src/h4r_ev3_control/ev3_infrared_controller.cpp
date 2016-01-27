@@ -191,11 +191,7 @@ bool Ev3InfraredController::init(Ev3SensorInterface* hw,
 				ROS_INFO_STREAM("Parameter min_range not given or wrong type, using 0");
 			}
 
-			if (!ctrl_nh.getParam("frame_id", frame_id_))
-			{
-				frame_id_=port_;
-				ROS_INFO_STREAM("Parameter frame_id not given or wrong type, using "<<port_);
-			}
+
 
 			if(max_range_>2.50)
 			{
@@ -228,6 +224,7 @@ bool Ev3InfraredController::init(Ev3SensorInterface* hw,
 				realtime_seek_publishers_[i] = RtSeekPublisherPtr(
 						new realtime_tools::RealtimePublisher<h4r_ev3_msgs::Seek>(
 								root_nh, topic_name, 4));
+
 			}
 			break;
 
@@ -247,13 +244,6 @@ bool Ev3InfraredController::init(Ev3SensorInterface* hw,
 				{
 					topic_name=port_+"_ir_remote_"+number;
 					ROS_INFO_STREAM("Parameter "<<param_name<<" not given using "<<topic_name<<" for channel "<<i);
-				}
-
-				param_name="frame_id_"+number;
-				if (!ctrl_nh.getParam(param_name, frame_id_))
-				{
-					frame_id_=port_+"_ir_remote_"+number;
-					ROS_INFO_STREAM("Parameter "<<param_name<<" not given using "<<frame_id_<<" for channel "<<i);
 				}
 
 
