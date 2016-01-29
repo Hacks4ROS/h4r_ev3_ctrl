@@ -44,6 +44,9 @@ namespace ev3_control
  * \image html EV3Color.png
  * \section Controller Function
  * This controller is used to read the standard EV3 Color Sensor
+ *
+ * \example color.launch
+ * \example color.yaml
  */
 
 /**

@@ -42,6 +42,9 @@ namespace ev3_control
  * \image html EV3Infrared.png
  * \section Controller Function
  * This controller is used to read the standard EV3 Infrared Sensor
+ *
+ * \example infrared.launch
+ * \example infrared.yaml
  */
 
 /**

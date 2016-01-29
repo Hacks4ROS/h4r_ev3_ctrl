@@ -40,6 +40,9 @@ namespace ev3_control
  * \image html EV3Touch.png
  * \section Controller Function
  * This controller is used to read the standard EV3 Touch Sensor
+ *
+ * \example touch.launch
+ * \example touch.yaml
  */
 
 /**

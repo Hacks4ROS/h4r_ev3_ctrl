@@ -78,6 +78,7 @@ bool Ev3InfraredController::init(Ev3SensorInterface* hw,
 			ROS_ERROR("Parameter port was not set");
 			return false;
 		}
+
 		/**
 		 * \page Ev3InfraredController Ev3InfraredController
 		 * \subsection mode

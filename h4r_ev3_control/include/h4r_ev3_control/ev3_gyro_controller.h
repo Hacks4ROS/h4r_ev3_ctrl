@@ -40,6 +40,9 @@ namespace ev3_control
  * \ingroup Ev3Controllers
  * \section Controller Function
  * This controller is used to read the standard EV3 Gyro Sensor
+ *
+ * \example gyro.launch
+ * \example gyro.yaml
  */
 
 /**
