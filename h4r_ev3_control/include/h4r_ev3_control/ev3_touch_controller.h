@@ -37,6 +37,7 @@ namespace ev3_control
 /**
  * \page Ev3TouchController Ev3TouchController
  * \ingroup Ev3Controllers
+ * \image html EV3Touch.png
  * \section Controller Function
  * This controller is used to read the standard EV3 Touch Sensor
  */

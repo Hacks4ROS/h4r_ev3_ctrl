@@ -36,6 +36,7 @@ namespace ev3_control
 {
 /**
  * \page Ev3GyroController Ev3GyroController
+ * \image html EV3Gyro.png
  * \ingroup Ev3Controllers
  * \section Controller Function
  * This controller is used to read the standard EV3 Gyro Sensor

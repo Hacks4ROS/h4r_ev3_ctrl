@@ -47,12 +47,26 @@ bool Ev3UltrasonicController::init(Ev3SensorInterface* hw,
 			ros::NodeHandle& ctrl_nh)
 	{
 
-		// get publishing period
+		/**
+		 *
+		 * \page Ev3UltrasonicController Ev3UltrasonicController
+		 * \section Parameters
+		 * \subsection publish_rate
+		 *
+		 * The rate the controller should use to publish its messages.
+		 */
 		if (!ctrl_nh.getParam("publish_rate", publish_rate_))
 		{
 			ROS_ERROR("Parameter publish_rate was not set, using 10 Hz");
 		}
 
+		/**
+		 * \page Ev3UltrasonicController Ev3UltrasonicController
+		 * \subsection port
+		 *
+		 *
+		 * Specifies the EV3 port name.
+		 */
 		if (!ctrl_nh.getParam("port", port_))
 		{
 			ROS_ERROR("Parameter port was not set");
@@ -60,6 +74,17 @@ bool Ev3UltrasonicController::init(Ev3SensorInterface* hw,
 		}
 
 		std::string mode_str;
+		/**
+		 * \page Ev3UltrasonicController Ev3UltrasonicController
+		 * \subsection mode
+		 * 1. **distance** publishes the measured distance into a **sensor_msgs::Range** topic
+		 * 2. **listen** publishes into a **std_msgs::Boolean** topic, when it detects
+		 *    another Ultrasonic Sensor or a loud noise (like a clap) the value is true otherwise false.
+		 *    - **max_range** sets the maximum range of values taken into account if a value is bigger it will be replaced by infinity.\n
+		 *      The maximum value for this parameter is 2.5 because the value 2.550 is the sensors error condition.
+		 *
+		 *    - **min_range** sets the minimum range of values taken into account if a value is smaller it will be replaced by negative infinity.
+		 */
 		if (!ctrl_nh.getParam("mode", mode_str))
 		{
 			ROS_ERROR("Parameter mode was not set, using 'distance'");
@@ -71,7 +96,7 @@ bool Ev3UltrasonicController::init(Ev3SensorInterface* hw,
 			{
 				mode_=Ev3Strings::EV3ULTRASONICMODE_US_DIST_CM;
 			}
-			else if(mode_str=="seek")
+			else if(mode_str=="listen")
 			{
 				mode_=Ev3Strings::EV3ULTRASONICMODE_US_LISTEN;
 			}

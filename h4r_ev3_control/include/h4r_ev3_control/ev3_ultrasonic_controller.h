@@ -38,6 +38,7 @@ namespace ev3_control
 /**
  * \page Ev3UltrasonicController Ev3UltrasonicController
  * \ingroup Ev3Controllers
+ * \image html EV3Ultrasonic.png
  * \section Controller Function
  * This controller is used to read the standard EV3 Ultrasonic Sensor
  *

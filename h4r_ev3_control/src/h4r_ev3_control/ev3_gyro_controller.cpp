@@ -53,12 +53,12 @@ bool Ev3GyroController::init(Ev3SensorInterface* hw,
 		}
 
 		/**
-		* \page Ev3GyroController Ev3GyroController
-		* \subsection port
-		*
-		*
-		* Specifies the EV3 port name.
-		*/
+		 * \page Ev3GyroController Ev3GyroController
+		 * \subsection port
+		 *
+		 *
+		 * Specifies the EV3 port name.
+		 */
 		if (!ctrl_nh.getParam("port", port_))
 		{
 			ROS_ERROR("Parameter port was not set");
@@ -66,6 +66,7 @@ bool Ev3GyroController::init(Ev3SensorInterface* hw,
 		}
 
 		std::string mode_str;
+
 		/**
 		 * \page Ev3GyroController Ev3GyroController
 		 * \subsection mode
@@ -84,7 +85,6 @@ bool Ev3GyroController::init(Ev3SensorInterface* hw,
 		 *                 This is a sensor issue.
 		 *                 Using this mode is not recommended.
 		 */
-
 		if (!ctrl_nh.getParam("mode", mode_str))
 		{
 			ROS_ERROR("Parameter mode was not set, using 'angle'");
@@ -129,7 +129,6 @@ bool Ev3GyroController::init(Ev3SensorInterface* hw,
 			return false;
 		}
 
-
 		/**
 		 * \page Ev3GyroController Ev3GyroController
 		 * \subsection frame_id
@@ -143,6 +142,7 @@ bool Ev3GyroController::init(Ev3SensorInterface* hw,
 
 		std::string topic_name;
 		topic_name=port_+"_gyro";
+
 		/**
 		 * \page Ev3GyroController Ev3GyroController
 		 * \subsection topic_name

@@ -41,6 +41,7 @@ namespace ev3_control
 /**
  * \page Ev3ColorController Ev3ColorController
  * \ingroup Ev3Controllers
+ * \image html EV3Color.png
  * \section Controller Function
  * This controller is used to read the standard EV3 Color Sensor
  */
