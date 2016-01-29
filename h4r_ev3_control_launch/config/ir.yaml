@@ -4,4 +4,4 @@ Ev3Infrared:
   topic_name: /ir
   publish_rate: 10
   port: in4
-  mode: remote 
+  mode: seek 

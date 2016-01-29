@@ -144,8 +144,6 @@ bool Ev3ColorController::init(Ev3SensorInterface* hw,
 		cout << "Mode: " << mode_str << endl;
 		cout << "Publish rate: " << publish_rate_ << endl;
 
-
-
 		handle_ = hw->getHandle(port_);
 		color_interface_.setSensor(handle_.getSensor());
 

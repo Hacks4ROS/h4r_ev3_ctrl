@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<package>
+  <name>h4r_ev3_control</name>
+  <version>0.0.0</version>
+  <description>The h4r_ev3_control_launch package contains example launch files and configurations for h4r_ev3_control</description>
+
+  <maintainer email="cyborgx1@gmail.com">Christian Holl</maintainer>
+
+  <license>GPLv3</license>
+
+  <url type="website">http://hacks4ros.github.io/h4r_ev3_ctrl</url>  
+  <url type="repository">http://github.com/Hacks4ROS/h4r_ev3_ctrl</url>
+  <url type="bugtracker">https://github.com/Hacks4ROS/h4r_ev3_ctrl/issues</url>
+  
+  <author email="cyborgx1@gmail.com">Christian Holl</author>
+  
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>controller_interface</build_depend>
+  <build_depend>hardware_interface</build_depend>
+  <build_depend>pluginlib</build_depend>
+  
+  <run_depend>controller_interface</run_depend>
+  <run_depend>hardware_interface</run_depend>
+  <run_depend>pluginlib</run_depend>
+
+  <export>
+  </export>
+</package>

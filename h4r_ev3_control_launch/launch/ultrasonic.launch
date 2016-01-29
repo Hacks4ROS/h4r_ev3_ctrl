@@ -1,7 +1,7 @@
 <launch>
 	 <group ns="ev3">
 	 		<!-- Load joint controller configurations from YAML file to parameter server -->
-	  	<rosparam file="$(find h4r_ev3_control)/config/ultrasonic.yaml" command="load"/>
+	  	<rosparam file="$(find h4r_ev3_control_launch)/config/ultrasonic.yaml" command="load"/>
 	
 	  	<!-- load the controllers -->
 	  	<node name="ev3_sensor_spawner" pkg="controller_manager" type="spawner" respawn="false"
