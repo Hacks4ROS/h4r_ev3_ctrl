@@ -257,7 +257,9 @@ class H4REv3Motor : public H4REv3Port
 	OpenFile f_Position;
 	OpenFile f_MotorCommand;
 	OpenFile f_MotorPolarity;
-
+	OpenFile f_SpeedPID_Kp;
+	OpenFile f_SpeedPID_Ki;
+	OpenFile f_SpeedPID_Kd;
 
 public:
 
@@ -349,6 +351,35 @@ public:
 		return writeKey<Ev3Strings::Ev3Polarity>("polarity",Ev3Strings::ev3_polarity_conv, pol, f_MotorPolarity);
 	}
 
+	/**
+	 * Sets the Kp part of the motors speed control
+	 * @param value
+	 * @return True if successful
+	 */
+	bool setSpeedPID_Kp(unsigned int value)
+	{
+		return writeInt("speed_pid/Kp",value,f_SpeedPID_Kp);
+	}
+
+	/**
+	 * Sets the Ki part of the motors speed control
+	 * @param value
+	 * @return True if successful
+	 */
+	bool setSpeedPID_Ki(unsigned int value)
+	{
+		return writeInt("speed_pid/Kp",value,f_SpeedPID_Ki);
+	}
+
+	/**
+	 * Sets the Kd part of the motors speed control
+	 * @param value
+	 * @return True if successful
+	 */
+	bool setSpeedPID_Kd(unsigned int value)
+	{
+		return writeInt("speed_pid/Kp",value,f_SpeedPID_Kd);
+	}
 };
 
 
