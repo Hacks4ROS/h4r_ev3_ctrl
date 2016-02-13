@@ -1,5 +1,5 @@
 <launch>
-	<group ns="ev3">
+	<group ns="$(arg ev3_hostname)">
 		<node pkg="h4r_ev3_manager" type="ev3_manager_node" name="ev3_manager_node" output="screen" >
 			<rosparam param="OutPorts">["outA","outB","outC","outD"]</rosparam>	
 			<rosparam param="InPorts">["in1","in2","in3","in4"]</rosparam>			
@@ -12,3 +12,4 @@
 	    output="screen" args="OutPortState OutPortA OutPortB "/>-->
 	</group>		
 </launch>
+ 
