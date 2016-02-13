@@ -73,10 +73,17 @@ public:
 	bool load(const Ev3HwSettings &settings, bool testOnly)
 	{
 
+
+
 		if(!testOnly)
 		{
 			port.setMotorCommand(Ev3Strings::EV3MOTORCOMMANDS_RESET);
 		}
+
+		//Setting motor PIDs
+		port.setSpeedPID_Kp(settings.pid[0]);
+		port.setSpeedPID_Ki(settings.pid[1]);
+		port.setSpeedPID_Kd(settings.pid[2]);
 
 
 		return true;
