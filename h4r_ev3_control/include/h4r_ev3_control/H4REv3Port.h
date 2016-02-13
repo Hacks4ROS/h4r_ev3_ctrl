@@ -368,7 +368,7 @@ public:
 	 */
 	bool setSpeedPID_Ki(unsigned int value)
 	{
-		return writeInt("speed_pid/Kp",value,f_SpeedPID_Ki);
+		return writeInt("speed_pid/Ki",value,f_SpeedPID_Ki);
 	}
 
 	/**
@@ -378,7 +378,7 @@ public:
 	 */
 	bool setSpeedPID_Kd(unsigned int value)
 	{
-		return writeInt("speed_pid/Kp",value,f_SpeedPID_Kd);
+		return writeInt("speed_pid/Kd",value,f_SpeedPID_Kd);
 	}
 };
 
