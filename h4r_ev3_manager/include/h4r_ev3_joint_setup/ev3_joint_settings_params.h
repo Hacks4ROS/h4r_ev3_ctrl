@@ -92,22 +92,25 @@ namespace ev3_control
 		settings.pid.clear();
 		if(!setup_nh.getParam("speed_pid_sp", settings.pid))
 		{
-			ROS_INFO("No PID Settings found, using standard Kp:0, Ki:60, Kp:1000");
-
-			//TODO set pid
+			settings.pid.resize(3);
+			ROS_INFO("No PID Settings found, using standard  Kp:1000 Ki:60, Kd:0");
+			settings.pid[0]=1000;
+			settings.pid[1]=60;
+			settings.pid[2]=0;
 		}
 		else
 		{
 			if(settings.pid.size()!=3)
 			{
-				ROS_ERROR("PID Settings error!");
+				ROS_ERROR("PID Settings error! Wrong amount of settings, required exactly 3 for P, I and D");
+				return false;
 			}
 			else
 			{
 				ROS_INFO_STREAM("P: "<<settings.pid[0]<<"  I: "<<settings.pid[1]<<"   D: "<<settings.pid[2]);
-				//TODO set pid
 			}
 		}
+		//PID
 		ROS_INFO_STREAM("</-------------EV3 Joint "<<joint_name<<"---------------->");
 
 		return true;
