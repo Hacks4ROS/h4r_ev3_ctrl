@@ -74,12 +74,15 @@ public:
 	{
 
 
-		ROS_INFO("load!");
 		if(!testOnly)
 		{
 			port.setMotorCommand(Ev3Strings::EV3MOTORCOMMANDS_RESET);
 		}
 
+
+		ROS_INFO_STREAM("PID "<<settings.pid[0]
+						      <<" "<<settings.pid[1]
+						      <<" "<<settings.pid[2]);
 		//Setting motor PIDs
 		port.setSpeedPID_Kp(settings.pid[0]);
 		port.setSpeedPID_Ki(settings.pid[1]);
