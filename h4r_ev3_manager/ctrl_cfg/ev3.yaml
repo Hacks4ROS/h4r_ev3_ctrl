@@ -1,15 +1,15 @@
 Ev3devJoints:
   Joint_A:
-    pid: [1.1 , 2.0, 3.0] 
+    speed_pid: [1001, 61 , 1] 
     mode: velocity
   Joint_B:
-    pid: [1.1 , 2.0, 3.0] 
+    speed_pid: [1002, 62, 2] 
     mode: velocity
   Joint_C:
-    pid: [1.1 , 2.0, 3.0] 
+    speed_pid: [1003 , 63, 3] 
     mode: velocity
   Joint_D:
-    pid: [1.1 , 2.0, 3.0] 
+    speed_pid: [1004 , 64, 4] 
     mode: velocity
 
 # Publish all joint states -----------------------------------

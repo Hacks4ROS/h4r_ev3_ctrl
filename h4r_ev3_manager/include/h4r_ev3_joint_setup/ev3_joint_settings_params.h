@@ -90,7 +90,7 @@ namespace ev3_control
 
 		//PID
 		settings.pid.clear();
-		if(!setup_nh.getParam("speed_pid_sp", settings.pid))
+		if(!setup_nh.getParam("speed_pid", settings.pid))
 		{
 			settings.pid.resize(3);
 			ROS_INFO("No PID Settings found, using standard  Kp:1000 Ki:60, Kd:0");
