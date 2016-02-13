@@ -104,6 +104,7 @@ public:
 
 	 bool ControllerChange(const std::list<ControllerInfo> &start_list)
 	 {
+		 ROS_INFO("Controller Change");
 		for (std::list<ControllerInfo>::const_iterator it = start_list.begin(); it != start_list.end(); it++)
 		{
 			for (std::set<std::string>::const_iterator res = it->resources.begin(); res != it->resources.end(); res++)
@@ -113,10 +114,11 @@ public:
 				try
 				{
 					Ev3JointInterfaceHandle handle=getHandle(*res);
-					handle.getSettings().port.setMotorCommand(Ev3Strings::EV3MOTORCOMMANDS_RESET);
 					Ev3JointSettings::Ev3HwSettings ev3settings;
+
+					handle.getSettings().port.setMotorCommand(Ev3Strings::EV3MOTORCOMMANDS_RESET);
 					getJointSettings(*res, ev3settings);
-					//Reset motor
+					ROS_INFO("----------------------------------------------<");
 					handle.getSettings().load(ev3settings,true);
 				}
 				catch(const Ev3JointInterfaceException& e)
