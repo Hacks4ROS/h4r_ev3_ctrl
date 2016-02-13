@@ -74,7 +74,7 @@ public:
 	{
 
 
-
+		ROS_INFO("load!");
 		if(!testOnly)
 		{
 			port.setMotorCommand(Ev3Strings::EV3MOTORCOMMANDS_RESET);
