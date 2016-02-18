@@ -1,5 +1,5 @@
 <launch>
-	 <group ns="ev3">
+	 <group ns="$(arg ev3_hostname)">
 	 		<!-- Load joint controller configurations from YAML file to parameter server -->
 	  	<rosparam file="$(find h4r_ev3_control_launch)/config/gyro.yaml" command="load"/>
 	

@@ -5,7 +5,7 @@
 			<rosparam param="InPorts">["in1","in2","in3","in4"]</rosparam>			
 		</node>
 	 	<!-- Load joint controller configurations from YAML file to parameter server -->
-	  	<rosparam file="$(find h4r_ev3_manager)/ctrl_cfg/ev3.yaml" command="load"/>
+	  	<rosparam file="$(find h4r_ev3_launch)/config/motors.yaml" command="load"/>
 	
 	  	<!-- load the controllers 
 	  	<node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"

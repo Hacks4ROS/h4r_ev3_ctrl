@@ -25,18 +25,7 @@ OutPortA:
 OutPortB:
   type: velocity_controllers/JointVelocityController
   joint: Joint_B
-    
-OutPortC:
-  type: velocity_controllers/JointVelocityController
-  joint: Joint_C
-
-OutPortD:
-  type: position_controllers/JointPositionController
-  joint: Joint_D
-
-
-
-
+ 
 ####
 diffDrv:
   type        : "diff_drive_controller/DiffDriveController"
