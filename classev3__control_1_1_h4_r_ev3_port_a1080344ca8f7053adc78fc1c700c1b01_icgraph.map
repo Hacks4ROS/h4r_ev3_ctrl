@@ -1,0 +1,4 @@
+<map id="ev3_control::H4REv3Port::writeKey" name="ev3_control::H4REv3Port::writeKey">
+<area shape="rect" id="node2" href="$classev3__control_1_1_h4_r_ev3_motor.html#ac2aeec33b6b259fb7c326f1a1c10a83c" title="ev3_control::H4REv3Motor\l::setSpeedRegulation" alt="" coords="225,5,405,46"/>
+<area shape="rect" id="node3" href="$classev3__control_1_1_h4_r_ev3_motor.html#a3b7feda5bec8be0209abda30452d1e04" title="ev3_control::H4REv3Motor\l::setMotorCommand" alt="" coords="225,70,405,111"/>
+</map>

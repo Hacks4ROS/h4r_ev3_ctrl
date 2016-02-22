@@ -1,0 +1,5 @@
+<map id="ev3_control::H4REv3Port::getDriverName" name="ev3_control::H4REv3Port::getDriverName">
+<area shape="rect" id="node2" href="$classev3__control_1_1_h4_r_ev3_port.html#a463e44ea92292ea8e2cba35acf1e18fe" title="ev3_control::H4REv3Port\l::isConnected" alt="" coords="224,5,395,46"/>
+<area shape="rect" id="node4" href="$classev3__control_1_1_h4_r_ev3_port.html#a0e89b9c3b10136f39928cb2b2bc22a67" title="ev3_control::H4REv3Port\l::readKey" alt="" coords="224,70,395,111"/>
+<area shape="rect" id="node3" href="$class_fixed_buffer_1_1_fixed_buffer.html#a43a1259340e8911d6cd335ba757b3939" title="Returns a C string (always valid). " alt="" coords="443,5,607,46"/>
+</map>
