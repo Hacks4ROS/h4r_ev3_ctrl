@@ -25,9 +25,9 @@
 
 namespace ev3_control {
 Ev3HardwareInterface::Ev3HardwareInterface(
-		const std::vector<ev3dev::port_type> &in_ports,
-		const std::vector<ev3dev::port_type> &out_ports
-		)
+		const std::vector<std::string> &in_ports,
+		const std::vector<std::string> &out_ports
+		):nh_(0)
 {
 	registerInterface(&jnt_vel_interface);
 	registerInterface(&jnt_pos_interface);

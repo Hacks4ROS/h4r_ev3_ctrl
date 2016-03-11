@@ -25,7 +25,6 @@
 #include <hardware_interface/robot_hw.h>
 #include <hardware_interface/controller_info.h>
 #include <joint_limits_interface/joint_limits_interface.h>
-#include <ev3dev.h>
 #include <control_toolbox/pid.h>
 #include <list>
 #include <vector>
