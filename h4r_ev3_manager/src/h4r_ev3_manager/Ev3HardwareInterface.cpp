@@ -20,7 +20,7 @@
  *
  */
 
-#include "../h4r_ev3_manager/Ev3HardwareInterface.h"
+#include "Ev3HardwareInterface.h"
 
 
 namespace ev3_control {
