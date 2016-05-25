@@ -2,7 +2,7 @@
 
 :warning: **ATTENTION! THE EV3_MANAGER NODE IS SUPPOSED TO RUN ON THE EV3 BRICK DIRECTLY!** :warning:
 
-:heart: Having problems with my software? Please use the Github [Issues](https://github.com/Hacks4ROS/h4r_ev3_ctrl/issues) features instead of direct emailing, maybe your problem and solving it can be useful for other users too, thank you...
+:question: Having problems with my software? Please use the Github [Issues](https://github.com/Hacks4ROS/h4r_ev3_ctrl/issues) features instead of direct emailing, maybe your problem and solving it can be useful for other users too, thank you... :heart:
 
 Use the image in the instructions - it gives you all except for the launchfiles you should launch on your Linux PC to make the Brick load the controller!
 
