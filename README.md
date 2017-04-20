@@ -10,6 +10,8 @@ Instructions to get a working image for your SD Card can be found here:
 
 http://hacks4ros.github.io/h4r_ev3_ctrl/
 
+If you want, [here](https://www.instructables.com/id/ROS-Robot-With-Lego-EV3-and-Docker) is a HowTo using Docker Containers created by Mikael Valot.
+
 
 This repository contains the node for the Lego EV3 for ROS.
 
